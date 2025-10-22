@@ -23,6 +23,7 @@ const productModule = require('./product');
 const orderModule = require('./order');
 const inventoryModule = require('./inventory');
 const statisticsModule = require('./statistics');
+const refundModule = require('./refund');
   const orderRoutes = require('./routes/orderRoutes');
   const inventoryRoutes = require('./routes/inventoryRoutes');
   const statisticsRoutes = require('./routes/statisticsRoutes');
@@ -35,9 +36,9 @@ const statisticsModule = require('./statistics');
     orderModule.register(app);
     inventoryModule.register(app);
     statisticsModule.register(app);
+    refundModule.register(app);
     
-    app.use('/api/seller/refunds', refundRoutes);
-  app.use('/api/seller/promotions', promotionRoutes);
+    app.use('/api/seller/promotions', promotionRoutes);
   
   logger.info('卖家端API模块注册完成');
 }
