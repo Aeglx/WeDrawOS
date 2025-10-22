@@ -3,10 +3,10 @@
  * 处理商品相关的HTTP请求
  */
 
-const logger = require('@core/utils/logger');
+const logger = require('../../../core/utils/logger');
 const productService = require('../services/productService');
-const { responseHandler } = require('@core/utils/responseHandler');
-const messageQueue = require('@core/messaging/messageQueue');
+const { responseHandler } = require('../../../core/utils/responseHandler');
+const messageQueue = require('../../../core/messaging/messageQueue');
 
 class ProductController {
   /**

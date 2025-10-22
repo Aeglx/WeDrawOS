@@ -3,9 +3,8 @@
  * 处理地址管理相关的HTTP请求
  */
 
-const di = require('@core/di/container');
-const addressService = di.resolve('addressService');
-const logger = di.resolve('logger');
+const logger = require('../../../core/utils/logger');
+const addressService = require('../services/addressService');
 
 class AddressController {
   /**

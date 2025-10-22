@@ -3,7 +3,7 @@
  * 整合购物车相关的控制器、服务、仓库和路由
  */
 
-const di = require('@core/di/container');
+const di = require('../../core/di/container');
 const cartRoutes = require('./routes/cartRoutes');
 const cartController = require('./controllers/cartController');
 const cartService = require('./services/cartService');

@@ -3,10 +3,10 @@
  * 处理商品相关的业务逻辑
  */
 
-const logger = require('@core/utils/logger');
+const logger = require('../../../core/utils/logger');
 const productRepository = require('../repositories/productRepository');
-const cacheService = require('@core/cache/cacheService');
-const messageQueue = require('@core/messaging/messageQueue');
+const cacheService = require('../../../core/cache/cacheService');
+const messageQueue = require('../../../core/messaging/messageQueue');
 
 class ProductService {
   /**

@@ -3,8 +3,8 @@
  * 负责商品数据的存取操作
  */
 
-const logger = require('@core/utils/logger');
-const BaseRepository = require('@core/data-access/repositories/BaseRepository');
+const logger = require('../../../core/utils/logger');
+const BaseRepository = require('../../../core/data-access/repositories/BaseRepository');
 
 class ProductRepository extends BaseRepository {
   constructor() {

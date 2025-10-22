@@ -3,9 +3,8 @@
  * 处理订单相关的数据操作
  */
 
-const di = require('@core/di/container');
-const BaseRepository = require('@core/repositories/baseRepository');
-const logger = di.resolve('logger');
+const logger = require('../../../core/utils/logger');
+const BaseRepository = require('../../../core/repositories/baseRepository');
 
 // 模拟订单数据存储
 let orders = [];

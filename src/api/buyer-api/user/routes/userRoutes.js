@@ -6,7 +6,7 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
-const authMiddleware = require('@core/security/authMiddleware');
+const authMiddleware = require('../../../core/security/authMiddleware');
 
 /**
  * 注册用户路由

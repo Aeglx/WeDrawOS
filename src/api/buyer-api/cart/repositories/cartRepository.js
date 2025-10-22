@@ -3,8 +3,8 @@
  * 负责购物车数据的存取操作
  */
 
-const logger = require('@core/utils/logger');
-const BaseRepository = require('@core/data-access/repositories/BaseRepository');
+const logger = require('../../../core/utils/logger');
+const BaseRepository = require('../../../core/data-access/repositories/BaseRepository');
 const { v4: uuidv4 } = require('uuid');
 
 class CartRepository extends BaseRepository {

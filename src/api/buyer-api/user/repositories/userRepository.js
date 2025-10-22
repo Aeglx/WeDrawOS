@@ -3,8 +3,8 @@
  * 负责用户数据的存取操作
  */
 
-const logger = require('@core/utils/logger');
-const BaseRepository = require('@core/data-access/repositories/BaseRepository');
+const logger = require('../../../core/utils/logger');
+const BaseRepository = require('../../../core/data-access/repositories/BaseRepository');
 
 class UserRepository extends BaseRepository {
   constructor() {

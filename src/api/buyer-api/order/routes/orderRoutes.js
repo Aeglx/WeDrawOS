@@ -6,7 +6,7 @@
 const express = require('express');
 const router = express.Router();
 const orderController = require('../controllers/orderController');
-const authMiddleware = require('@core/security/authMiddleware');
+const authMiddleware = require('../../../core/security/authMiddleware');
 
 /**
  * 注册订单路由

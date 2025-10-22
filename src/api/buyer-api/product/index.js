@@ -3,7 +3,7 @@
  * 整合商品相关的控制器、服务、仓库和路由
  */
 
-const di = require('@core/di/container');
+const di = require('../../core/di/container');
 const productRoutes = require('./routes/productRoutes');
 const productController = require('./controllers/productController');
 const productService = require('./services/productService');

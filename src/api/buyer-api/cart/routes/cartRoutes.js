@@ -6,7 +6,7 @@
 const express = require('express');
 const router = express.Router();
 const cartController = require('../controllers/cartController');
-const authMiddleware = require('@core/security/authMiddleware');
+const authMiddleware = require('../../../core/security/authMiddleware');
 
 /**
  * 注册购物车路由

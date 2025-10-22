@@ -3,10 +3,9 @@
  * 处理订单相关的HTTP请求
  */
 
-const di = require('@core/di/container');
-const orderService = di.resolve('orderService');
-const logger = di.resolve('logger');
-const messageQueue = di.resolve('messageQueue');
+const logger = require('../../../core/utils/logger');
+const orderService = require('../services/orderService');
+const messageQueue = require('../../../core/messaging/messageQueue');
 
 class OrderController {
   /**

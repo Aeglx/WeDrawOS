@@ -3,7 +3,7 @@
  * 整合订单相关的控制器、服务、仓库和路由
  */
 
-const di = require('@core/di/container');
+const di = require('../../core/di/container');
 const orderRoutes = require('./routes/orderRoutes');
 const orderController = require('./controllers/orderController');
 const orderService = require('./services/orderService');

@@ -3,7 +3,7 @@
  * 整合地址管理相关的控制器、服务、仓库和路由
  */
 
-const di = require('@core/di/container');
+const di = require('../../core/di/container');
 const addressRoutes = require('./routes/addressRoutes');
 const addressController = require('./controllers/addressController');
 const addressService = require('./services/addressService');

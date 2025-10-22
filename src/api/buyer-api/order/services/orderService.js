@@ -3,13 +3,12 @@
  * 处理订单相关的业务逻辑
  */
 
-const di = require('@core/di/container');
-const orderRepository = di.resolve('orderRepository');
-const productService = di.resolve('productService');
-const cartService = di.resolve('cartService');
-const logger = di.resolve('logger');
-const cache = di.resolve('cache');
-const messageQueue = di.resolve('messageQueue');
+const logger = require('../../../core/utils/logger');
+const orderRepository = require('../repositories/orderRepository');
+const productService = require('../../product/services/productService');
+const cartService = require('../../cart/services/cartService');
+const cacheService = require('../../../core/cache/cacheService');
+const messageQueue = require('../../../core/messaging/messageQueue');
 
 class OrderService {
   /**
@@ -69,7 +68,7 @@ class OrderService {
       await cartService.clearCart(userId);
       
       // 清除缓存
-      await cache.delete(`user:${userId}:orders`);
+      await cacheService.delete(`user:${userId}:orders`);
       
       logger.info('订单创建成功', { orderId: createdOrder.id, userId });
       
@@ -90,7 +89,7 @@ class OrderService {
     try {
       // 尝试从缓存获取
       const cacheKey = `user:${userId}:orders:${query.page}:${query.limit}:${query.status || 'all'}`;
-      const cachedOrders = await cache.get(cacheKey);
+      const cachedOrders = await cacheService.get(cacheKey);
       if (cachedOrders) {
         return JSON.parse(cachedOrders);
       }
@@ -98,7 +97,7 @@ class OrderService {
       const orders = await orderRepository.getUserOrders(userId, query);
       
       // 缓存结果
-      await cache.set(cacheKey, JSON.stringify(orders), 300); // 5分钟缓存
+      await cacheService.set(cacheKey, JSON.stringify(orders), 300); // 5分钟缓存
       
       return orders;
     } catch (error) {
@@ -160,7 +159,7 @@ class OrderService {
       }
       
       // 清除缓存
-      await cache.deleteByPattern(`user:${userId}:orders:*`);
+      await cacheService.deleteByPattern(`user:${userId}:orders:*`);
       
       logger.info('订单取消成功', { orderId, userId });
       
@@ -258,7 +257,7 @@ class OrderService {
     try {
       // 尝试从缓存获取
       const cacheKey = `user:${userId}:orderStats`;
-      const cachedStats = await cache.get(cacheKey);
+      const cachedStats = await cacheService.get(cacheKey);
       if (cachedStats) {
         return JSON.parse(cachedStats);
       }
@@ -266,7 +265,7 @@ class OrderService {
       const stats = await orderRepository.getOrderStats(userId);
       
       // 缓存结果
-      await cache.set(cacheKey, JSON.stringify(stats), 600); // 10分钟缓存
+      await cacheService.set(cacheKey, JSON.stringify(stats), 600); // 10分钟缓存
       
       return stats;
     } catch (error) {

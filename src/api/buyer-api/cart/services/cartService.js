@@ -3,11 +3,11 @@
  * 处理购物车相关的业务逻辑
  */
 
-const logger = require('@core/utils/logger');
+const logger = require('../../../core/utils/logger');
 const cartRepository = require('../repositories/cartRepository');
 const productService = require('../../product/services/productService');
-const cacheService = require('@core/cache/cacheService');
-const messageQueue = require('@core/messaging/messageQueue');
+const cacheService = require('../../../core/cache/cacheService');
+const messageQueue = require('../../../core/messaging/messageQueue');
 
 class CartService {
   /**
