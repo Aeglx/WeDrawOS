@@ -12,6 +12,7 @@ const productModule = require('./product');
 const cartModule = require('./cart');
 const orderModule = require('./order');
 const addressModule = require('./address');
+const reviewModule = require('./review');
 
 /**
  * 注册买家端API模块
@@ -26,6 +27,7 @@ function register(app) {
   cartModule.initialize(app);
   orderModule.initialize(app);
   addressModule.initialize(app);
+  reviewModule.initialize(app);
   
   // TODO: 注册其他业务模块
   

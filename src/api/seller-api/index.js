@@ -17,25 +17,22 @@ function register(app) {
   const router = require('express').Router();
   
   // 导入卖家端业务模块路由
-  const sellerRoutes = require('./routes/sellerRoutes');
-  const productRoutes = require('./routes/productRoutes');
+  const sellerModule = require('./seller');
+  const productModule = require('./product');
   const orderRoutes = require('./routes/orderRoutes');
   const inventoryRoutes = require('./routes/inventoryRoutes');
   const statisticsRoutes = require('./routes/statisticsRoutes');
   const refundRoutes = require('./routes/refundRoutes');
   const promotionRoutes = require('./routes/promotionRoutes');
   
-  // 注册各业务模块路由
-  router.use('/sellers', sellerRoutes);
-  router.use('/products', productRoutes);
-  router.use('/orders', orderRoutes);
-  router.use('/inventory', inventoryRoutes);
-  router.use('/statistics', statisticsRoutes);
-  router.use('/refunds', refundRoutes);
-  router.use('/promotions', promotionRoutes);
-  
-  // 注册到应用
-  app.use('/api/seller', router);
+  // 注册卖家端各个业务模块
+  sellerModule.register(app);
+  productModule.register(app);
+  app.use('/api/seller/orders', orderRoutes);
+  app.use('/api/seller/inventory', inventoryRoutes);
+  app.use('/api/seller/statistics', statisticsRoutes);
+  app.use('/api/seller/refunds', refundRoutes);
+  app.use('/api/seller/promotions', promotionRoutes);
   
   logger.info('卖家端API模块注册完成');
 }
