@@ -32,6 +32,15 @@ const sellerApi = require('./seller-api');
 const adminApi = require('./admin-api');
 const imApi = require('./im-api');
 
+// 导入客服系统API模块
+const customerServiceRoutes = require('./routes');
+const authMiddleware = require('./middleware/auth');
+const responseFormatter = require('./middleware/responseFormatter');
+const logger = require('./middleware/logger');
+const rateLimiter = require('./middleware/rateLimiter');
+const validators = require('./middleware/validators');
+const customerServiceDb = require('./models');
+
 // 导入后台模块
 const messageConsumer = require('./message-consumer');
 const scheduler = require('./scheduler');
@@ -67,6 +76,15 @@ async function initialize() {
     // 初始化推送服务
     pushService.initialize();
     
+    // 客服系统错误处理中间件
+    try {
+      if (logger.errorLogger) {
+        app.use(logger.errorLogger);
+      }
+    } catch (e) {
+      // 忽略错误
+    }
+    
     // 注册统一错误处理
     app.use(errorHandler);
     
@@ -98,9 +116,10 @@ function configureMiddleware(app) {
   
   // 跨域配置
   app.use(cors({
-    origin: process.env.CORS_ORIGIN || '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    origin: process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : process.env.CORS_ORIGIN || '*',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
   }));
   
   // 请求体解析
@@ -121,8 +140,22 @@ function configureMiddleware(app) {
   const swaggerUiAssetPath = require('swagger-ui-dist').getAbsoluteFSPath();
   app.use('/swagger-ui', express.static(swaggerUiAssetPath));
   
+  // 客服系统专用中间件
+  try {
+    // 请求ID中间件
+    if (logger.requestId) {
+      app.use(logger.requestId);
+    }
+    // 自定义请求日志
+    if (logger.requestLogger) {
+      app.use(logger.requestLogger);
+    }
+  } catch (e) {
+    // 忽略中间件错误
+  }
+  
   // 统一响应格式中间件
-  app.use(responseFormatter.formatResponse);
+  app.use(responseFormatter.formatResponse || (req, res, next) => next());
 }
 
 /**
@@ -134,6 +167,22 @@ async function initializeCoreServices() {
   try {
     // 初始化数据库连接
     await database.initialize();
+    
+    // 初始化客服系统数据库
+    try {
+      if (customerServiceDb && customerServiceDb.sequelize) {
+        logger.info('初始化客服系统数据库...');
+        await customerServiceDb.sequelize.authenticate();
+        // 在开发环境自动同步模型
+        if (process.env.NODE_ENV !== 'production') {
+          await customerServiceDb.sequelize.sync({ alter: true });
+        }
+        logger.info('客服系统数据库初始化成功');
+      }
+    } catch (csDbError) {
+      logger.error('客服系统数据库初始化失败:', csDbError);
+      // 不阻止主应用启动
+    }
     
     // 初始化Redis缓存
     await cacheManager.initialize();
@@ -180,7 +229,53 @@ function registerRoutes(app) {
     });
   });
   
-  // 注册各模块路由
+  // API信息端点
+  app.get('/api/info', (req, res) => {
+    res.status(200).json({
+      success: true,
+      data: {
+        version: '1.0.0',
+        name: 'WeDrawOS Customer Service API',
+        timestamp: new Date().toISOString()
+      }
+    });
+  });
+  
+  // 客服系统API路由
+  try {
+    logger.info('注册客服系统API路由...');
+    // 客服系统API基础路径
+    const csApiPath = '/api/v1';
+    
+    // 客服系统数据库连接检查中间件
+    const checkCsDatabaseConnection = async (req, res, next) => {
+      try {
+        if (customerServiceDb && customerServiceDb.sequelize) {
+          await customerServiceDb.sequelize.authenticate();
+        }
+        next();
+      } catch (error) {
+        return res.status(503).json({
+          success: false,
+          message: '客服系统数据库连接失败',
+          data: null
+        });
+      }
+    };
+    
+    // 注册客服系统路由
+    if (typeof customerServiceRoutes === 'function') {
+      app.use(csApiPath, checkCsDatabaseConnection, customerServiceRoutes);
+    } else if (typeof customerServiceRoutes === 'object') {
+      app.use(csApiPath, checkCsDatabaseConnection, customerServiceRoutes);
+    }
+    
+    logger.info(`客服系统API路由已注册，基础路径: ${csApiPath}`);
+  } catch (csRouteError) {
+    logger.error('客服系统API路由注册失败:', csRouteError);
+  }
+  
+  // 注册原有系统各模块路由
   commonApi.register(app);
   buyerApi.register(app);
   sellerApi.register(app);

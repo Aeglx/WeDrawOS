@@ -1,27 +1,41 @@
 /**
- * 应用程序入口文件
- * 负责启动和初始化整个应用
+ * WeDrawOS 客服系统 API 入口文件
+ * 负责启动和初始化整个应用，包括客服系统功能
  */
 
 // 加载环境变量
+if (!process.env.NODE_ENV) {
+  process.env.NODE_ENV = 'development';
+}
+
+// 尝试从特定环境文件加载配置
+require('dotenv').config({
+  path: `.env.${process.env.NODE_ENV}`
+});
+
+// 再次加载默认环境变量（确保所有配置都被加载）
 require('dotenv').config();
 
-const { start } = require('./core/app');
-const logger = require('./core/utils/logger');
+// 导入主应用启动模块
+const { initialize } = require('./app');
+const logger = require('./core/utils/logger') || console;
 
 /**
  * 主函数
- * 启动应用程序
+ * 启动应用程序，包括客服系统API
  */
 async function main() {
   try {
-    logger.info('正在启动应用程序...');
+    console.log('========================================');
+    logger.info('WeDrawOS 应用启动中...');
     logger.info(`环境: ${process.env.NODE_ENV || 'development'}`);
+    logger.info(`端口: ${process.env.PORT || 3000}`);
+    console.log('========================================');
     
-    // 启动应用
-    await start();
+    // 启动应用（包括客服系统）
+    await initialize();
     
-    logger.info('应用程序启动完成');
+    logger.info('WeDrawOS 应用启动完成，客服系统API已集成');
   } catch (error) {
     logger.error('应用程序启动失败:', { error });
     

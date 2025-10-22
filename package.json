@@ -2,17 +2,22 @@
   "name": "wedraw-api",
   "version": "1.0.0",
   "description": "WeDraw应用后端API服务",
-  "main": "src/api/app.js",
+  "main": "src/api/index.js",
   "scripts": {
-    "start": "node src/api/app.js",
-    "dev": "nodemon src/api/app.js",
+    "start": "node src/api/index.js",
+    "dev": "nodemon src/api/index.js",
     "build": "node build.js",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "db:migrate": "node src/api/migrations/init-database.js",
+    "db:seed": "node src/api/seeds/init-data.js",
+    "db:reset": "npm run db:migrate && npm run db:seed"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
@@ -24,6 +29,8 @@
     "mysql2": "^3.9.7",
     "node-cron": "^3.0.3",
     "redis": "^4.6.13",
+    "sequelize": "^6.37.3",
+    "sequelize-cli": "^6.6.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0"
   },
@@ -34,11 +41,12 @@
   },
   "keywords": [
     "wedraw",
+    "customer-service",
     "modular",
-    "e-commerce",
     "api",
     "express",
-    "nodejs"
+    "nodejs",
+    "sequelize"
   ],
   "author": "WeDraw Team",
   "license": "MIT",

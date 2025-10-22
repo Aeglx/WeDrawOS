@@ -165,6 +165,23 @@ class Conversation extends Model {
           }
         },
         
+        // 是否有反馈
+        hasFeedback: {
+          type: DataTypes.BOOLEAN,
+          allowNull: false,
+          defaultValue: false
+        },
+        
+        // 反馈评分（与Feedback模型关联）
+        feedbackRating: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
+          validate: {
+            min: 1,
+            max: 5
+          }
+        },
+        
         // 会话结束原因
         closureReason: {
           type: DataTypes.STRING(255),
@@ -394,6 +411,12 @@ class Conversation extends Model {
    * 关联模型
    */
   static associate(models) {
+    // 关联反馈
+    this.hasMany(models.Feedback, {
+      foreignKey: 'conversationId',
+      as: 'feedbacks'
+    });
+    
     // 关联用户（多对多）
     this.belongsToMany(models.User, {
       through: 'conversation_participants',
@@ -758,6 +781,8 @@ class Conversation extends Model {
       firstResponseTime: this.firstResponseTime,
       avgResponseTime: this.avgResponseTime,
       satisfactionScore: this.satisfactionScore,
+      hasFeedback: this.hasFeedback,
+      feedbackRating: this.feedbackRating,
       closureReason: this.closureReason,
       solution: this.solution,
       notes: this.notes,
