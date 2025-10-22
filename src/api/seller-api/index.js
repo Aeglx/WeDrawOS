@@ -24,6 +24,7 @@ const orderModule = require('./order');
 const inventoryModule = require('./inventory');
 const statisticsModule = require('./statistics');
 const refundModule = require('./refund');
+const promotionModule = require('./promotion');
   const orderRoutes = require('./routes/orderRoutes');
   const inventoryRoutes = require('./routes/inventoryRoutes');
   const statisticsRoutes = require('./routes/statisticsRoutes');
@@ -37,8 +38,9 @@ const refundModule = require('./refund');
     inventoryModule.register(app);
     statisticsModule.register(app);
     refundModule.register(app);
+    promotionModule.register(app);
     
-    app.use('/api/seller/promotions', promotionRoutes);
+  // 所有模块路由已通过模块注册
   
   logger.info('卖家端API模块注册完成');
 }
