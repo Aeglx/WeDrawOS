@@ -3,10 +3,10 @@
  * 提供评价相关的业务逻辑处理
  */
 
-const logger = require('@core/utils/logger');
+const logger = require('../../../core/utils/logger');
 const reviewRepository = require('../repositories/reviewRepository');
 const orderService = require('../../order/services/orderService');
-const AppError = require('@core/errors/AppError');
+const AppError = require('../../../core/errors/AppError');
 
 class ReviewService {
   /**

@@ -5,8 +5,8 @@
 const express = require('express');
 const router = express.Router();
 const reviewController = require('../controllers/reviewController');
-const authMiddleware = require('@core/middlewares/authMiddleware');
-const { validate } = require('@core/middlewares/validationMiddleware');
+const authMiddleware = require('../../../core/security/authMiddleware');
+const { validate } = require('../../../core/validation/index');
 const reviewValidation = require('../validations/reviewValidation');
 
 /**

@@ -3,10 +3,9 @@
  * 处理地址管理相关的业务逻辑
  */
 
-const di = require('@core/di/container');
-const addressRepository = di.resolve('addressRepository');
-const logger = di.resolve('logger');
-const cache = di.resolve('cache');
+const logger = require('../../../core/utils/logger');
+const addressRepository = require('../repositories/addressRepository');
+const cacheService = require('../../../core/cache/cacheService');
 
 class AddressService {
   /**
@@ -18,7 +17,7 @@ class AddressService {
     try {
       // 尝试从缓存获取
       const cacheKey = `user:${userId}:addresses`;
-      const cachedAddresses = await cache.get(cacheKey);
+      const cachedAddresses = await cacheService.get(cacheKey);
       
       if (cachedAddresses) {
         return JSON.parse(cachedAddresses);
@@ -27,7 +26,7 @@ class AddressService {
       const addresses = await addressRepository.getUserAddresses(userId);
       
       // 缓存结果
-      await cache.set(cacheKey, JSON.stringify(addresses), 3600); // 1小时缓存
+      await cacheService.set(cacheKey, JSON.stringify(addresses), 3600); // 1小时缓存
       
       return addresses;
     } catch (error) {
@@ -102,8 +101,8 @@ class AddressService {
       const createdAddress = await addressRepository.createAddress(address);
       
       // 清除缓存
-      await cache.delete(`user:${userId}:addresses`);
-      await cache.delete(`user:${userId}:defaultAddress`);
+      await cacheService.delete(`user:${userId}:addresses`);
+      await cacheService.delete(`user:${userId}:defaultAddress`);
       
       logger.info('地址创建成功', { addressId: createdAddress.id, userId });
       
@@ -144,8 +143,8 @@ class AddressService {
       const updatedAddress = await addressRepository.updateAddress(addressId, updateData);
       
       // 清除缓存
-      await cache.delete(`user:${userId}:addresses`);
-      await cache.delete(`user:${userId}:defaultAddress`);
+      await cacheService.delete(`user:${userId}:addresses`);
+      await cacheService.delete(`user:${userId}:defaultAddress`);
       
       logger.info('地址更新成功', { addressId, userId });
       
@@ -183,8 +182,8 @@ class AddressService {
         }
         
         // 清除缓存
-        await cache.delete(`user:${userId}:addresses`);
-        await cache.delete(`user:${userId}:defaultAddress`);
+        await cacheService.delete(`user:${userId}:addresses`);
+      await cacheService.delete(`user:${userId}:defaultAddress`);
         
         logger.info('地址删除成功', { addressId, userId });
       }
@@ -217,8 +216,8 @@ class AddressService {
       });
       
       // 清除缓存
-      await cache.delete(`user:${userId}:addresses`);
-      await cache.delete(`user:${userId}:defaultAddress`);
+      await cacheService.delete(`user:${userId}:addresses`);
+      await cacheService.delete(`user:${userId}:defaultAddress`);
       
       logger.info('默认地址设置成功', { addressId, userId });
       
@@ -238,7 +237,7 @@ class AddressService {
     try {
       // 尝试从缓存获取
       const cacheKey = `user:${userId}:defaultAddress`;
-      const cachedAddress = await cache.get(cacheKey);
+      const cachedAddress = await cacheService.get(cacheKey);
       
       if (cachedAddress) {
         return JSON.parse(cachedAddress);
@@ -248,7 +247,7 @@ class AddressService {
       
       // 缓存结果
       if (address) {
-        await cache.set(cacheKey, JSON.stringify(address), 3600); // 1小时缓存
+        await cacheService.set(cacheKey, JSON.stringify(address), 3600); // 1小时缓存
       }
       
       return address;

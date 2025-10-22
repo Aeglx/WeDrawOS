@@ -3,8 +3,8 @@
  * 提供评价相关的数据访问操作
  */
 
-const logger = require('@core/utils/logger');
-const database = require('@core/database/database');
+const logger = require('../../../core/utils/logger');
+const database = require('../../../core/database/database');
 const { DataTypes, Op } = require('sequelize');
 
 // 假设数据库连接和模型已经设置好

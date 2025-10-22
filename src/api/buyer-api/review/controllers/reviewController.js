@@ -3,11 +3,11 @@
  * 处理商品评价相关的HTTP请求
  */
 
-const logger = require('@core/utils/logger');
+const logger = require('../../../core/utils/logger');
 const reviewService = require('../services/reviewService');
-const { responseHandler } = require('@core/utils/responseHandler');
-const messageQueue = require('@core/messaging/messageQueue');
-const { MESSAGE_TOPICS } = require('@common-api/message-queue/topics/messageTopics');
+const { responseHandler } = require('../../../core/utils/responseHandler');
+const messageQueue = require('../../../core/messaging/messageQueue');
+const { MESSAGE_TOPICS } = require('../../../common-api/message-queue/topics/messageTopics');
 
 class ReviewController {
   /**
@@ -254,6 +254,30 @@ class ReviewController {
       return responseHandler.success(res, statistics);
     } catch (error) {
       logger.error(`获取评价统计失败 - 商品ID: ${req.params.productId}`, error);
+      return responseHandler.error(res, error);
+    }
+  }
+  
+  /**
+   * 获取评价回复列表
+   * @param {Object} req - Express请求对象
+   * @param {Object} res - Express响应对象
+   * @param {Function} next - 下一个中间件函数
+   */
+  async getReviewReplies(req, res, next) {
+    try {
+      const { id } = req.params;
+      const { page = 1, limit = 10 } = req.query;
+      
+      const replies = await reviewService.getReviewReplies(
+        id,
+        parseInt(page),
+        parseInt(limit)
+      );
+      
+      return responseHandler.success(res, replies);
+    } catch (error) {
+      logger.error(`获取评价回复失败 - 评价ID: ${req.params.id}`, error);
       return responseHandler.error(res, error);
     }
   }

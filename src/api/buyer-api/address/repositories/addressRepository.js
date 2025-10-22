@@ -3,9 +3,8 @@
  * 处理地址管理相关的数据操作
  */
 
-const di = require('@core/di/container');
-const BaseRepository = require('@core/repositories/baseRepository');
-const logger = di.resolve('logger');
+const logger = require('../../../core/utils/logger');
+const BaseRepository = require('../../../core/repositories/baseRepository');
 
 // 模拟地址数据存储
 let addresses = [];
