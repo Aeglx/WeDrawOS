@@ -156,8 +156,8 @@ class GroupService {
       logger.info(`批量向外部群发送消息，群组数量: ${chatIds.length}`);
       
       const results = [];
-      const successCount = 0;
-      const failedCount = 0;
+      let successCount = 0;
+      let failedCount = 0;
       const failedGroups = [];
       
       // 逐个发送消息
@@ -193,6 +193,179 @@ class GroupService {
       };
     } catch (error) {
       logger.error('批量向外部群发送消息失败:', error);
+      throw error;
+    }
+  }
+  
+  /**
+   * 同步外部群列表
+   * @returns {Promise<Object>} - 返回同步结果
+   */
+  async syncGroupList() {
+    try {
+      logger.info('同步外部群列表');
+      
+      // 从企业微信API获取最新的外部群列表
+      const apiGroups = await wechatWorkUtil.getExternalGroupList();
+      
+      // 同步到本地数据库
+      await this.syncGroupsToLocal(apiGroups);
+      
+      return {
+        success: true,
+        syncedCount: apiGroups.length,
+        message: `成功同步${apiGroups.length}个外部群`
+      };
+    } catch (error) {
+      logger.error('同步外部群列表失败:', error);
+      throw error;
+    }
+  }
+  
+  /**
+   * 同步单个群组信息
+   * @param {string} chatId - 群聊ID
+   * @returns {Promise<Object>} - 返回同步结果
+   */
+  async syncGroupInfo(chatId) {
+    try {
+      logger.info(`同步单个群组信息，群聊ID: ${chatId}`);
+      
+      // 从企业微信API获取最新的群详情
+      const groupDetail = await wechatWorkUtil.getExternalGroupDetail(chatId);
+      
+      // 更新本地数据库
+      await groupRepository.saveOrUpdateGroup(groupDetail);
+      
+      return {
+        success: true,
+        message: '群组信息同步成功',
+        group: groupDetail
+      };
+    } catch (error) {
+      logger.error(`同步群组信息失败，群聊ID: ${chatId}`, error);
+      throw error;
+    }
+  }
+  
+  /**
+   * 获取群群主信息
+   * @param {string} chatId - 群聊ID
+   * @returns {Promise<Object>} - 返回群主信息
+   */
+  async getGroupOwners(chatId) {
+    try {
+      logger.info(`获取群群主信息，群聊ID: ${chatId}`);
+      
+      // 从企业微信API获取群详情
+      const groupDetail = await wechatWorkUtil.getExternalGroupDetail(chatId);
+      
+      // 提取群主信息
+      const owner = groupDetail.owner ? {
+        userId: groupDetail.owner,
+        name: groupDetail.member_list.find(m => m.userid === groupDetail.owner)?.name || '未知'
+      } : null;
+      
+      return { owner };
+    } catch (error) {
+      logger.error(`获取群群主信息失败，群聊ID: ${chatId}`, error);
+      throw error;
+    }
+  }
+  
+  /**
+   * 发送文本消息
+   * @param {string} chatId - 群聊ID
+   * @param {string} content - 消息内容
+   * @returns {Promise<Object>} - 返回发送结果
+   */
+  async sendTextMessage(chatId, content) {
+    try {
+      logger.info(`发送文本消息，群聊ID: ${chatId}`);
+      
+      const messageData = {
+        msgtype: 'text',
+        text: { content }
+      };
+      
+      return await this.sendGroupMessage(chatId, messageData);
+    } catch (error) {
+      logger.error(`发送文本消息失败，群聊ID: ${chatId}`, error);
+      throw error;
+    }
+  }
+  
+  /**
+   * 上传媒体文件
+   * @param {string} fileType - 文件类型
+   * @param {Buffer} fileData - 文件数据
+   * @param {string} fileName - 文件名
+   * @returns {Promise<Object>} - 返回上传结果
+   */
+  async uploadMediaFile(fileType, fileData, fileName) {
+    try {
+      logger.info(`上传媒体文件，文件名: ${fileName}`);
+      
+      const result = await wechatWorkUtil.uploadMedia(fileType, fileData, fileName);
+      return result;
+    } catch (error) {
+      logger.error(`上传媒体文件失败，文件名: ${fileName}`, error);
+      throw error;
+    }
+  }
+  
+  /**
+   * 批量更新群组状态
+   * @param {Array} groupUpdates - 群组更新数据
+   * @returns {Promise<Object>} - 返回更新结果
+   */
+  async batchUpdateGroupStatus(groupUpdates) {
+    try {
+      logger.info(`批量更新群组状态，数量: ${groupUpdates.length}`);
+      
+      let successCount = 0;
+      let failedCount = 0;
+      const failedGroups = [];
+      
+      for (const update of groupUpdates) {
+        try {
+          await groupRepository.updateGroupStatus(update.chatId, update.status);
+          successCount++;
+        } catch (error) {
+          failedCount++;
+          failedGroups.push({
+            chatId: update.chatId,
+            error: error.message
+          });
+        }
+      }
+      
+      return {
+        total: groupUpdates.length,
+        successCount,
+        failedCount,
+        failedGroups
+      };
+    } catch (error) {
+      logger.error('批量更新群组状态失败:', error);
+      throw error;
+    }
+  }
+  
+  /**
+   * 导出群组列表
+   * @param {Object} options - 导出选项
+   * @returns {Promise<Object>} - 返回导出结果
+   */
+  async exportGroupList(options = {}) {
+    try {
+      logger.info('导出群组列表');
+      
+      const format = options.format || 'xlsx';
+      // 调用现有的exportGroups方法
+      return await this.exportGroups(format);
+    } catch (error) {
+      logger.error('导出群组列表失败:', error);
       throw error;
     }
   }

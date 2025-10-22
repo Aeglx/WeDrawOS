@@ -68,7 +68,7 @@ router.use(authenticate);
  */
 router.get('/groups', 
   validate(groupValidation.getGroupsValidation),
-  groupController.getGroups
+  groupController.getGroupList
 );
 
 /**
@@ -258,7 +258,7 @@ router.get('/groups/search',
  */
 router.post('/groups/:chatId/messages',
   validate(groupValidation.sendMessageValidation),
-  groupController.sendMessage
+  groupController.sendGroupMessage
 );
 
 /**
@@ -532,7 +532,7 @@ router.post('/groups/:chatId/messages/link',
  */
 router.post('/groups/batch-send',
   validate(groupValidation.batchSendMessageValidation),
-  groupController.batchSendMessage
+  groupController.batchSendGroupMessage
 );
 
 /**
@@ -593,7 +593,7 @@ router.post('/groups/batch-send',
  */
 router.get('/groups/:chatId/chat-records',
   validate(groupValidation.getChatRecordsValidation),
-  groupController.getChatRecords
+  groupController.getGroupChatRecords
 );
 
 /**
@@ -939,8 +939,9 @@ router.put('/groups/batch-update-status',
  *         description: 服务器错误
  */
 router.post('/media/upload/:type',
+  validate(groupValidation.uploadMediaValidation),
   upload.single('file'),
-  groupController.uploadMedia
+  groupController.uploadMediaFile
 );
 
 /**
@@ -970,7 +971,228 @@ router.post('/media/upload/:type',
  *         description: 服务器错误
  */
 router.get('/groups/export',
-  groupController.exportGroups
+  groupController.exportGroupList
+);
+
+/**
+ * @swagger
+ * /api/admin-api/wechat-work/groups/sync: 
+ *   post:
+ *     summary: 同步企业微信外部群列表
+ *     tags: [企业微信外部群管理]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: forceUpdate
+ *         schema:
+ *           type: boolean
+ *         description: 是否强制更新
+ *     responses:
+ *       200:
+ *         description: 同步成功
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success: { type: boolean }
+ *                 data: { type: object }
+ *       401:
+ *         description: 未授权
+ *       500:
+ *         description: 服务器错误
+ */
+router.post('/groups/sync',
+  validate(groupValidation.syncGroupValidation),
+  groupController.syncGroupList
+);
+
+/**
+ * @swagger
+ * /api/admin-api/wechat-work/groups/{chatId}/sync: 
+ *   post:
+ *     summary: 同步特定群组信息
+ *     tags: [企业微信外部群管理]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: chatId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: 群聊ID
+ *     responses:
+ *       200:
+ *         description: 同步成功
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success: { type: boolean }
+ *                 data: { type: object }
+ *       400:
+ *         description: 请求参数错误
+ *       401:
+ *         description: 未授权
+ *       500:
+ *         description: 服务器错误
+ */
+router.post('/groups/:chatId/sync',
+  validate(groupValidation.getGroupDetailValidation),
+  groupController.syncGroupInfo
+);
+
+/**
+ * @swagger
+ * /api/admin-api/wechat-work/groups/owners: 
+ *   get:
+ *     summary: 获取所有群主列表
+ *     tags: [企业微信外部群管理]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: 获取成功
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success: { type: boolean }
+ *                 data: { type: array }
+ *       401:
+ *         description: 未授权
+ *       500:
+ *         description: 服务器错误
+ */
+router.get('/groups/owners',
+  groupController.getGroupOwners
+);
+
+/**
+ * @swagger
+ * /api/admin-api/wechat-work/messages/statistics: 
+ *   get:
+ *     summary: 获取消息发送统计
+ *     tags: [企业微信外部群管理]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: startTime
+ *         schema:
+ *           type: string
+ *           format: date-time
+ *         description: 开始时间
+ *       - in: query
+ *         name: endTime
+ *         schema:
+ *           type: string
+ *           format: date-time
+ *         description: 结束时间
+ *     responses:
+ *       200:
+ *         description: 获取成功
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success: { type: boolean }
+ *                 data: { type: object }
+ *       401:
+ *         description: 未授权
+ *       500:
+ *         description: 服务器错误
+ */
+router.get('/messages/statistics',
+  validate(groupValidation.getMessageStatisticsValidation),
+  groupController.getMessageStatistics
+);
+
+/**
+ * @swagger
+ * /api/admin-api/wechat-work/messages/clean: 
+ *   delete:
+ *     summary: 清理过期消息记录
+ *     tags: [企业微信外部群管理]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: days
+ *         schema:
+ *           type: integer
+ *           default: 30
+ *         description: 保留天数
+ *     responses:
+ *       200:
+ *         description: 清理成功
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success: { type: boolean }
+ *                 data: { type: object }
+ *       401:
+ *         description: 未授权
+ *       500:
+ *         description: 服务器错误
+ */
+router.delete('/messages/clean',
+  validate(groupValidation.cleanExpiredMessagesValidation),
+  groupController.cleanExpiredMessages
+);
+
+/**
+ * @swagger
+ * /api/admin-api/wechat-work/groups/activity-rank: 
+ *   get:
+ *     summary: 获取群活跃度排行
+ *     tags: [企业微信外部群管理]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: startTime
+ *         schema:
+ *           type: string
+ *           format: date-time
+ *         description: 开始时间
+ *       - in: query
+ *         name: endTime
+ *         schema:
+ *           type: string
+ *           format: date-time
+ *         description: 结束时间
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: 返回数量
+ *     responses:
+ *       200:
+ *         description: 获取成功
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success: { type: boolean }
+ *                 data: { type: array }
+ *       401:
+ *         description: 未授权
+ *       500:
+ *         description: 服务器错误
+ */
+router.get('/groups/activity-rank',
+  validate(groupValidation.getGroupActivityRankValidation),
+  groupController.getGroupActivityRank
 );
 
 module.exports = router;

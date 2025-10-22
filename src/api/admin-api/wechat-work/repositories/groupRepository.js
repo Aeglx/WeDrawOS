@@ -443,6 +443,36 @@ class GroupRepository {
   }
 
   /**
+   * 更新单个群组状态
+   * @param {string} chatId - 群聊ID
+   * @param {string} status - 状态
+   * @returns {Promise<Object>} - 返回更新结果
+   */
+  async updateGroupStatus(chatId, status) {
+    try {
+      logger.info(`更新群组状态，群聊ID: ${chatId}，状态: ${status}`);
+      
+      const result = await db('wechat_work_external_groups')
+        .where({ chat_id: chatId })
+        .update({
+          status,
+          update_time: new Date()
+        })
+        .returning('*');
+      
+      if (result.length === 0) {
+        throw new Error(`群组不存在，群聊ID: ${chatId}`);
+      }
+      
+      logger.info(`更新群组状态成功，群聊ID: ${chatId}`);
+      return result[0];
+    } catch (error) {
+      logger.error(`更新群组状态失败，群聊ID: ${chatId}`, error);
+      throw error;
+    }
+  }
+  
+  /**
    * 批量更新群组状态
    * @param {Array} chatIds - 群聊ID数组
    * @param {string} status - 状态

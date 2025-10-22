@@ -70,6 +70,38 @@ class MessageRepository {
       throw error;
     }
   }
+  
+  /**
+   * 批量保存聊天记录
+   * @param {Array} messages - 消息列表（每条消息应包含chat_id）
+   * @returns {Promise<void>}
+   */
+  async batchSaveChatRecords(messages) {
+    try {
+      logger.info(`批量保存聊天记录，消息数量: ${messages.length}`);
+      
+      const recordData = messages.map(msg => ({
+        chat_id: msg.chat_id,
+        msgid: msg.msgid,
+        sender: msg.sender,
+        sender_type: msg.sender_type,
+        msgtype: msg.msgtype,
+        content: JSON.stringify(msg.msgcontent || {}),
+        create_time: msg.send_time || msg.create_time,
+        add_time: new Date()
+      }));
+      
+      // 批量插入
+      if (recordData.length > 0) {
+        await db('wechat_work_chat_records').insert(recordData);
+      }
+      
+      logger.info('批量保存聊天记录成功');
+    } catch (error) {
+      logger.error('批量保存聊天记录失败:', error);
+      throw error;
+    }
+  }
 
   /**
    * 获取消息发送记录

@@ -412,9 +412,20 @@ exports.batchUpdateGroupStatusValidation = [
 ];
 
 /**
- * 上传媒体文件验证规则（用于multer配置）
+ * 上传媒体文件路径参数验证规则
  */
-exports.uploadMediaValidation = {
+exports.uploadMediaValidation = [
+  param('type')
+    .notEmpty()
+    .withMessage('文件类型不能为空')
+    .isIn(['image', 'file', 'video'])
+    .withMessage('文件类型必须是image、file或video之一')
+];
+
+/**
+ * 上传媒体文件multer配置
+ */
+exports.uploadMediaMulterConfig = {
   limits: {
     fileSize: 10 * 1024 * 1024 // 10MB
   },
@@ -435,6 +446,76 @@ exports.uploadMediaValidation = {
     }
   }
 };
+
+/**
+ * 新增路由的基本验证规则
+ */
+exports.syncGroupValidation = [
+  query('forceUpdate')
+    .optional()
+    .isBoolean()
+    .withMessage('forceUpdate必须是布尔值')
+];
+
+exports.getGroupStatisticsValidation = [
+  query('startTime')
+    .optional()
+    .isISO8601()
+    .withMessage('开始时间格式不正确')
+    .toDate(),
+  
+  query('endTime')
+    .optional()
+    .isISO8601()
+    .withMessage('结束时间格式不正确')
+    .toDate(),
+    
+  query('type')
+    .optional()
+    .trim()
+];
+
+exports.getMessageStatisticsValidation = [
+  query('startTime')
+    .optional()
+    .isISO8601()
+    .withMessage('开始时间格式不正确')
+    .toDate(),
+  
+  query('endTime')
+    .optional()
+    .isISO8601()
+    .withMessage('结束时间格式不正确')
+    .toDate()
+];
+
+exports.cleanExpiredMessagesValidation = [
+  query('days')
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage('保留天数必须是正整数')
+    .toInt()
+];
+
+exports.getGroupActivityRankValidation = [
+  query('startTime')
+    .optional()
+    .isISO8601()
+    .withMessage('开始时间格式不正确')
+    .toDate(),
+  
+  query('endTime')
+    .optional()
+    .isISO8601()
+    .withMessage('结束时间格式不正确')
+    .toDate(),
+    
+  query('limit')
+    .optional()
+    .isInt({ min: 1, max: 100 })
+    .withMessage('返回数量必须在1-100之间')
+    .toInt()
+];
 
 /**
  * 通用ID验证规则
