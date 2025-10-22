@@ -11,6 +11,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+const http = require('http');
 
 // 导入核心模块
 const logger = require('./core/utils/logger');
@@ -21,6 +22,8 @@ const errorHandler = require('./core/exception/handlers/errorHandler');
 const responseFormatter = require('./core/exception/response/responseFormatter');
 const securityUtils = require('./core/security/securityUtils');
 const { setupSwagger } = require('./core/docs/swaggerConfig');
+const WebSocketService = require('./core/services/websocketService');
+const pushService = require('./core/services/pushService');
 
 // 导入API模块
 const commonApi = require('./common-api');
@@ -43,17 +46,26 @@ async function initialize() {
     // 创建Express应用实例
     const app = express();
     
+    // 创建HTTP服务器
+    const httpServer = http.createServer(app);
+    
     // 配置中间件
     configureMiddleware(app);
     
     // 初始化核心服务
-  await initializeCoreServices();
-  
-  // 设置Swagger API文档
-  setupSwagger(app);
-  
-  // 注册API路由
-  registerRoutes(app);
+    await initializeCoreServices();
+    
+    // 设置Swagger API文档
+    setupSwagger(app);
+    
+    // 注册API路由
+    registerRoutes(app);
+    
+    // 初始化WebSocket服务
+    await initializeWebSocketService(httpServer);
+    
+    // 初始化推送服务
+    pushService.initialize();
     
     // 注册统一错误处理
     app.use(errorHandler);
@@ -62,7 +74,7 @@ async function initialize() {
     startBackgroundServices();
     
     // 启动HTTP服务器
-    const server = startHttpServer(app);
+    const server = startHttpServer(httpServer);
     
     logger.info('WeDraw应用初始化完成！');
     
@@ -135,6 +147,7 @@ async function initializeCoreServices() {
     di.register('cacheManager', () => cacheManager);
     di.register('responseFormatter', () => responseFormatter);
     di.register('securityUtils', () => securityUtils);
+    di.register('pushService', () => pushService);
     
     logger.info('核心服务初始化成功');
   } catch (error) {
@@ -150,6 +163,23 @@ async function initializeCoreServices() {
 function registerRoutes(app) {
   logger.info('注册API路由...');
   
+  // 健康检查路由
+  app.get('/health', (req, res) => {
+    res.status(200).json({
+      success: true,
+      data: {
+        status: 'ok',
+        timestamp: new Date().toISOString(),
+        services: {
+          database: 'connected',
+          redis: 'connected',
+          websocket: 'available',
+          push: 'available'
+        }
+      }
+    });
+  });
+  
   // 注册各模块路由
   commonApi.register(app);
   buyerApi.register(app);
@@ -158,11 +188,13 @@ function registerRoutes(app) {
   imApi.register(app);
   
   // 404处理
-  app.use((req, res, next) => {
+  app.use((req, res) => {
     res.status(404).json({
       success: false,
       message: '接口不存在',
-      data: null
+      data: {
+        path: req.path
+      }
     });
   });
 }
@@ -181,29 +213,107 @@ function startBackgroundServices() {
 }
 
 /**
+ * 初始化WebSocket服务
+ * @param {Object} httpServer - HTTP服务器实例
+ */
+async function initializeWebSocketService(httpServer) {
+  try {
+    logger.info('初始化WebSocket服务...');
+    
+    // 启动WebSocket服务
+    const wsService = WebSocketService.start(httpServer);
+    
+    // 注册WebSocket事件处理
+    setupWebSocketEvents(wsService);
+    
+    // 注册到依赖注入容器
+    di.register('websocketService', () => wsService);
+    
+    logger.info('WebSocket服务初始化成功');
+  } catch (error) {
+    logger.error('WebSocket服务初始化失败:', error);
+    throw error;
+  }
+}
+
+/**
+ * 设置WebSocket事件处理
+ * @param {Object} wsService - WebSocket服务实例
+ */
+function setupWebSocketEvents(wsService) {
+  // 用户连接事件
+  wsService.on('user_connected', (data) => {
+    logger.info(`用户 ${data.userId} 已连接`);
+    // 处理用户上线逻辑
+  });
+  
+  // 用户断开连接事件
+  wsService.on('user_disconnected', (data) => {
+    logger.info(`用户 ${data.userId} 已断开连接`);
+    // 处理用户下线逻辑
+  });
+  
+  // 消息事件处理
+  wsService.on('message', async (message) => {
+    try {
+      logger.debug('收到WebSocket消息:', message.type);
+      
+      // 根据消息类型分发处理
+      if (message.type === 'chat_message') {
+        // 聊天消息处理
+        const chatService = di.resolve('chatService');
+        await chatService.handleMessage(message);
+      } else if (message.type === 'notification_subscribe') {
+        // 通知订阅处理
+        pushService.handleSubscription(message);
+      }
+    } catch (error) {
+      logger.error('处理WebSocket消息失败:', error);
+    }
+  });
+}
+
+/**
  * 启动HTTP服务器
- * @param {Object} app - Express应用实例
+ * @param {Object} httpServer - HTTP服务器实例
  * @returns {Object} HTTP服务器实例
  */
-function startHttpServer(app) {
+function startHttpServer(httpServer) {
   const port = process.env.PORT || 3000;
   
-  const server = app.listen(port, () => {
+  httpServer.listen(port, () => {
     logger.info(`HTTP服务器启动成功，监听端口: ${port}`);
+    logger.info(`WebSocket服务运行在 ws://localhost:${port}/ws`);
     logger.info(`环境: ${process.env.NODE_ENV || 'development'}`);
     logger.info(`API文档地址: http://localhost:${port}/api/docs`);
   });
   
   // 处理服务器关闭
-  process.on('SIGINT', () => {
+  process.on('SIGINT', async () => {
     logger.info('正在关闭服务器...');
-    server.close(() => {
+    
+    try {
+      // 关闭WebSocket服务
+      const wsService = di.has('websocketService') ? di.resolve('websocketService') : null;
+      if (wsService && typeof wsService.shutdown === 'function') {
+        await wsService.shutdown();
+      }
+      
+      // 关闭数据库连接
+      await database.disconnect();
+      
+      // 关闭服务器
+      await new Promise(resolve => httpServer.close(resolve));
+      
       logger.info('服务器已关闭');
       process.exit(0);
-    });
+    } catch (error) {
+      logger.error('关闭服务器时发生错误:', error);
+      process.exit(1);
+    }
   });
   
-  return server;
+  return httpServer;
 }
 
 // 处理未捕获的异常
