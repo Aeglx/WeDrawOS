@@ -1,6 +1,6 @@
 /**
  * Redis缓存管理器
- * 提供缓存操作和发布订阅功能
+ * 提供缓存操作、发布订阅功能和缓存策略支持
  */
 
 const redis = require('redis');
@@ -29,6 +29,10 @@ let subClient = null;
 
 // 订阅者回调映射
 const subscriberCallbacks = new Map();
+
+// 本地内存缓存（用于Redis不可用时的降级方案）
+const localCache = new Map();
+const localCacheTtl = new Map();
 
 /**
  * 初始化Redis连接
@@ -77,6 +81,7 @@ async function initialize() {
     
   } catch (error) {
     logger.error('Redis连接失败:', error);
+    logger.warn('将使用本地内存缓存作为降级方案');
     // Redis连接失败不应该导致应用崩溃，可以在功能上降级
   }
 }
@@ -91,6 +96,36 @@ function handleRedisError(error) {
 }
 
 /**
+ * 获取本地缓存
+ * @param {string} key - 缓存键
+ * @returns {any} 缓存值
+ */
+function getLocalCache(key) {
+  const now = Date.now();
+  const expiry = localCacheTtl.get(key);
+  
+  if (expiry && expiry > now) {
+    return JSON.parse(localCache.get(key));
+  }
+  
+  // 清理过期缓存
+  localCache.delete(key);
+  localCacheTtl.delete(key);
+  return null;
+}
+
+/**
+ * 设置本地缓存
+ * @param {string} key - 缓存键
+ * @param {*} value - 缓存值
+ * @param {number} ttl - 过期时间（秒）
+ */
+function setLocalCache(key, value, ttl = 3600) {
+  localCache.set(key, JSON.stringify(value));
+  localCacheTtl.set(key, Date.now() + ttl * 1000);
+}
+
+/**
  * 设置缓存
  * @param {string} key - 缓存键
  * @param {*} value - 缓存值
@@ -98,8 +133,11 @@ function handleRedisError(error) {
  */
 async function set(key, value, ttl = 3600) {
   try {
+    // 无论Redis是否可用，都设置本地缓存作为降级方案
+    setLocalCache(key, value, ttl);
+    
     if (!redisClient) {
-      logger.warn('Redis客户端未初始化');
+      logger.warn(`Redis客户端未初始化，仅设置本地缓存: ${key}`);
       return;
     }
     
@@ -112,7 +150,176 @@ async function set(key, value, ttl = 3600) {
     
     logger.debug(`缓存设置成功: ${key}`);
   } catch (error) {
-    logger.error(`设置缓存失败 [${key}]: ${error.message}`);
+    logger.error(`设置Redis缓存失败 [${key}]: ${error.message}，已设置本地缓存`);
+  }
+}
+
+/**
+ * 获取缓存
+ * @param {string} key - 缓存键
+ * @returns {Promise<any>} 缓存值
+ */
+async function get(key) {
+  try {
+    // 优先从Redis获取缓存
+    if (redisClient) {
+      const value = await redisClient.get(key);
+      if (value !== null) {
+        const parsedValue = JSON.parse(value);
+        // 同时更新本地缓存
+        setLocalCache(key, parsedValue);
+        logger.debug(`从Redis获取缓存成功: ${key}`);
+        return parsedValue;
+      }
+    }
+    
+    // Redis不可用或缓存未命中，尝试从本地缓存获取
+    const localValue = getLocalCache(key);
+    if (localValue !== null) {
+      logger.debug(`从本地缓存获取缓存成功: ${key}`);
+      return localValue;
+    }
+    
+    logger.debug(`缓存未命中: ${key}`);
+    return null;
+  } catch (error) {
+    logger.error(`获取缓存失败 [${key}]: ${error.message}`);
+    // 出错时尝试从本地缓存获取
+    return getLocalCache(key);
+  }
+}
+
+/**
+ * 删除缓存
+ * @param {string} key - 缓存键
+ * @returns {Promise<void>}
+ */
+async function delete(key) {
+  try {
+    // 同时删除本地缓存和Redis缓存
+    localCache.delete(key);
+    localCacheTtl.delete(key);
+    
+    if (redisClient) {
+      await redisClient.del(key);
+    }
+    
+    logger.debug(`缓存删除成功: ${key}`);
+  } catch (error) {
+    logger.error(`删除缓存失败 [${key}]: ${error.message}`);
+  }
+}
+
+/**
+ * 批量删除缓存（支持模式匹配）
+ * @param {string} pattern - 键模式
+ * @returns {Promise<number>} 删除的键数量
+ */
+async function deleteByPattern(pattern) {
+  try {
+    let deletedCount = 0;
+    
+    // 删除本地缓存中匹配的键
+    for (const key of localCache.keys()) {
+      if (key.match(pattern)) {
+        localCache.delete(key);
+        localCacheTtl.delete(key);
+        deletedCount++;
+      }
+    }
+    
+    // 删除Redis中匹配的键
+    if (redisClient) {
+      const keys = await redisClient.keys(pattern);
+      if (keys.length > 0) {
+        const redisDeleted = await redisClient.del(keys);
+        deletedCount += redisDeleted;
+      }
+    }
+    
+    logger.debug(`批量删除缓存成功，模式: ${pattern}，删除数量: ${deletedCount}`);
+    return deletedCount;
+  } catch (error) {
+    logger.error(`批量删除缓存失败 [${pattern}]: ${error.message}`);
+    return 0;
+  }
+}
+
+/**
+ * 清理所有缓存
+ * @returns {Promise<void>}
+ */
+async function clearAll() {
+  try {
+    // 清理本地缓存
+    localCache.clear();
+    localCacheTtl.clear();
+    
+    // 清理Redis缓存
+    if (redisClient) {
+      await redisClient.flushDb();
+    }
+    
+    logger.debug('所有缓存已清理');
+  } catch (error) {
+    logger.error('清理缓存失败:', error);
+  }
+}
+
+/**
+ * 增加计数器
+ * @param {string} key - 缓存键
+ * @param {number} increment - 增量，默认为1
+ * @returns {Promise<number>} 增加后的值
+ */
+async function increment(key, increment = 1) {
+  try {
+    if (redisClient) {
+      const value = await redisClient.incrBy(key, increment);
+      logger.debug(`计数器增加成功: ${key}, 值: ${value}`);
+      return value;
+    }
+    
+    // Redis不可用时，使用本地缓存模拟
+    let currentValue = getLocalCache(key) || 0;
+    currentValue += increment;
+    setLocalCache(key, currentValue);
+    return currentValue;
+  } catch (error) {
+    logger.error(`计数器增加失败 [${key}]: ${error.message}`);
+    // 出错时使用本地缓存
+    let currentValue = getLocalCache(key) || 0;
+    currentValue += increment;
+    setLocalCache(key, currentValue);
+    return currentValue;
+  }
+}
+
+/**
+ * 设置缓存过期时间
+ * @param {string} key - 缓存键
+ * @param {number} ttl - 过期时间（秒）
+ * @returns {Promise<boolean>} 是否设置成功
+ */
+async function expire(key, ttl) {
+  try {
+    if (redisClient) {
+      const result = await redisClient.expire(key, ttl);
+      logger.debug(`设置缓存过期时间成功: ${key}, ttl: ${ttl}`);
+      return result === 1;
+    }
+    
+    // Redis不可用时，更新本地缓存的过期时间
+    const value = getLocalCache(key);
+    if (value !== null) {
+      setLocalCache(key, value, ttl);
+      return true;
+    }
+    
+    return false;
+  } catch (error) {
+    logger.error(`设置缓存过期时间失败 [${key}]: ${error.message}`);
+    return false;
   }
 }
 
@@ -252,17 +459,28 @@ function isConnected() {
  */
 async function close() {
   try {
+    // 关闭所有Redis客户端连接
     if (redisClient) {
       await redisClient.quit();
-    }
-    if (pubClient) {
-      await pubClient.quit();
-    }
-    if (subClient) {
-      await subClient.quit();
+      redisClient = null;
     }
     
-    logger.info('Redis连接已关闭');
+    if (pubClient) {
+      await pubClient.quit();
+      pubClient = null;
+    }
+    
+    if (subClient) {
+      await subClient.quit();
+      subClient = null;
+    }
+    
+    // 清空本地缓存
+    localCache.clear();
+    localCacheTtl.clear();
+    subscriberCallbacks.clear();
+    
+    logger.info('Redis连接已关闭，本地缓存已清空');
   } catch (error) {
     logger.error('关闭Redis连接失败:', error);
   }
@@ -270,12 +488,15 @@ async function close() {
 
 module.exports = {
   initialize,
-  set,
   get,
-  del,
+  set,
+  delete,
+  deleteByPattern,
+  clearAll,
+  increment,
+  expire,
   publish,
   subscribe,
   unsubscribe,
-  isConnected,
   close
 };
