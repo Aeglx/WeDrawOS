@@ -281,6 +281,49 @@ class ReviewController {
       return responseHandler.error(res, error);
     }
   }
+  
+  /**
+   * 获取商品评价统计
+   * @param {Object} req - Express请求对象
+   * @param {Object} res - Express响应对象
+   * @param {Function} next - 下一个中间件函数
+   */
+  async getReviewStats(req, res, next) {
+    try {
+      const { productId } = req.params;
+      
+      const stats = await reviewService.getReviewStatistics(productId);
+      
+      return responseHandler.success(res, stats);
+    } catch (error) {
+      logger.error(`获取商品评价统计失败 - 商品ID: ${req.params.productId}`, error);
+      return responseHandler.error(res, error);
+    }
+  }
+  
+  /**
+   * 获取可评价的订单项
+   * @param {Object} req - Express请求对象
+   * @param {Object} res - Express响应对象
+   * @param {Function} next - 下一个中间件函数
+   */
+  async getEvaluableItems(req, res, next) {
+    try {
+      const { userId } = req.user;
+      const { page = 1, pageSize = 10 } = req.query;
+      
+      const items = await reviewService.getEvaluableOrderItems(
+        userId,
+        parseInt(page),
+        parseInt(pageSize)
+      );
+      
+      return responseHandler.success(res, items);
+    } catch (error) {
+      logger.error(`获取可评价订单项失败 - 用户ID: ${req.user?.userId}`, error);
+      return responseHandler.error(res, error);
+    }
+  }
 }
 
 module.exports = new ReviewController();
