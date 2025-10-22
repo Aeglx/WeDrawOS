@@ -27,15 +27,15 @@ const logger = require('./core/utils/logger') || console;
 async function main() {
   try {
     console.log('========================================');
-    logger.info('WeDrawOS 应用启动中...');
-    logger.info(`环境: ${process.env.NODE_ENV || 'development'}`);
-    logger.info(`端口: ${process.env.PORT || 3000}`);
+    console.log('WeDrawOS 应用启动中...');
+    console.log(`环境: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`端口: ${process.env.PORT || 3000}`);
     console.log('========================================');
     
     // 启动应用（包括客服系统）
     await initialize();
     
-    logger.info('WeDrawOS 应用启动完成，客服系统API已集成');
+    console.log('WeDrawOS 应用启动完成，客服系统API已集成');
   } catch (error) {
     logger.error('应用程序启动失败:', { error });
     

@@ -143,7 +143,35 @@ npm run dev
 npm start
 ```
 
-## API 文档
+## API文档
+
+### 微信开发文档风格API文档
+
+本系统提供采用微信开放平台文档风格设计的API接口文档，具有美观的界面和完善的接口说明：
+
+- **文档地址**：`http://localhost:3000/api/wechat-docs`
+- **JSON数据**：`http://localhost:3000/api/wechat-docs.json`
+- **调试信息**：`http://localhost:3000/api/wechat-docs/debug`
+
+### 功能特性
+
+- ✅ 采用微信开放平台文档风格设计
+- ✅ 三栏式布局，清晰展示接口分类
+- ✅ 支持接口搜索和过滤
+- ✅ 完整的请求参数和响应示例
+- ✅ 支持在线接口调试
+- ✅ 响应式设计，适配各种设备
+- ✅ 完善的错误码说明
+
+### 测试API文档
+
+```bash
+# 运行API文档测试脚本
+cd src/api
+node docs/test-docs.js
+```
+
+## 原有API文档
 
 启动服务后，可以通过以下地址访问API文档：
 

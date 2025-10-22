@@ -29,15 +29,15 @@ function initializeCommonApi(app, options = {}) {
     router.get('/health', commonController.healthCheck);
     
     // 公共数据接口
-    router.get('/categories', commonController.getCategories || (req, res) => res.status(501).send('Not implemented'));
-    router.get('/regions', commonController.getRegions || (req, res) => res.status(501).send('Not implemented'));
-    router.get('/suggestions', commonController.getSearchSuggestions || (req, res) => res.status(501).send('Not implemented'));
+    router.get('/categories', commonController.getCategories || function(req, res) { res.status(501).send('Not implemented'); });
+    router.get('/regions', commonController.getRegions || function(req, res) { res.status(501).send('Not implemented'); });
+    router.get('/suggestions', commonController.getSearchSuggestions || function(req, res) { res.status(501).send('Not implemented'); });
     
     // 系统配置接口
     router.get('/config', commonController.getSystemConfig);
     
     // 消息发送接口
-    router.post('/messages', commonController.sendSystemMessage || (req, res) => res.status(501).send('Not implemented'));
+    router.post('/messages', commonController.sendSystemMessage || function(req, res) { res.status(501).send('Not implemented'); });
     
     // 文件上传接口 - 单个图片
     router.post('/upload/image', 

@@ -3,7 +3,7 @@
  * 整合用户相关的控制器、服务、仓库和路由
  */
 
-const di = require('@core/di/container');
+const di = require('../../core/di/container');
 const userRoutes = require('./routes/userRoutes');
 const userController = require('./controllers/userController');
 const userService = require('./services/userService');

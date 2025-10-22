@@ -6,8 +6,8 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const uuid = require('uuid').v4;
-const logger = require('@core/utils/logger');
-const redisConfig = require('@common-api/cache-config/redisConfig');
+const logger = require('../../../core/utils/logger');
+const redisConfig = require('../../../common-api/cache-config/redisConfig');
 const userRepository = require('../repositories/userRepository');
 
 // JWT配置

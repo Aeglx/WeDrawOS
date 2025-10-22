@@ -3,7 +3,7 @@
  * 提供平台通用的业务功能接口
  */
 
-const logger = require('@core/utils/logger');
+const logger = require('../../core/utils/logger');
 const redisConfig = require('../cache-config/redisConfig');
 const messageProducer = require('../message-queue/producers/messageProducer');
 const { MESSAGE_TOPICS } = require('../message-queue/topics/messageTopics');

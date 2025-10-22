@@ -50,6 +50,9 @@ const FeedbackRoutes = require('./routes/FeedbackRoutes');
 const SchedulerRoutes = require('./routes/SchedulerRoutes');
 const WechatPlatformRoutes = require('./seller-api/wechat/routes/WechatPlatformRoutes');
 
+// 导入API文档模块
+const { setupWechatApiDocs } = require('./docs/wechatApiDocs');
+
 // 导入后台服务模块
 const messageConsumer = require('./message-consumer');
 const scheduler = require('./scheduler');
@@ -164,7 +167,7 @@ function configureMiddleware(app) {
   }
   
   // 统一响应格式中间件
-  app.use(responseFormatter.formatResponse || (req, res, next) => next());
+  app.use(responseFormatter.formatResponse || function(req, res, next) { next(); });
 }
 
 /**
@@ -305,6 +308,9 @@ function registerRoutes(app) {
     if (typeof WechatPlatformRoutes !== 'undefined') {
       app.use('/api/v1/seller/wechat/platform', WechatPlatformRoutes);
     }
+  
+    // 设置微信开发文档风格的API文档
+    setupWechatApiDocs(app);
   
   // 404处理
   app.use((req, res) => {

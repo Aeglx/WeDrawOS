@@ -4,7 +4,7 @@
  */
 
 const amqp = require('amqplib');
-const logger = require('@core/utils/logger');
+const logger = require('../../../core/utils/logger');
 const { MESSAGE_TOPICS, isValidTopic } = require('../topics/messageTopics');
 
 class MessageProducer {

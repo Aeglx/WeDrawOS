@@ -6,7 +6,7 @@
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs').promises;
-const logger = require('@core/utils/logger');
+const logger = require('../../core/utils/logger');
 const commonService = require('../services/commonService');
 const { MESSAGE_TOPICS } = require('../message-queue/topics/messageTopics');
 const messageProducer = require('../message-queue/producers/messageProducer');

@@ -3,10 +3,10 @@
  * 处理用户注册、登录、个人信息管理等功能
  */
 
-const logger = require('@core/utils/logger');
+const logger = require('../../../core/utils/logger');
 const userService = require('../services/userService');
-const { MESSAGE_TOPICS } = require('@common-api/message-queue/topics/messageTopics');
-const messageProducer = require('@common-api/message-queue/producers/messageProducer');
+const { MESSAGE_TOPICS } = require('../../../common-api/message-queue/topics/messageTopics');
+const messageProducer = require('../../../common-api/message-queue/producers/messageProducer');
 
 class UserController {
   /**

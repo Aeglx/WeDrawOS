@@ -4,7 +4,7 @@
  */
 
 const commonService = require('../services/commonService');
-const logger = require('@core/utils/logger');
+const logger = require('../../core/utils/logger');
 
 class CommonController {
   /**

@@ -194,7 +194,7 @@ async function get(key) {
  * @param {string} key - 缓存键
  * @returns {Promise<void>}
  */
-async function delete(key) {
+async function deleteCache(key) {
   try {
     // 同时删除本地缓存和Redis缓存
     localCache.delete(key);
@@ -490,7 +490,8 @@ module.exports = {
   initialize,
   get,
   set,
-  delete,
+  delete: deleteCache,
+  deleteCache,
   deleteByPattern,
   clearAll,
   increment,
