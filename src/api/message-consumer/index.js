@@ -14,6 +14,13 @@ const MemberMessageHandler = require('./member/memberMessageHandler');
 const AfterSalesMessageHandler = require('./after-sales/afterSalesMessageHandler');
 const NotificationService = require('./notification/notificationService');
 
+// 导入增强功能模块
+const EnhancedMessageQueue = require('./enhancedMessageQueue');
+const MessageProcessingMonitor = require('./monitoring/messageProcessingMonitor');
+const PriceChangeHandler = require('./product/priceChangeHandler');
+const PromotionMessageHandler = require('./promotion/promotionMessageHandler');
+const ComplaintMessageHandler = require('./complaint/complaintMessageHandler');
+
 /**
  * 启动消息消费者
  */
@@ -21,6 +28,9 @@ async function start() {
   logger.info('启动消息消费者模块');
   
   try {
+    // 初始化增强版消息队列和监控器
+    await initializeEnhancedFeatures();
+    
     // 确保cacheManager存在
     if (!cacheManager || typeof cacheManager.subscribe !== 'function') {
       throw new Error('cacheManager初始化失败或缺少subscribe方法');
@@ -49,6 +59,64 @@ async function start() {
     logger.error('消息消费者模块启动失败:', error);
     throw error;
   }
+}
+
+/**
+ * 初始化增强功能
+ */
+async function initializeEnhancedFeatures() {
+  try {
+    logger.info('初始化消息处理增强功能...');
+    
+    // 初始化增强版消息队列
+    const messageQueue = new EnhancedMessageQueue();
+    await messageQueue.initialize();
+    
+    // 初始化监控器
+    const monitor = new MessageProcessingMonitor();
+    await monitor.initialize();
+    
+    // 注册新增的消息处理器
+    PriceChangeHandler.registerHandlers(messageQueue);
+    PromotionMessageHandler.registerHandlers(messageQueue);
+    ComplaintMessageHandler.registerHandlers(messageQueue);
+    
+    // 启动监控统计任务
+    startMonitoringTasks(monitor);
+    
+    logger.info('增强功能初始化完成');
+    
+    // 存储到di容器中供其他模块使用
+    di.set('enhancedMessageQueue', messageQueue);
+    di.set('messageProcessingMonitor', monitor);
+  } catch (error) {
+    logger.error('初始化增强功能失败:', error);
+    // 增强功能失败不影响核心功能启动，只记录错误
+  }
+}
+
+/**
+ * 启动监控任务
+ */
+function startMonitoringTasks(monitor) {
+  // 每小时生成一次统计报告
+  setInterval(async () => {
+    try {
+      const stats = await monitor.generateStatisticsReport();
+      logger.info('消息处理统计报告:', stats.summary);
+    } catch (error) {
+      logger.error('生成统计报告失败:', error);
+    }
+  }, 60 * 60 * 1000);
+  
+  // 每天清理过期统计数据
+  setInterval(async () => {
+    try {
+      await monitor.cleanupOldStatistics();
+    } catch (error) {
+      logger.error('清理过期统计数据失败:', error);
+    }
+  }, 24 * 60 * 60 * 1000);
 }
 
 /**
@@ -127,5 +195,46 @@ function registerPaymentHandlers() {
 }
 
 module.exports = {
-  start
+  start,
+  // 导出获取监控器的方法
+  getMessageMonitor: () => di.get('messageProcessingMonitor'),
+  getEnhancedMessageQueue: () => di.get('enhancedMessageQueue')
+};
+
+// 提供优雅关闭方法
+module.exports.stop = async () => {
+  try {
+    logger.info('关闭消息消费者模块...');
+    
+    // 关闭增强功能
+    const messageQueue = di.get('enhancedMessageQueue');
+    const monitor = di.get('messageProcessingMonitor');
+    
+    if (messageQueue && messageQueue.shutdown) {
+      await messageQueue.shutdown();
+    }
+    
+    if (monitor && monitor.shutdown) {
+      await monitor.shutdown();
+    }
+    
+    logger.info('消息消费者模块关闭完成');
+    return true;
+  } catch (error) {
+    logger.error('关闭消息消费者模块失败:', error);
+    return false;
+  }
+};
+
+// 提供获取当前状态的方法
+module.exports.getStatus = async () => {
+  try {
+    const monitor = di.get('messageProcessingMonitor');
+    if (monitor && monitor.getStatus) {
+      return await monitor.getStatus();
+    }
+    return { status: 'running' };
+  } catch (error) {
+    return { status: 'error', error: error.message };
+  }
 };
