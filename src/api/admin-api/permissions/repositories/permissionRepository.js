@@ -88,7 +88,16 @@ let permissions = [
   { id: '33', code: 'promotion:delete', name: '删除促销', group: '运营管理', description: '删除促销活动' },
   { id: '34', code: 'coupon:create', name: '创建优惠券', group: '运营管理', description: '创建优惠券' },
   { id: '35', code: 'coupon:update', name: '更新优惠券', group: '运营管理', description: '更新优惠券' },
-  { id: '36', code: 'coupon:delete', name: '删除优惠券', group: '运营管理', description: '删除优惠券' }
+  { id: '36', code: 'coupon:delete', name: '删除优惠券', group: '运营管理', description: '删除优惠券' },
+  
+  // 企业微信和公众号平台接口权限（卖家可通过平台访问）
+  { id: '37', code: 'wechat:platform:message:send', name: '发送消息', group: '企业微信接口', description: '通过平台发送企业微信或公众号消息' },
+  { id: '38', code: 'wechat:platform:template:use', name: '使用模板', group: '企业微信接口', description: '使用预设模板发送消息' },
+  { id: '39', code: 'wechat:platform:menu:preview', name: '预览菜单', group: '企业微信接口', description: '预览自定义菜单效果' },
+  { id: '40', code: 'wechat:platform:qrcode:generate', name: '生成二维码', group: '企业微信接口', description: '生成推广二维码' },
+  { id: '41', code: 'wechat:platform:media:upload', name: '上传素材', group: '企业微信接口', description: '上传图片、视频等素材' },
+  { id: '42', code: 'wechat:platform:analytics:view', name: '查看分析数据', group: '企业微信接口', description: '查看消息发送和用户互动数据' },
+  { id: '43', code: 'wechat:platform:access', name: '平台接口访问', group: '企业微信接口', description: '访问企业微信平台接口的基础权限' }
 ];
 
 // 模拟角色权限关联

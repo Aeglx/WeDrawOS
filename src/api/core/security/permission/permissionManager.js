@@ -42,10 +42,27 @@ class PermissionManager {
       'order:delete',
       'system:config',
       'system:logs',
-      'system:backup'
+      'system:backup',
+      // 企业微信和公众号完整权限
+      'wechat:core:api',
+      'wechat:enterprise:config',
+      'wechat:public:account:settings',
+      'wechat:token:manage',
+      'wechat:menu:customize',
+      'wechat:user:manage',
+      'wechat:template:admin',
+      'wechat:analytics:raw',
+      'wechat:permissions:manage',
+      // 平台接口权限
+      'wechat:platform:message:send',
+      'wechat:platform:template:use',
+      'wechat:platform:menu:preview',
+      'wechat:platform:qrcode:generate',
+      'wechat:platform:media:upload',
+      'wechat:platform:analytics:view'
     ]);
 
-    // 卖家权限
+    // 卖家权限（基础权限，管理员可以额外分配企业微信平台接口权限）
     this.setRolePermissions(this.defaultRoles.SELLER, [
       'product:create',
       'product:read',
@@ -55,6 +72,7 @@ class PermissionManager {
       'order:update',
       'seller:profile:read',
       'seller:profile:update'
+      // 企业微信平台接口权限需要管理员单独分配
     ]);
 
     // 买家权限

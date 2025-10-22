@@ -6,6 +6,7 @@
 // 加载环境变量
 require('dotenv').config();
 
+// 导入核心依赖模块
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -13,7 +14,7 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const http = require('http');
 
-// 导入核心模块
+// 导入核心服务模块
 const logger = require('./core/utils/logger');
 const di = require('./core/di/container');
 const database = require('./core/data-access/database');
@@ -32,16 +33,24 @@ const sellerApi = require('./seller-api');
 const adminApi = require('./admin-api');
 const imApi = require('./im-api');
 
-// 导入客服系统API模块
-const customerServiceRoutes = require('./routes');
+// 导入中间件
 const authMiddleware = require('./middleware/auth');
-const responseFormatter = require('./middleware/responseFormatter');
-const logger = require('./middleware/logger');
-const rateLimiter = require('./middleware/rateLimiter');
+const middlewareResponseFormatter = require('./middleware/responseFormatter');
+const middlewareLogger = require('./middleware/logger');
 const validators = require('./middleware/validators');
+
+// 导入数据库模型
 const customerServiceDb = require('./models');
 
-// 导入后台模块
+// 导入路由模块
+const healthRoutes = require('./routes/health');
+const infoRoutes = require('./routes/info');
+const customerServiceRoutes = require('./routes');
+const FeedbackRoutes = require('./routes/FeedbackRoutes');
+const SchedulerRoutes = require('./routes/SchedulerRoutes');
+const WechatPlatformRoutes = require('./seller-api/wechat/routes/WechatPlatformRoutes');
+
+// 导入后台服务模块
 const messageConsumer = require('./message-consumer');
 const scheduler = require('./scheduler');
 
@@ -281,6 +290,21 @@ function registerRoutes(app) {
   sellerApi.register(app);
   adminApi.register(app);
   imApi.register(app);
+  
+  // 注册反馈系统API路由
+  if (typeof FeedbackRoutes !== 'undefined') {
+    app.use('/api/v1/feedback', checkCsDatabaseConnection, FeedbackRoutes);
+  }
+  
+  // 注册调度器监控API路由
+    if (typeof SchedulerRoutes !== 'undefined') {
+      app.use('/api/v1/scheduler', checkDatabaseConnection, SchedulerRoutes);
+    }
+    
+    // 卖家企业微信平台接口路由
+    if (typeof WechatPlatformRoutes !== 'undefined') {
+      app.use('/api/v1/seller/wechat/platform', WechatPlatformRoutes);
+    }
   
   // 404处理
   app.use((req, res) => {
