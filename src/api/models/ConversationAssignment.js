@@ -1,4 +1,4 @@
-import { DataTypes, Model } from 'sequelize';
+const { DataTypes, Model } = require('sequelize');
 
 /**
  * 会话分配模型
@@ -368,3 +368,6 @@ class ConversationAssignment extends Model {
       conversation: this.conversation ? this.conversation.toResponseObject() : null
     };
   }
+}
+
+module.exports = ConversationAssignment;

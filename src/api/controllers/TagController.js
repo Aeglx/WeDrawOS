@@ -1,13 +1,13 @@
-import { validationResult } from 'express-validator';
-import db from '../models/index.js';
-import {
-  BadRequestError,
-  UnauthorizedError,
-  ForbiddenError,
-  NotFoundError,
-  ConflictError,
-  InternalServerError
-} from '../utils/errors.js';
+const { validationResult } = require('express-validator');
+const db = require('../models/index.js');
+const {
+    BadRequestError,
+    UnauthorizedError,
+    ForbiddenError,
+    NotFoundError,
+    ConflictError,
+    InternalServerError
+  } = require('../utils/errors.js');
 
 const { Tag, Conversation, Message } = db.models;
 
@@ -902,4 +902,4 @@ class TagController {
   }
 }
 
-export default TagController;
+module.exports = TagController;

@@ -1,4 +1,4 @@
-import { DataTypes, Model } from 'sequelize';
+const { DataTypes, Model } = require('sequelize');
 
 /**
  * 工作记录模型
@@ -99,131 +99,75 @@ class WorkLog extends Model {
           defaultValue: {}
         },
         
-        // 持续时间（秒）
-        duration: {
-          type: DataTypes.INTEGER,
-          allowNull: true,
-          comment: '活动持续时间（秒）'
-        },
-        
-        // 结果状态
-        resultStatus: {
-          type: DataTypes.ENUM('success', 'failed', 'partial', 'pending', 'cancelled'),
-          allowNull: false,
-          defaultValue: 'success'
-        },
-        
-        // 关联资源类型
+        // 资源类型
         resourceType: {
-          type: DataTypes.ENUM('user', 'conversation', 'message', 'tag', 'attachment', 'note', 'feedback'),
+          type: DataTypes.STRING(50),
           allowNull: true
         },
         
+        // 资源ID
         resourceId: {
           type: DataTypes.UUID,
           allowNull: true
         },
         
-        // 相关用户ID（如转移目标、反馈提供者等）
-        relatedUserId: {
-          type: DataTypes.UUID,
-          allowNull: true,
-          references: {
-            model: 'users',
-            key: 'id'
-          },
-          onDelete: 'SET NULL'
-        },
-        
-        // 数量信息
-        quantity: {
+        // 持续时间（毫秒）
+        duration: {
           type: DataTypes.INTEGER,
           allowNull: true,
-          defaultValue: 1
+          defaultValue: 0
+        },
+        
+        // 结果状态
+        resultStatus: {
+          type: DataTypes.ENUM('success', 'failed', 'partial', 'pending'),
+          allowNull: true,
+          defaultValue: 'success'
+        },
+        
+        // 错误信息（如果有）
+        errorMessage: {
+          type: DataTypes.TEXT,
+          allowNull: true
         },
         
         // 工作类别
         workCategory: {
-          type: DataTypes.ENUM(
-            'chat_service',
-            'voice_service',
-            'email_service',
-            'video_service',
-            'administrative',
-            'training',
-            'quality_management',
-            'reporting',
-            'system_maintenance'
-          ),
-          allowNull: false,
-          defaultValue: 'chat_service'
+          type: DataTypes.ENUM('chat', 'call', 'email', 'training', 'meeting', 'administrative', 'other'),
+          allowNull: true,
+          defaultValue: 'other'
         },
         
         // 是否可计费
         billable: {
           type: DataTypes.BOOLEAN,
           allowNull: false,
-          defaultValue: true
+          defaultValue: false
         },
         
-        // 计费单位
-        billingUnit: {
-          type: DataTypes.ENUM('hour', 'minute', 'session', 'message', 'task'),
+        // 计费时间（分钟）
+        billableMinutes: {
+          type: DataTypes.INTEGER,
           allowNull: true,
-          defaultValue: 'minute'
+          defaultValue: 0
         },
         
-        // 位置信息
-        location: {
-          type: DataTypes.JSONB,
+        // 标签
+        tags: {
+          type: DataTypes.ARRAY(DataTypes.STRING),
           allowNull: true,
-          defaultValue: {}
+          defaultValue: []
         },
         
-        // 设备信息
-        deviceInfo: {
-          type: DataTypes.JSONB,
-          allowNull: true,
-          defaultValue: {}
-        },
-        
-        // IP地址
+        // 系统信息
         ipAddress: {
           type: DataTypes.STRING(45),
           allowNull: true
         },
         
-        // 用户代理
         userAgent: {
-          type: DataTypes.TEXT,
+          type: DataTypes.STRING(255),
           allowNull: true
-        },
-        
-        // 是否为系统生成
-        isSystemGenerated: {
-          type: DataTypes.BOOLEAN,
-          allowNull: false,
-          defaultValue: false
-        },
-        
-        // 是否为批量操作
-        isBulkOperation: {
-          type: DataTypes.BOOLEAN,
-          allowNull: false,
-          defaultValue: false
-        },
-        
-        // 批量操作ID
-        bulkOperationId: {
-          type: DataTypes.UUID,
-          allowNull: true
-        },
-        
-        // 性能指标
-        performanceMetrics: {
-          type: DataTypes.JSONB,
-          allowNull: true,
-          defaultValue: {}
         },
         
         // 元数据
@@ -238,77 +182,27 @@ class WorkLog extends Model {
         modelName: 'WorkLog',
         tableName: 'work_logs',
         timestamps: true,
-        paranoid: true,
+        paranoid: false,
         indexes: [
           { fields: ['userId'] },
-          { fields: ['scheduleId'] },
           { fields: ['conversationId'] },
-          { fields: ['activityType'] },
+          { fields: ['scheduleId'] },
           { fields: ['createdAt'] },
-          { fields: ['resultStatus'] },
+          { fields: ['activityType'] },
           { fields: ['workCategory'] },
-          { fields: ['resourceId'] },
-          { fields: ['relatedUserId'] },
           {
             fields: ['userId', 'createdAt'],
-            name: 'idx_user_created'
+            name: 'idx_user_created_at'
           },
           {
             fields: ['userId', 'activityType'],
-            name: 'idx_user_activity'
+            name: 'idx_user_activity_type'
           },
           {
             fields: ['conversationId', 'createdAt'],
-            name: 'idx_conversation_created'
-          },
-          {
-            fields: ['createdAt', 'activityType'],
-            name: 'idx_created_activity'
-          },
-          {
-            fields: ['workCategory', 'billable'],
-            name: 'idx_category_billable'
-          },
-          {
-            fields: ['bulkOperationId'],
-            name: 'idx_bulk_operation'
+            name: 'idx_conversation_created_at'
           }
-        ],
-        hooks: {
-          beforeCreate: async (workLog) => {
-            // 如果有关联的排班记录，尝试更新工作统计
-            if (workLog.scheduleId) {
-              try {
-                const schedule = await workLog.sequelize.models.WorkSchedule.findByPk(workLog.scheduleId);
-                if (schedule) {
-                  // 根据活动类型更新相应的统计数据
-                  const workStats = { ...schedule.workStats };
-                  
-                  if (workLog.activityType === 'session_end' && workLog.resultStatus === 'success') {
-                    workStats.resolvedSessions = (workStats.resolvedSessions || 0) + 1;
-                  }
-                  
-                  if (workLog.activityType === 'session_start') {
-                    workStats.totalSessions = (workStats.totalSessions || 0) + 1;
-                  }
-                  
-                  if (workLog.activityType === 'feedback_received' && workLog.details?.rating) {
-                    const currentRating = workStats.customerSatisfaction || 0;
-                    const totalRatings = workStats.totalRatings || 0;
-                    workStats.customerSatisfaction = 
-                      (currentRating * totalRatings + workLog.details.rating) / (totalRatings + 1);
-                    workStats.totalRatings = totalRatings + 1;
-                  }
-                  
-                  await schedule.update({ workStats });
-                }
-              } catch (error) {
-                // 记录错误但不阻止创建工作记录
-                console.error('Failed to update work schedule stats:', error);
-              }
-            }
-          }
-        }
+        ]
       }
     );
   }
@@ -323,83 +217,64 @@ class WorkLog extends Model {
       as: 'user'
     });
     
-    // 关联工作安排
-    this.belongsTo(models.WorkSchedule, {
-      foreignKey: 'scheduleId',
-      as: 'schedule'
-    });
-    
     // 关联会话
     this.belongsTo(models.Conversation, {
       foreignKey: 'conversationId',
       as: 'conversation'
     });
     
-    // 关联相关用户
-    this.belongsTo(models.User, {
-      foreignKey: 'relatedUserId',
-      as: 'relatedUser'
-    });
-    
-    // 关联资源（如消息、标签等）
-    this.belongsTo(models.Message, {
-      foreignKey: 'resourceId',
-      constraints: false,
-      as: 'message'
-    });
-    
-    this.belongsTo(models.Tag, {
-      foreignKey: 'resourceId',
-      constraints: false,
-      as: 'tag'
+    // 关联工作日程
+    this.belongsTo(models.WorkSchedule, {
+      foreignKey: 'scheduleId',
+      as: 'schedule'
     });
   }
   
   /**
-   * 记录登录活动
+   * 记录登录
    * @param {Object} data - 登录数据
    * @returns {WorkLog} 工作记录
    */
   static async logLogin(data) {
-    const { userId, location, deviceInfo, ipAddress, userAgent } = data;
+    const { userId, ipAddress, userAgent } = data;
     
     return await this.create({
       userId,
       activityType: 'login',
-      description: '用户登录系统',
+      description: '系统登录',
       details: {
-        timestamp: new Date(),
-        ...(location && { location }),
-        ...(deviceInfo && { deviceInfo })
+        ipAddress,
+        userAgent,
+        timestamp: new Date()
       },
       resultStatus: 'success',
-      workCategory: 'administrative',
-      billable: false,
       ipAddress,
       userAgent
     });
   }
   
   /**
-   * 记录登出活动
+   * 记录登出
    * @param {Object} data - 登出数据
    * @returns {WorkLog} 工作记录
    */
   static async logLogout(data) {
-    const { userId, loginTime, duration } = data;
+    const { userId, ipAddress, userAgent, duration } = data;
     
     return await this.create({
       userId,
       activityType: 'logout',
-      description: '用户登出系统',
+      description: '系统登出',
       details: {
-        loginTime,
-        logoutTime: new Date()
+        ipAddress,
+        userAgent,
+        timestamp: new Date(),
+        sessionDuration: duration
       },
-      duration,
       resultStatus: 'success',
-      workCategory: 'administrative',
-      billable: false
+      duration,
+      ipAddress,
+      userAgent
     });
   }
   
@@ -425,8 +300,7 @@ class WorkLog extends Model {
       resultStatus: 'success',
       resourceType: 'conversation',
       resourceId: conversationId,
-      relatedUserId: customerId,
-      workCategory: 'chat_service',
+      workCategory: 'chat',
       billable: true
     });
   }
@@ -448,14 +322,16 @@ class WorkLog extends Model {
       details: {
         startTime,
         endTime: new Date(),
+        duration,
         resolution
       },
+      resultStatus: 'success',
       duration,
-      resultStatus: resolution === '已解决' ? 'success' : 'partial',
       resourceType: 'conversation',
       resourceId: conversationId,
-      workCategory: 'chat_service',
-      billable: true
+      workCategory: 'chat',
+      billable: true,
+      billableMinutes: Math.ceil(duration / 60000)
     });
   }
   
@@ -465,176 +341,101 @@ class WorkLog extends Model {
    * @returns {WorkLog} 工作记录
    */
   static async logMessageSent(data) {
-    const { userId, conversationId, scheduleId, messageId, messageType, contentLength } = data;
+    const { userId, conversationId, messageId, messageType } = data;
     
     return await this.create({
       userId,
       conversationId,
-      scheduleId,
       activityType: 'message_sent',
       description: `发送${messageType || '文本'}消息`,
       details: {
         messageId,
         messageType,
-        contentLength
+        timestamp: new Date()
       },
       resultStatus: 'success',
       resourceType: 'message',
       resourceId: messageId,
-      quantity: contentLength || 1,
-      workCategory: 'chat_service',
-      billable: true,
-      billingUnit: 'message'
+      workCategory: 'chat',
+      billable: true
     });
   }
   
   /**
-   * 获取用户活动统计
+   * 记录自动回复
+   * @param {Object} data - 回复数据
+   * @returns {WorkLog} 工作记录
+   */
+  static async logAutoReply(data) {
+    const { conversationId, ruleId, messageId } = data;
+    
+    return await this.create({
+      conversationId,
+      activityType: 'auto_reply_sent',
+      description: '自动回复消息',
+      details: {
+        ruleId,
+        messageId,
+        timestamp: new Date()
+      },
+      resultStatus: 'success',
+      resourceType: 'message',
+      resourceId: messageId,
+      workCategory: 'chat',
+      billable: false
+    });
+  }
+  
+  /**
+   * 获取用户工作统计
    * @param {string} userId - 用户ID
    * @param {Date} startDate - 开始日期
    * @param {Date} endDate - 结束日期
    * @returns {Object} 统计数据
    */
-  static async getUserActivityStats(userId, startDate, endDate) {
-    const logs = await this.findAll({
-      where: {
-        userId,
-        createdAt: {
-          [this.sequelize.Op.between]: [startDate, endDate]
-        }
-      },
-      attributes: ['activityType', 'createdAt', 'duration', 'billable']
-    });
-    
-    const stats = {
-      totalActivities: logs.length,
-      byType: {},
-      totalBillableMinutes: 0,
-      sessionCount: 0,
-      messageCount: 0
+  static async getUserStatistics(userId, startDate, endDate) {
+    const where = {
+      userId,
+      createdAt: {
+        [this.sequelize.Op.between]: [startDate, endDate]
+      }
     };
     
-    logs.forEach(log => {
-      // 按类型统计
-      if (!stats.byType[log.activityType]) {
-        stats.byType[log.activityType] = 0;
-      }
-      stats.byType[log.activityType]++;
-      
-      // 统计计费时间
-      if (log.billable && log.duration) {
-        stats.totalBillableMinutes += Math.ceil(log.duration / 60);
-      }
-      
-      // 统计会话数量
-      if (log.activityType === 'session_start') {
-        stats.sessionCount++;
-      }
-      
-      // 统计消息数量
-      if (log.activityType === 'message_sent' || log.activityType === 'message_received') {
-        stats.messageCount++;
-      }
-    });
-    
-    return stats;
-  }
-  
-  /**
-   * 获取会话活动历史
-   * @param {string} conversationId - 会话ID
-   * @returns {Array} 活动列表
-   */
-  static async getConversationActivityHistory(conversationId) {
-    return await this.findAll({
-      where: {
-        conversationId
-      },
-      include: [
-        { model: this.sequelize.models.User, as: 'user', attributes: ['id', 'firstName', 'lastName', 'avatar'] },
-        { model: this.sequelize.models.User, as: 'relatedUser', attributes: ['id', 'firstName', 'lastName'] }
+    // 获取活动类型统计
+    const activityStats = await this.findAll({
+      attributes: [
+        'activityType',
+        [this.sequelize.fn('COUNT', '*'), 'count']
       ],
-      order: [['createdAt', 'ASC']]
+      where,
+      group: ['activityType']
     });
-  }
-  
-  /**
-   * 获取工作统计摘要
-   * @param {string} userId - 用户ID
-   * @param {Date} date - 日期
-   * @returns {Object} 统计摘要
-   */
-  static async getDailyWorkSummary(userId, date) {
-    const startOfDay = new Date(date);
-    startOfDay.setHours(0, 0, 0, 0);
     
-    const endOfDay = new Date(date);
-    endOfDay.setHours(23, 59, 59, 999);
-    
-    const logs = await this.findAll({
+    // 获取总工作时长
+    const totalDuration = await this.sum('duration', {
       where: {
-        userId,
-        createdAt: {
-          [this.sequelize.Op.between]: [startOfDay, endOfDay]
-        }
+        ...where,
+        billable: true
       }
     });
     
-    const summary = {
-      totalSessions: 0,
-      resolvedSessions: 0,
-      messagesSent: 0,
-      messagesReceived: 0,
-      totalWorkMinutes: 0,
-      breakMinutes: 0,
-      firstLogin: null,
-      lastLogout: null
+    // 获取会话数量
+    const sessionCount = await this.count({
+      where: {
+        ...where,
+        activityType: 'session_end'
+      }
+    });
+    
+    return {
+      activityStats: activityStats.reduce((acc, stat) => {
+        acc[stat.activityType] = parseInt(stat.count);
+        return acc;
+      }, {}),
+      totalDuration: parseInt(totalDuration || 0),
+      sessionCount,
+      totalBillableMinutes: await this.sum('billableMinutes', { where })
     };
-    
-    let loginTime = null;
-    let breakStartTime = null;
-    
-    logs.forEach(log => {
-      switch (log.activityType) {
-        case 'login':
-          loginTime = new Date(log.createdAt);
-          if (!summary.firstLogin || loginTime < summary.firstLogin) {
-            summary.firstLogin = loginTime;
-          }
-          break;
-        case 'logout':
-          summary.lastLogout = new Date(log.createdAt);
-          if (log.duration) {
-            summary.totalWorkMinutes += Math.ceil(log.duration / 60);
-          }
-          break;
-        case 'break_start':
-          breakStartTime = new Date(log.createdAt);
-          break;
-        case 'break_end':
-          if (breakStartTime) {
-            const breakDuration = Math.ceil((new Date(log.createdAt) - breakStartTime) / (1000 * 60));
-            summary.breakMinutes += breakDuration;
-          }
-          break;
-        case 'session_start':
-          summary.totalSessions++;
-          break;
-        case 'session_end':
-          if (log.resultStatus === 'success') {
-            summary.resolvedSessions++;
-          }
-          break;
-        case 'message_sent':
-          summary.messagesSent++;
-          break;
-        case 'message_received':
-          summary.messagesReceived++;
-          break;
-      }
-    });
-    
-    return summary;
   }
   
   /**
@@ -645,40 +446,41 @@ class WorkLog extends Model {
     return {
       id: this.id,
       userId: this.userId,
-      scheduleId: this.scheduleId,
       conversationId: this.conversationId,
+      scheduleId: this.scheduleId,
       activityType: this.activityType,
       description: this.description,
       details: this.details,
-      duration: this.duration,
-      resultStatus: this.resultStatus,
       resourceType: this.resourceType,
       resourceId: this.resourceId,
-      relatedUserId: this.relatedUserId,
-      quantity: this.quantity,
+      duration: this.duration,
+      resultStatus: this.resultStatus,
+      errorMessage: this.errorMessage,
       workCategory: this.workCategory,
       billable: this.billable,
-      billingUnit: this.billingUnit,
+      billableMinutes: this.billableMinutes,
+      tags: this.tags,
       createdAt: this.createdAt,
       // 关联信息会在查询时包含
       user: this.user ? this.user.toSafeObject() : null,
-      relatedUser: this.relatedUser ? this.relatedUser.toSafeObject() : null,
-      conversation: this.conversation ? this.conversation.toResponseObject() : null
+      conversation: this.conversation ? this.conversation.toSummary() : null
     };
   }
   
   /**
-   * 获取摘要信息
-   * @returns {Object} 摘要信息
+   * 转换为简化的显示对象
+   * @returns {Object} 显示对象
    */
-  toSummary() {
+  toDisplayObject() {
     return {
       id: this.id,
       type: this.activityType,
       description: this.description,
       time: this.createdAt,
-      status: this.resultStatus,
       user: this.user ? `${this.user.firstName} ${this.user.lastName}` : null,
       conversationId: this.conversationId
     };
   }
+}
+
+module.exports = WorkLog;

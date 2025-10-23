@@ -3,29 +3,9 @@
  * 提供缓存操作、发布订阅功能和缓存策略支持
  */
 
-const redis = require('redis');
 const logger = require('../utils/logger');
-const dotenv = require('dotenv');
-
-// 加载环境变量
-dotenv.config();
-
-// Redis客户端配置
-const redisConfig = {
-  host: process.env.REDIS_HOST || 'localhost',
-  port: process.env.REDIS_PORT || 6379,
-  password: process.env.REDIS_PASSWORD || '',
-  db: process.env.REDIS_DB || 0,
-  retry_strategy: options => {
-    const delay = Math.min(options.attempt * 50, 2000);
-    return delay;
-  }
-};
-
-// 创建Redis客户端实例
-let redisClient = null;
-let pubClient = null;
-let subClient = null;
+// 使用我们新创建的Redis客户端模块
+const { redisClient } = require('./redisClient');
 
 // 订阅者回调映射
 const subscriberCallbacks = new Map();
@@ -35,52 +15,23 @@ const localCache = new Map();
 const localCacheTtl = new Map();
 
 /**
- * 初始化Redis连接
+ * 初始化缓存管理器
  */
 async function initialize() {
   try {
-    // 普通Redis客户端（用于一般缓存操作）
-    redisClient = redis.createClient(redisConfig);
+    // 初始化Redis客户端
+    await redisClient.init();
     
-    // 发布订阅客户端
-    pubClient = redis.createClient(redisConfig);
-    subClient = redis.createClient(redisConfig);
-    
-    // 连接到Redis
-    await redisClient.connect();
-    await pubClient.connect();
-    await subClient.connect();
+    logger.info('Redis缓存管理器初始化成功');
     
     // 测试连接
-    await redisClient.ping();
-    logger.info('Redis连接成功');
-    
-    // 注册错误处理
-    redisClient.on('error', handleRedisError);
-    pubClient.on('error', handleRedisError);
-    subClient.on('error', handleRedisError);
-    
-    // 设置订阅消息处理器
-    subClient.on('message', (channel, message) => {
-      const callbacks = subscriberCallbacks.get(channel);
-      if (callbacks && callbacks.length > 0) {
-        try {
-          const parsedMessage = JSON.parse(message);
-          callbacks.forEach(callback => {
-            try {
-              callback(parsedMessage);
-            } catch (err) {
-              logger.error(`执行订阅回调时出错: ${err.message}`);
-            }
-          });
-        } catch (parseError) {
-          logger.error(`解析Redis消息时出错: ${parseError.message}`);
-        }
-      }
-    });
+    const status = redisClient.getStatus();
+    if (status && status.connected) {
+      logger.info('Redis连接状态: 已连接');
+    }
     
   } catch (error) {
-    logger.error('Redis连接失败:', error);
+    logger.error('Redis缓存管理器初始化失败:', error);
     logger.warn('将使用本地内存缓存作为降级方案');
     // Redis连接失败不应该导致应用崩溃，可以在功能上降级
   }
@@ -131,26 +82,25 @@ function setLocalCache(key, value, ttl = 3600) {
  * @param {*} value - 缓存值
  * @param {number} ttl - 过期时间（秒）
  */
-async function set(key, value, ttl = 3600) {
+async function set(key, value, ttl = 0) {
   try {
-    // 无论Redis是否可用，都设置本地缓存作为降级方案
-    setLocalCache(key, value, ttl);
-    
-    if (!redisClient) {
-      logger.warn(`Redis客户端未初始化，仅设置本地缓存: ${key}`);
+    if (!key) {
       return;
     }
     
     const jsonValue = JSON.stringify(value);
-    if (ttl > 0) {
-      await redisClient.set(key, jsonValue, { EX: ttl });
-    } else {
-      await redisClient.set(key, jsonValue);
+    
+    // 尝试设置Redis缓存
+    if (redisClient && redisClient.isConnected) {
+      await redisClient.set(key, jsonValue, ttl);
     }
     
-    logger.debug(`缓存设置成功: ${key}`);
+    // 更新本地缓存
+    setLocalCache(key, value, ttl);
   } catch (error) {
-    logger.error(`设置Redis缓存失败 [${key}]: ${error.message}，已设置本地缓存`);
+    logger.error(`设置缓存失败 (${key}):`, error);
+    // 降级到本地缓存
+    setLocalCache(key, value, ttl);
   }
 }
 
@@ -324,22 +274,36 @@ async function expire(key, ttl) {
 }
 
 /**
- * 获取缓存
+ * 获取缓存值
  * @param {string} key - 缓存键
- * @returns {*} 缓存值
+ * @returns {Promise<any>} 缓存值
  */
 async function get(key) {
   try {
-    if (!redisClient) {
-      logger.warn('Redis客户端未初始化');
+    if (!key) {
       return null;
     }
     
-    const value = await redisClient.get(key);
-    return value ? JSON.parse(value) : null;
+    // 尝试从Redis获取
+    if (redisClient && redisClient.isConnected) {
+      const value = await redisClient.get(key);
+      if (value !== null) {
+        try {
+          return JSON.parse(value);
+        } catch (e) {
+          // 如果不是JSON格式，则直接返回字符串
+          return value;
+        }
+      }
+    }
+    
+    // 降级到本地缓存
+    const cachedValue = getLocalCache(key);
+    return cachedValue;
   } catch (error) {
-    logger.error(`获取缓存失败 [${key}]: ${error.message}`);
-    return null;
+    logger.error(`获取缓存失败 (${key}):`, error);
+    // 降级到本地缓存
+    return getLocalCache(key);
   }
 }
 
@@ -349,100 +313,91 @@ async function get(key) {
  */
 async function del(key) {
   try {
-    if (!redisClient) {
-      logger.warn('Redis客户端未初始化');
+    if (!key) {
       return;
     }
     
-    await redisClient.del(key);
+    // 尝试删除Redis缓存
+    if (redisClient && redisClient.isConnected) {
+      await redisClient.del(key);
+    }
+    
+    // 同步删除本地缓存
+    localCache.delete(key);
+    localCacheTtl.delete(key);
     logger.debug(`缓存删除成功: ${key}`);
   } catch (error) {
-    logger.error(`删除缓存失败 [${key}]: ${error.message}`);
+    logger.error(`删除缓存失败 (${key}):`, error);
+    // 降级到本地缓存
+    localCache.delete(key);
+    localCacheTtl.delete(key);
   }
 }
 
 /**
  * 发布消息
- * @param {string} channel - 通道名称
+ * @param {string} channel - 频道名
  * @param {*} message - 消息内容
  */
 async function publish(channel, message) {
   try {
-    if (!pubClient) {
-      logger.warn('Redis发布客户端未初始化');
+    if (!channel) {
       return;
     }
     
-    const jsonMessage = JSON.stringify(message);
-    await pubClient.publish(channel, jsonMessage);
+    // 尝试发布到Redis
+    if (redisClient && redisClient.isConnected) {
+      await redisClient.publish(channel, message);
+    }
+    
     logger.debug(`消息发布成功: ${channel}`);
   } catch (error) {
-    logger.error(`发布消息失败 [${channel}]: ${error.message}`);
+    logger.error(`消息发布失败 (${channel}):`, error);
   }
 }
 
 /**
- * 订阅消息
- * @param {string} channel - 通道名称
+ * 订阅频道
+ * @param {string} channel - 频道名
  * @param {Function} callback - 回调函数
  */
 async function subscribe(channel, callback) {
   try {
-    if (!subClient) {
-      logger.warn('Redis订阅客户端未初始化');
+    if (!channel || typeof callback !== 'function') {
       return;
     }
     
-    // 添加回调到映射
-    if (!subscriberCallbacks.has(channel)) {
-      subscriberCallbacks.set(channel, []);
-      // 首次订阅时，执行实际的Redis订阅
-      await subClient.subscribe(channel);
-      logger.info(`开始订阅通道: ${channel}`);
+    // 尝试订阅Redis频道
+    if (redisClient && redisClient.isConnected) {
+      await redisClient.subscribe(channel, (channelName, message) => {
+        callback(message);
+      });
     }
     
-    subscriberCallbacks.get(channel).push(callback);
+    logger.debug(`频道订阅成功: ${channel}`);
   } catch (error) {
-    logger.error(`订阅消息失败 [${channel}]: ${error.message}`);
+    logger.error(`频道订阅失败 (${channel}):`, error);
   }
 }
 
 /**
  * 取消订阅
- * @param {string} channel - 通道名称
- * @param {Function} callback - 回调函数（可选，不传则取消所有订阅）
+ * @param {string} channel - 频道名
  */
-async function unsubscribe(channel, callback = null) {
+async function unsubscribe(channel) {
   try {
-    if (!subClient) {
-      logger.warn('Redis订阅客户端未初始化');
+    if (!channel) {
       return;
     }
     
-    if (subscriberCallbacks.has(channel)) {
-      if (callback) {
-        // 移除特定回调
-        const callbacks = subscriberCallbacks.get(channel);
-        const index = callbacks.indexOf(callback);
-        if (index > -1) {
-          callbacks.splice(index, 1);
-        }
-        
-        // 如果没有回调了，取消Redis订阅
-        if (callbacks.length === 0) {
-          subscriberCallbacks.delete(channel);
-          await subClient.unsubscribe(channel);
-          logger.info(`取消订阅通道: ${channel}`);
-        }
-      } else {
-        // 取消所有回调
-        subscriberCallbacks.delete(channel);
-        await subClient.unsubscribe(channel);
-        logger.info(`取消订阅通道: ${channel}`);
-      }
+    // 尝试取消Redis订阅
+    if (redisClient && redisClient.isConnected) {
+      await redisClient.unsubscribe(channel);
     }
+    
+    logger.debug(`频道取消订阅成功: ${channel}`);
   } catch (error) {
-    logger.error(`取消订阅失败 [${channel}]: ${error.message}`);
+    logger.error(`频道取消订阅失败 (${channel}):`, error);
   }
 }
 

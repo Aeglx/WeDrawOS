@@ -1,7 +1,7 @@
-import express from 'express';
-import { authenticateToken } from '../middleware/auth';
-import { authorizeRole } from '../middleware/authorize';
-import customerServiceRoutes from './customerServiceRoutes';
+const express = require('express');
+const { authenticateToken } = require('../middleware/auth');
+const { authorizeRole } = require('../middleware/authorize');
+const customerServiceRoutes = require('./customerServiceRoutes');
 
 /**
  * 客服系统路由模块
@@ -93,4 +93,4 @@ router.use((err, req, res, next) => {
   });
 });
 
-export default router;
+module.exports = router;

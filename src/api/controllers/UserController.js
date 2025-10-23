@@ -1,16 +1,16 @@
-import { validationResult } from 'express-validator';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import config from '../config/config.js';
-import db from '../models/index.js';
-import {
-  BadRequestError,
-  UnauthorizedError,
-  ForbiddenError,
-  NotFoundError,
-  ConflictError,
-  InternalServerError
-} from '../utils/errors.js';
+const { validationResult } = require('express-validator');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const config = require('../config/config.js');
+const db = require('../models/index.js');
+const {
+    BadRequestError,
+    UnauthorizedError,
+    ForbiddenError,
+    NotFoundError,
+    ConflictError,
+    InternalServerError
+  } = require('../utils/errors.js');
 
 const { User } = db.models;
 const jwtConfig = config.getConfig('jwt');
@@ -718,4 +718,4 @@ class UserController {
   }
 };
 
-export default UserController;
+module.exports = UserController;

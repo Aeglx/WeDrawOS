@@ -22,7 +22,7 @@ const getEnvBoolean = (key, defaultValue) => {
 /**
  * 系统配置对象
  */
-export const config = {
+const config = {
   // 应用基本配置
   app: {
     name: getEnv('APP_NAME', 'WeDrawOS 客服系统'),
@@ -50,105 +50,92 @@ export const config = {
   
   // 数据库配置
   database: {
-    host: getEnv('DB_HOST', 'localhost'),
-    port: getEnvNumber('DB_PORT', 5432),
-    username: getEnv('DB_USERNAME', 'postgres'),
+    name: getEnv('DB_NAME', 'wedrawos_customer_service'),
+    username: getEnv('DB_USERNAME', 'root'),
     password: getEnv('DB_PASSWORD', 'password'),
-    database: getEnv('DB_NAME', 'wedrawos_customer_service'),
-    dialect: getEnv('DB_DIALECT', 'postgres'),
+    host: getEnv('DB_HOST', 'localhost'),
+    port: getEnvNumber('DB_PORT', 3306),
+    dialect: getEnv('DB_DIALECT', 'mysql'),
+    dialectOptions: {
+      connectTimeout: getEnvNumber('DB_TIMEOUT', 10000)
+    },
     pool: {
       max: getEnvNumber('DB_POOL_MAX', 10),
       min: getEnvNumber('DB_POOL_MIN', 0),
       acquire: getEnvNumber('DB_POOL_ACQUIRE', 30000),
       idle: getEnvNumber('DB_POOL_IDLE', 10000)
     },
-    logging: getEnvBoolean('DB_LOGGING', false)
+    logging: getEnvBoolean('DB_LOGGING', false),
+    timezone: '+08:00'
   },
   
-  // Redis配置（用于会话存储和缓存）
+  // 文件上传配置
+  upload: {
+    maxSize: getEnvNumber('UPLOAD_MAX_SIZE', 10 * 1024 * 1024), // 默认10MB
+    allowedTypes: ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'],
+    tempDir: getEnv('UPLOAD_TEMP_DIR', './temp'),
+    storagePath: getEnv('UPLOAD_STORAGE_PATH', './uploads')
+  },
+  
+  // 邮件配置
+  mail: {
+    host: getEnv('MAIL_HOST', 'smtp.example.com'),
+    port: getEnvNumber('MAIL_PORT', 587),
+    secure: getEnvBoolean('MAIL_SECURE', false),
+    auth: {
+      user: getEnv('MAIL_USER', 'your-email@example.com'),
+      pass: getEnv('MAIL_PASS', 'your-email-password')
+    },
+    from: getEnv('MAIL_FROM', 'WeDrawOS 客服系统 <noreply@example.com>')
+  },
+  
+  // WebSocket配置
+  websocket: {
+    pingInterval: getEnvNumber('WS_PING_INTERVAL', 30000),
+    maxConnections: getEnvNumber('WS_MAX_CONNECTIONS', 1000),
+    maxMessageSize: getEnvNumber('WS_MAX_MESSAGE_SIZE', 1024 * 1024) // 1MB
+  },
+  
+  // Redis配置
   redis: {
     host: getEnv('REDIS_HOST', 'localhost'),
     port: getEnvNumber('REDIS_PORT', 6379),
     password: getEnv('REDIS_PASSWORD', ''),
     db: getEnvNumber('REDIS_DB', 0),
-    keyPrefix: getEnv('REDIS_KEY_PREFIX', 'wedrawos:')
-  },
-  
-  // WebSocket配置
-  websocket: {
-    heartbeatInterval: getEnvNumber('WS_HEARTBEAT_INTERVAL', 30000), // 30秒
-    maxMessageSize: getEnvNumber('WS_MAX_MESSAGE_SIZE', 1024 * 1024), // 1MB
-    reconnectDelay: getEnvNumber('WS_RECONNECT_DELAY', 1000),
-    maxReconnectAttempts: getEnvNumber('WS_MAX_RECONNECT_ATTEMPTS', 5)
-  },
-  
-  // 文件上传配置
-  upload: {
-    maxFileSize: getEnvNumber('UPLOAD_MAX_SIZE', 5 * 1024 * 1024), // 5MB
-    allowedFormats: ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx', 'txt'],
-    uploadPath: getEnv('UPLOAD_PATH', './uploads')
+    maxRetriesPerRequest: getEnvNumber('REDIS_MAX_RETRIES', 5)
   },
   
   // 自动回复配置
   autoReply: {
     enabled: getEnvBoolean('AUTO_REPLY_ENABLED', true),
-    defaultReplyDelay: getEnvNumber('AUTO_REPLY_DEFAULT_DELAY', 1000), // 1秒
-    maxKeywords: getEnvNumber('AUTO_REPLY_MAX_KEYWORDS', 50),
-    priorityLevels: getEnvNumber('AUTO_REPLY_PRIORITY_LEVELS', 10)
-  },
-  
-  // 会话配置
-  session: {
-    timeout: getEnvNumber('SESSION_TIMEOUT', 30 * 60 * 1000), // 30分钟
-    maxConcurrentSessionsPerAgent: getEnvNumber('SESSION_MAX_PER_AGENT', 10),
-    autoAssignEnabled: getEnvBoolean('SESSION_AUTO_ASSIGN', true),
-    unassignedTimeout: getEnvNumber('SESSION_UNASSIGNED_TIMEOUT', 5 * 60 * 1000) // 5分钟
-  },
-  
-  // 统计配置
-  statistics: {
-    cacheTimeout: getEnvNumber('STATS_CACHE_TIMEOUT', 5 * 60 * 1000), // 5分钟
-    batchSize: getEnvNumber('STATS_BATCH_SIZE', 1000),
-    retentionDays: getEnvNumber('STATS_RETENTION_DAYS', 90)
+    delay: getEnvNumber('AUTO_REPLY_DELAY', 2000), // 毫秒
+    maxAttempts: getEnvNumber('AUTO_REPLY_MAX_ATTEMPTS', 3)
   },
   
   // 通知配置
   notification: {
     enabled: getEnvBoolean('NOTIFICATION_ENABLED', true),
-    emailEnabled: getEnvBoolean('EMAIL_NOTIFICATION_ENABLED', true),
-    webhookEnabled: getEnvBoolean('WEBHOOK_NOTIFICATION_ENABLED', false)
+    pollingInterval: getEnvNumber('NOTIFICATION_POLLING_INTERVAL', 30000), // 30秒
+    maxStored: getEnvNumber('NOTIFICATION_MAX_STORED', 100)
   },
   
-  // 安全配置
-  security: {
-    cors: {
-      enabled: getEnvBoolean('CORS_ENABLED', true),
-      origins: getEnv('CORS_ORIGINS', '*').split(',')
-    },
-    rateLimit: {
-      enabled: getEnvBoolean('RATE_LIMIT_ENABLED', true),
-      windowMs: getEnvNumber('RATE_LIMIT_WINDOW', 15 * 60 * 1000), // 15分钟
-      maxRequests: getEnvNumber('RATE_LIMIT_MAX', 100)
-    }
-  },
-  
-  // 日志配置
-  logging: {
-    level: getEnv('LOG_LEVEL', 'info'),
-    format: getEnv('LOG_FORMAT', 'json'),
-    file: getEnv('LOG_FILE', './logs/app.log')
+  // 工作时间配置
+  workHours: {
+    start: getEnv('WORK_HOURS_START', '09:00'),
+    end: getEnv('WORK_HOURS_END', '18:00'),
+    weekdays: [1, 2, 3, 4, 5] // 周一到周五
   }
 };
 
 /**
- * 获取特定部分的配置
- * @param {string} section - 配置部分
- * @returns {Object} 配置对象
+ * 获取指定配置
+ * @param {string} key - 配置键，支持点号分隔获取嵌套配置
+ * @returns {*} 配置值
  */
-export const getConfig = (section) => {
-  if (!section) return config;
+const getConfig = (key) => {
+  if (!key) return config;
   
-  const parts = section.split('.');
+  const parts = key.split('.');
   let current = config;
   
   for (const part of parts) {
@@ -161,8 +148,18 @@ export const getConfig = (section) => {
   return current;
 };
 
-// 导出JWT配置的快捷方式
-export const jwtSecret = config.jwt.secret;
-export const jwtRefreshSecret = config.jwt.refreshSecret;
-export const jwtExpiration = config.jwt.expiration;
-export const jwtRefreshExpiration = config.jwt.refreshExpiration;
+// JWT配置的快捷方式
+const jwtSecret = config.jwt.secret;
+const jwtRefreshSecret = config.jwt.refreshSecret;
+const jwtExpiration = config.jwt.expiration;
+const jwtRefreshExpiration = config.jwt.refreshExpiration;
+
+// 导出配置
+module.exports = {
+  config,
+  getConfig,
+  jwtSecret,
+  jwtRefreshSecret,
+  jwtExpiration,
+  jwtRefreshExpiration
+};

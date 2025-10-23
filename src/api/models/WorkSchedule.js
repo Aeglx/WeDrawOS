@@ -1,4 +1,4 @@
-import { DataTypes, Model } from 'sequelize';
+const { DataTypes, Model } = require('sequelize');
 
 /**
  * 工作时间管理模型
@@ -688,3 +688,6 @@ class WorkSchedule extends Model {
       resolvedSessions: this.workStats?.resolvedSessions || 0
     };
   }
+}
+
+module.exports = WorkSchedule;

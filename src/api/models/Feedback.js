@@ -1,4 +1,4 @@
-import { DataTypes, Model } from 'sequelize';
+const { DataTypes, Model } = require('sequelize');
 
 /**
  * 客户反馈模型
@@ -518,3 +518,6 @@ class Feedback extends Model {
       agentName: this.agent ? `${this.agent.firstName} ${this.agent.lastName}` : null
     };
   }
+}
+
+module.exports = Feedback;

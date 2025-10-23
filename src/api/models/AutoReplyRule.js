@@ -1,4 +1,4 @@
-import { DataTypes, Model } from 'sequelize';
+const { DataTypes, Model } = require('sequelize');
 
 /**
  * 自动回复规则模型
@@ -342,7 +342,7 @@ class AutoReplyRule extends Model {
       });
     }
     
-    query.where[query.sequelize.Op.or] = scopeConditions;
+    query.where[this.sequelize.Op.or] = scopeConditions;
     
     const rules = await this.findAll(query);
     
@@ -392,3 +392,6 @@ class AutoReplyRule extends Model {
       creator: this.creator ? this.creator.toSafeObject() : null
     };
   }
+}
+
+module.exports = AutoReplyRule;

@@ -6,7 +6,7 @@
 /**
  * 基础错误类
  */
-export class BaseError extends Error {
+class BaseError extends Error {
   constructor(message, statusCode, errorCode, details = {}) {
     super(message);
     this.name = this.constructor.name;
@@ -36,7 +36,7 @@ export class BaseError extends Error {
 /**
  * 400 Bad Request 错误
  */
-export class BadRequestError extends BaseError {
+class BadRequestError extends BaseError {
   constructor(message, details = {}) {
     super(message, 400, 'BAD_REQUEST', details);
   }
@@ -45,7 +45,7 @@ export class BadRequestError extends BaseError {
 /**
  * 401 Unauthorized 错误
  */
-export class UnauthorizedError extends BaseError {
+class UnauthorizedError extends BaseError {
   constructor(message, details = {}) {
     super(message, 401, 'UNAUTHORIZED', details);
   }
@@ -54,7 +54,7 @@ export class UnauthorizedError extends BaseError {
 /**
  * 403 Forbidden 错误
  */
-export class ForbiddenError extends BaseError {
+class ForbiddenError extends BaseError {
   constructor(message, details = {}) {
     super(message, 403, 'FORBIDDEN', details);
   }
@@ -63,7 +63,7 @@ export class ForbiddenError extends BaseError {
 /**
  * 404 Not Found 错误
  */
-export class NotFoundError extends BaseError {
+class NotFoundError extends BaseError {
   constructor(message, details = {}) {
     super(message, 404, 'NOT_FOUND', details);
   }
@@ -72,7 +72,7 @@ export class NotFoundError extends BaseError {
 /**
  * 409 Conflict 错误
  */
-export class ConflictError extends BaseError {
+class ConflictError extends BaseError {
   constructor(message, details = {}) {
     super(message, 409, 'CONFLICT', details);
   }
@@ -81,7 +81,7 @@ export class ConflictError extends BaseError {
 /**
  * 422 Unprocessable Entity 错误
  */
-export class UnprocessableEntityError extends BaseError {
+class UnprocessableEntityError extends BaseError {
   constructor(message, details = {}) {
     super(message, 422, 'UNPROCESSABLE_ENTITY', details);
   }
@@ -90,7 +90,7 @@ export class UnprocessableEntityError extends BaseError {
 /**
  * 500 Internal Server Error 错误
  */
-export class InternalServerError extends BaseError {
+class InternalServerError extends BaseError {
   constructor(message, details = {}) {
     super(message || '服务器内部错误', 500, 'INTERNAL_SERVER_ERROR', details);
   }
@@ -99,7 +99,7 @@ export class InternalServerError extends BaseError {
 /**
  * 502 Bad Gateway 错误
  */
-export class BadGatewayError extends BaseError {
+class BadGatewayError extends BaseError {
   constructor(message, details = {}) {
     super(message || '网关错误', 502, 'BAD_GATEWAY', details);
   }
@@ -108,7 +108,7 @@ export class BadGatewayError extends BaseError {
 /**
  * 503 Service Unavailable 错误
  */
-export class ServiceUnavailableError extends BaseError {
+class ServiceUnavailableError extends BaseError {
   constructor(message, details = {}) {
     super(message || '服务不可用', 503, 'SERVICE_UNAVAILABLE', details);
   }
@@ -117,7 +117,7 @@ export class ServiceUnavailableError extends BaseError {
 /**
  * 验证错误类
  */
-export class ValidationError extends BadRequestError {
+class ValidationError extends BadRequestError {
   constructor(message, validationErrors = []) {
     super(message || '验证失败', { validationErrors });
     this.name = 'ValidationError';
@@ -150,7 +150,7 @@ export class ValidationError extends BadRequestError {
 /**
  * 数据库错误类
  */
-export class DatabaseError extends InternalServerError {
+class DatabaseError extends InternalServerError {
   constructor(message, originalError = null) {
     super(message || '数据库操作失败', { originalError });
     this.name = 'DatabaseError';
@@ -161,7 +161,7 @@ export class DatabaseError extends InternalServerError {
 /**
  * API错误类
  */
-export class ApiError extends BaseError {
+class ApiError extends BaseError {
   constructor(message, statusCode, apiCode, details = {}) {
     super(message, statusCode, apiCode, details);
     this.name = 'ApiError';
@@ -171,7 +171,7 @@ export class ApiError extends BaseError {
 /**
  * WebSocket错误类
  */
-export class WebSocketError extends BaseError {
+class WebSocketError extends BaseError {
   constructor(message, code = 1000, details = {}) {
     super(message, 400, 'WEBSOCKET_ERROR', details);
     this.code = code;
@@ -184,7 +184,7 @@ export class WebSocketError extends BaseError {
  * @param {Error} error - 错误对象
  * @returns {Object} 格式化的错误响应
  */
-export const formatErrorResponse = (error) => {
+const formatErrorResponse = (error) => {
   if (error instanceof BaseError) {
     return error.toResponse();
   }
@@ -209,7 +209,7 @@ export const formatErrorResponse = (error) => {
  * @param {Object} res - 响应对象
  * @param {Function} next - 下一个中间件
  */
-export const errorHandler = (err, req, res, next) => {
+const errorHandler = (err, req, res, next) => {
   const errorResponse = formatErrorResponse(err);
   
   // 记录错误日志
@@ -230,7 +230,7 @@ export const errorHandler = (err, req, res, next) => {
  * @param {string} message - 错误消息
  * @returns {ValidationError} 验证错误对象
  */
-export const createValidationError = (field, message) => {
+const createValidationError = (field, message) => {
   return new ValidationError('参数验证失败', [{ field, message }]);
 };
 
@@ -242,6 +242,28 @@ export const createValidationError = (field, message) => {
  * @param {Object} details - 附加信息
  * @returns {ApiError} API错误对象
  */
-export const createApiError = (message, statusCode = 500, apiCode = 'API_ERROR', details = {}) => {
+const createApiError = (message, statusCode = 500, apiCode = 'API_ERROR', details = {}) => {
   return new ApiError(message, statusCode, apiCode, details);
+};
+
+// 导出所有错误类和工具函数
+module.exports = {
+  BaseError,
+  BadRequestError,
+  UnauthorizedError,
+  ForbiddenError,
+  NotFoundError,
+  ConflictError,
+  UnprocessableEntityError,
+  InternalServerError,
+  BadGatewayError,
+  ServiceUnavailableError,
+  ValidationError,
+  DatabaseError,
+  ApiError,
+  WebSocketError,
+  formatErrorResponse,
+  errorHandler,
+  createValidationError,
+  createApiError
 };

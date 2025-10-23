@@ -1,4 +1,4 @@
-import { DataTypes, Model } from 'sequelize';
+const { DataTypes, Model } = require('sequelize');
 
 /**
  * 标签模型
@@ -335,3 +335,6 @@ class Tag extends Model {
       creator: this.creator ? this.creator.toSafeObject() : null
     };
   }
+}
+
+module.exports = Tag;

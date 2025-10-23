@@ -1,16 +1,53 @@
-import jwt from 'jsonwebtoken';
-import db from '../models/index.js';
-import { config } from '../config/config';
-import {
-  UnauthorizedError,
-  ForbiddenError,
-  BadRequestError
-} from '../utils/errors.js';
+const jwt = require('jsonwebtoken');
+
+// 安全地导入数据库模型
+let db = null;
+try {
+  console.log('【DEBUG】auth.js: 尝试导入models/index.js');
+  db = require('../models/index.js');
+  console.log('【DEBUG】auth.js: 成功导入models/index.js');
+} catch (dbImportError) {
+  console.error('【严重错误】auth.js: 导入models/index.js失败:', dbImportError.message);
+  // 创建一个空的db对象，避免后续代码崩溃
+  db = {
+    models: {}
+  };
+}
+
+let config = null;
+try {
+  console.log('【DEBUG】auth.js: 尝试导入config/config.js');
+  config = require('../config/config.js');
+  console.log('【DEBUG】auth.js: 成功导入config/config.js');
+} catch (configImportError) {
+  console.error('【严重错误】auth.js: 导入config/config.js失败:', configImportError.message);
+  // 使用默认配置
+  config = {
+    jwtSecret: 'fallback-secret-key'
+  };
+}
+
+let errors = null;
+try {
+  console.log('【DEBUG】auth.js: 尝试导入utils/errors.js');
+  errors = require('../utils/errors.js');
+  console.log('【DEBUG】auth.js: 成功导入utils/errors.js');
+} catch (errorsImportError) {
+  console.error('【严重错误】auth.js: 导入utils/errors.js失败:', errorsImportError.message);
+  // 定义基本的错误类
+  errors = {
+    UnauthorizedError: class UnauthorizedError extends Error { constructor(message) { super(message); this.name = 'UnauthorizedError'; } },
+    ForbiddenError: class ForbiddenError extends Error { constructor(message) { super(message); this.name = 'ForbiddenError'; } },
+    BadRequestError: class BadRequestError extends Error { constructor(message) { super(message); this.name = 'BadRequestError'; } }
+  };
+}
+
+const { UnauthorizedError, ForbiddenError, BadRequestError } = errors;
 
 /**
  * 验证请求数据
  */
-export const validateRequest = (req, res, next) => {
+const validateRequest = (req, res, next) => {
   try {
     const errors = req.validationErrors || [];
     
@@ -28,7 +65,7 @@ export const validateRequest = (req, res, next) => {
 /**
  * JWT认证中间件
  */
-export const requireAuth = async (req, res, next) => {
+const requireAuth = async (req, res, next) => {
   try {
     // 从请求头获取token
     const authHeader = req.headers.authorization;
@@ -87,10 +124,10 @@ export const requireAuth = async (req, res, next) => {
   }
 };
 
-/**
+  /**
  * 角色权限检查中间件
  */
-export const requireRole = (roles) => {
+const requireRole = (roles) => {
   return (req, res, next) => {
     try {
       if (!req.user || !req.user.role) {
@@ -116,7 +153,7 @@ export const requireRole = (roles) => {
  * 认证中间件（兼容旧版）
  * 验证请求中的JWT令牌并解析用户信息
  */
-export const authenticateToken = (req, res, next) => {
+const authenticateToken = (req, res, next) => {
   try {
     // 检查是否为公开路由
     if (req.isPublicRoute) {
@@ -169,7 +206,7 @@ export const authenticateToken = (req, res, next) => {
 /**
  * 会话权限检查中间件 - 确保用户只能访问自己的会话
  */
-export const requireConversationAccess = async (req, res, next) => {
+const requireConversationAccess = async (req, res, next) => {
   try {
     const { conversationId } = req.params;
     const currentUserId = req.user.userId;
@@ -210,7 +247,7 @@ export const requireConversationAccess = async (req, res, next) => {
 /**
  * 消息权限检查中间件
  */
-export const requireMessageAccess = async (req, res, next) => {
+const requireMessageAccess = async (req, res, next) => {
   try {
     const { messageId } = req.params;
     const currentUserId = req.user.userId;
@@ -263,7 +300,7 @@ export const requireMessageAccess = async (req, res, next) => {
 /**
  * 用户数据权限检查中间件
  */
-export const requireUserDataAccess = (req, res, next) => {
+const requireUserDataAccess = (req, res, next) => {
   try {
     const { userId } = req.params;
     const currentUserId = req.user.userId;
@@ -288,7 +325,7 @@ export const requireUserDataAccess = (req, res, next) => {
 /**
  * 速率限制中间件
  */
-export const rateLimiter = (limit = 100, windowMs = 15 * 60 * 1000) => {
+const rateLimiter = (limit = 100, windowMs = 15 * 60 * 1000) => {
   const requests = new Map();
   
   return (req, res, next) => {
@@ -330,7 +367,7 @@ export const rateLimiter = (limit = 100, windowMs = 15 * 60 * 1000) => {
 /**
  * 日志记录中间件
  */
-export const logRequest = async (req, res, next) => {
+const logRequest = async (req, res, next) => {
   try {
     // 记录请求信息
     const logData = {
@@ -396,7 +433,7 @@ export const logRequest = async (req, res, next) => {
 /**
  * CORS中间件
  */
-export const cors = (req, res, next) => {
+const cors = (req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', config.corsOrigin || '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
@@ -431,7 +468,7 @@ function sanitizeData(data) {
  * 可选认证中间件
  * 尝试验证令牌，但不强制要求令牌存在
  */
-export const optionalAuthenticateToken = (req, res, next) => {
+const optionalAuthenticateToken = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     const token = authHeader && authHeader.split(' ')[1];
@@ -460,7 +497,7 @@ export const optionalAuthenticateToken = (req, res, next) => {
  * 刷新令牌中间件
  * 用于验证刷新令牌的有效性
  */
-export const validateRefreshToken = (req, res, next) => {
+const validateRefreshToken = (req, res, next) => {
   try {
     const refreshToken = req.body.refreshToken || req.cookies.refreshToken;
     
@@ -498,7 +535,7 @@ export const validateRefreshToken = (req, res, next) => {
  * @param {Object} user - 用户信息对象
  * @returns {string} JWT令牌
  */
-export const generateAccessToken = (user) => {
+const generateAccessToken = (user) => {
   return jwt.sign(
     {
       id: user.id,
@@ -519,7 +556,7 @@ export const generateAccessToken = (user) => {
  * @param {Object} user - 用户信息对象
  * @returns {string} 刷新令牌
  */
-export const generateRefreshToken = (user) => {
+const generateRefreshToken = (user) => {
   return jwt.sign(
     {
       id: user.id,
@@ -530,4 +567,22 @@ export const generateRefreshToken = (user) => {
       expiresIn: config.jwtRefreshExpiration || '7d'
     }
   );
+};
+
+// 导出所有中间件函数
+module.exports = {
+  validateRequest,
+  requireAuth,
+  requireRole,
+  authenticateToken,
+  requireConversationAccess,
+  requireMessageAccess,
+  requireUserDataAccess,
+  rateLimiter,
+  logRequest,
+  cors,
+  optionalAuthenticateToken,
+  validateRefreshToken,
+  generateAccessToken,
+  generateRefreshToken
 };

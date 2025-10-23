@@ -1,0 +1,711 @@
+/**
+ * 微信官方开发文档样式 - 严格按照微信开放平台文档样式实现
+ */
+
+/* 全局重置 - 微信文档默认样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+  font-size: 14px;
+  color: #333;
+  background-color: #fff;
+  overflow: hidden;
+  height: 100%;
+  line-height: 1.5;
+}
+
+/* 隐藏Swagger默认的顶部栏 */
+.swagger-ui .topbar {
+  display: none !important;
+}
+
+/* 微信文档顶部导航栏 - 严格按照官方样式 */
+.wx-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: #fff;
+  border-bottom: 1px solid #e6e6e6;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.wx-header .logo {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.wx-header .nav {
+  margin-left: 40px;
+  display: flex;
+  gap: 30px;
+}
+
+.wx-header .nav-item {
+  position: relative;
+  font-size: 15px;
+  color: #666;
+  cursor: pointer;
+  padding: 0 5px;
+  height: 60px;
+  line-height: 60px;
+  transition: color 0.2s;
+}
+
+.wx-header .nav-item:hover {
+  color: #07c160;
+}
+
+.wx-header .nav-item.active {
+  color: #07c160;
+  font-weight: 500;
+}
+
+.wx-header .nav-item.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background-color: #07c160;
+}
+
+.wx-header .header-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.wx-header .header-text {
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.wx-header .header-text:hover {
+  color: #07c160;
+}
+
+.wx-header .header-search {
+  margin-left: 20px;
+}
+
+.wx-header .search-input {
+  padding: 6px 12px;
+  border: 1px solid #e6e6e6;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 180px;
+  transition: all 0.2s;
+}
+
+.wx-header .search-input:focus {
+  outline: none;
+  border-color: #07c160;
+  box-shadow: 0 0 0 2px rgba(7, 193, 96, 0.1);
+}
+
+/* 微信文档3栏布局主容器 */
+.wx-container {
+  display: flex;
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #f7f7f7;
+}
+
+/* 左侧导航栏 - 微信官方样式 */
+.wx-sidebar {
+  width: 220px;
+  background-color: #fff;
+  border-right: 1px solid #e6e6e6;
+  overflow-y: auto;
+  flex-shrink: 0;
+  height: calc(100vh - 60px);
+}
+
+.wx-sidebar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.wx-sidebar::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+.wx-sidebar::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 2px;
+}
+
+.wx-sidebar .sidebar-header {
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.wx-sidebar .sidebar-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.wx-sidebar .menu-group-title {
+  padding: 12px 20px 6px;
+  font-size: 13px;
+  color: #999;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.wx-sidebar .sub-menu {
+  margin-bottom: 12px;
+}
+
+.wx-sidebar .menu-item {
+  padding: 8px 20px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wx-sidebar .menu-item:hover {
+  background-color: #f6f8fa;
+  color: #07c160;
+}
+
+.wx-sidebar .menu-item.active {
+  background-color: #f6ffed;
+  color: #07c160;
+  border-right: 3px solid #07c160;
+  font-weight: 500;
+}
+
+.wx-sidebar .loading, .wx-sidebar .error {
+  padding: 20px;
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+}
+
+/* 中间内容区域 - 微信官方样式 */
+.wx-content {
+  flex: 1;
+  overflow-y: auto;
+  background-color: #f7f7f7;
+  padding: 20px;
+  height: calc(100vh - 60px);
+}
+
+.wx-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.wx-content::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+.wx-content::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 4px;
+}
+
+/* 右侧操作面板 - 微信官方样式 */
+.wx-right-panel {
+  width: 280px;
+  background-color: #fff;
+  border-left: 1px solid #e6e6e6;
+  overflow-y: auto;
+  flex-shrink: 0;
+  padding: 20px;
+  height: calc(100vh - 60px);
+}
+
+.wx-right-panel::-webkit-scrollbar {
+  width: 5px;
+}
+
+.wx-right-panel::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+.wx-right-panel::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 2px;
+}
+
+.wx-right-panel .panel-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.wx-right-panel .panel-item {
+  margin-bottom: 15px;
+}
+
+.wx-right-panel .panel-item label {
+  display: block;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.wx-right-panel .panel-item input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e6e6e6;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+  background-color: #fff;
+}
+
+.wx-right-panel .panel-item input:focus {
+  outline: none;
+  border-color: #07c160;
+  box-shadow: 0 0 0 2px rgba(7, 193, 96, 0.1);
+}
+
+.wx-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #07c160;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.wx-btn:hover {
+  background-color: #06ad56;
+}
+
+/* Swagger UI容器样式重置 */
+.swagger-ui {
+  background-color: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  height: 100% !important;
+}
+
+/* Swagger内容容器 */
+#swagger-ui-container {
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  overflow: hidden;
+  height: 100%;
+}
+
+/* 覆盖Swagger UI默认样式 */
+.swagger-ui .info {
+  background-color: #fff !important;
+  padding: 24px 30px !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+}
+
+.swagger-ui .info .title {
+  color: #333 !important;
+  font-size: 22px !important;
+  font-weight: 600 !important;
+  margin-bottom: 12px !important;
+}
+
+.swagger-ui .info .description {
+  color: #666 !important;
+  font-size: 14px !important;
+  line-height: 1.6;
+}
+
+/* 标签样式 - 微信文档风格 */
+.swagger-ui .tag {
+  background-color: #fff !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  border: none !important;
+}
+
+.swagger-ui .tag h2 {
+  color: #333 !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
+  padding: 20px 30px 12px !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+}
+
+/* 操作区块样式 - 微信文档风格 */
+.swagger-ui .opblock {
+  background-color: #fff !important;
+  border: 1px solid #e6e6e6 !important;
+  border-bottom: 1px solid #e6e6e6 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin-bottom: 16px !important;
+}
+
+.swagger-ui .opblock-summary {
+  padding: 14px 30px !important;
+  border-bottom: none !important;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.swagger-ui .opblock-summary:hover {
+  background-color: #fafafa;
+}
+
+.swagger-ui .opblock-summary-control {
+  padding: 0 !important;
+}
+
+.swagger-ui .opblock-summary-path {
+  color: #333 !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+}
+
+.swagger-ui .opblock-summary-description {
+  color: #666 !important;
+  font-size: 14px !important;
+  margin-left: 16px !important;
+}
+
+/* HTTP方法标签样式 - 微信文档风格 */
+.swagger-ui .opblock-summary-method {
+  border-radius: 4px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  padding: 6px 12px !important;
+  min-width: 70px !important;
+  text-align: center !important;
+  line-height: 1.4 !important;
+}
+
+/* HTTP方法颜色 - 严格按照微信文档颜色 */
+.swagger-ui .opblock-get .opblock-summary-method {
+  background-color: #07c160 !important;
+  color: #fff !important;
+}
+
+.swagger-ui .opblock-post .opblock-summary-method {
+  background-color: #007aff !important;
+  color: #fff !important;
+}
+
+.swagger-ui .opblock-put .opblock-summary-method {
+  background-color: #ff9500 !important;
+  color: #fff !important;
+}
+
+.swagger-ui .opblock-delete .opblock-summary-method {
+  background-color: #ff3b30 !important;
+  color: #fff !important;
+}
+
+/* 操作详情样式 */
+.swagger-ui .opblock-description-wrapper {
+  padding: 16px 30px !important;
+  background-color: #fafafa !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+}
+
+.swagger-ui .opblock-description-wrapper p {
+  color: #666 !important;
+  font-size: 14px !important;
+  line-height: 1.6;
+}
+
+.swagger-ui .opblock-body {
+  padding: 0 !important;
+}
+
+/* 标签页样式 */
+.swagger-ui .tab {
+  padding: 14px 30px !important;
+  background-color: #fafafa !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.swagger-ui .tab:hover {
+  background-color: #f5f5f5;
+}
+
+.swagger-ui .tab.active {
+  background-color: #fff !important;
+  border-bottom: 2px solid #07c160 !important;
+  font-weight: 500 !important;
+}
+
+.swagger-ui .tab a {
+  color: #666 !important;
+  font-size: 14px !important;
+  text-decoration: none !important;
+  transition: color 0.2s;
+}
+
+.swagger-ui .tab.active a {
+  color: #07c160 !important;
+}
+
+/* 参数样式 */
+.swagger-ui .parameters {
+  padding: 20px 30px !important;
+}
+
+.swagger-ui .parameters-col_name {
+  color: #333 !important;
+  font-weight: 500 !important;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+  font-size: 14px !important;
+}
+
+.swagger-ui .parameters-col_description {
+  color: #666 !important;
+  font-size: 14px !important;
+  line-height: 1.5;
+}
+
+.swagger-ui .parameter__name {
+  color: #333 !important;
+  font-weight: 500 !important;
+}
+
+.swagger-ui .parameter__type {
+  color: #07c160 !important;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+  font-size: 13px !important;
+}
+
+.swagger-ui .parameter__in {
+  color: #999 !important;
+  font-size: 12px !important;
+  text-transform: uppercase !important;
+}
+
+/* 响应样式 */
+.swagger-ui .responses-wrapper {
+  padding: 20px 30px !important;
+}
+
+.swagger-ui .responses-header {
+  color: #333 !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  margin-bottom: 16px !important;
+}
+
+.swagger-ui .response {
+  margin-bottom: 16px !important;
+  padding: 16px !important;
+  background-color: #fafafa !important;
+  border-radius: 4px !important;
+  border-left: 4px solid #07c160 !important;
+}
+
+.swagger-ui .response-col_status {
+  color: #333 !important;
+  font-weight: 600 !important;
+  font-size: 15px !important;
+}
+
+.swagger-ui .response-col_description {
+  color: #666 !important;
+  font-size: 14px !important;
+  line-height: 1.5;
+}
+
+.swagger-ui .response-col_links {
+  color: #07c160 !important;
+}
+
+/* 按钮样式 - 微信文档风格 */
+.swagger-ui .btn {
+  background-color: #07c160 !important;
+  border-color: #07c160 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  padding: 8px 16px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  transition: all 0.2s;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+}
+
+.swagger-ui .btn:hover {
+  background-color: #06ad56 !important;
+  border-color: #06ad56 !important;
+}
+
+.swagger-ui .btn.cancel {
+  background-color: #fff !important;
+  border-color: #e6e6e6 !important;
+  color: #666 !important;
+}
+
+.swagger-ui .btn.cancel:hover {
+  background-color: #f5f5f5 !important;
+}
+
+/* 代码样式 */
+.swagger-ui code {
+  color: #ff3b30 !important;
+  background-color: #f6f8fa !important;
+  padding: 2px 4px !important;
+  border-radius: 3px !important;
+  font-size: 12px !important;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+}
+
+/* 代码块样式 */
+.swagger-ui .microlight,
+.swagger-ui .highlight-code {
+  background-color: #f6f8fa !important;
+  color: #333 !important;
+  border-radius: 4px !important;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+  font-size: 13px !important;
+  line-height: 1.6;
+  border: 1px solid #e6e6e6 !important;
+}
+
+/* Try it out 按钮样式 */
+.swagger-ui .try-out {
+  padding: 16px 30px !important;
+  background-color: #fafafa !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+}
+
+.swagger-ui .try-out__btn {
+  background-color: #07c160 !important;
+  border-color: #07c160 !important;
+  color: #fff !important;
+  padding: 6px 16px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  border-radius: 4px !important;
+  transition: all 0.2s;
+}
+
+.swagger-ui .try-out__btn:hover {
+  background-color: #06ad56 !important;
+  border-color: #06ad56 !important;
+}
+
+/* 表格样式 - 微信文档风格 */
+.swagger-ui table {
+  border-collapse: collapse !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+.swagger-ui table th,
+.swagger-ui table td {
+  border: 1px solid #e6e6e6 !important;
+  padding: 10px 12px !important;
+  text-align: left !important;
+}
+
+.swagger-ui table th {
+  background-color: #f7f7f7 !important;
+  color: #333 !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+}
+
+.swagger-ui table td {
+  color: #666 !important;
+  font-size: 14px !important;
+  background-color: #fff !important;
+}
+
+/* 响应式设计 - 微信文档风格 */
+@media (max-width: 1200px) {
+  .wx-right-panel {
+    display: none;
+  }
+  
+  .wx-header {
+    padding: 0 20px;
+  }
+  
+  .wx-header .nav {
+    gap: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .wx-sidebar {
+    position: fixed;
+    left: -220px;
+    top: 60px;
+    bottom: 0;
+    z-index: 900;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+    transition: left 0.3s;
+  }
+  
+  .wx-sidebar.show {
+    left: 0;
+  }
+  
+  .wx-content {
+    padding: 16px;
+  }
+  
+  .wx-header {
+    padding: 0 16px;
+  }
+  
+  .wx-header .nav {
+    margin-left: 20px;
+    gap: 20px;
+  }
+  
+  .wx-header .nav-item {
+    font-size: 14px;
+  }
+  
+  .swagger-ui .info,
+  .swagger-ui .tag h2,
+  .swagger-ui .opblock-summary {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}

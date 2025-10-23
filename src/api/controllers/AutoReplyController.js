@@ -1,13 +1,13 @@
-import { validationResult } from 'express-validator';
-import db from '../models/index.js';
-import {
-  BadRequestError,
-  UnauthorizedError,
-  ForbiddenError,
-  NotFoundError,
-  ConflictError,
-  InternalServerError
-} from '../utils/errors.js';
+const { validationResult } = require('express-validator');
+const db = require('../models/index.js');
+const {
+    BadRequestError,
+    UnauthorizedError,
+    ForbiddenError,
+    NotFoundError,
+    ConflictError,
+    InternalServerError
+  } = require('../utils/errors.js');
 
 const { AutoReplyRule, AutoReplyLog, Conversation, Message, User } = db.models;
 
@@ -745,4 +745,4 @@ class AutoReplyController {
   }
 }
 
-export default AutoReplyController;
+module.exports = AutoReplyController;

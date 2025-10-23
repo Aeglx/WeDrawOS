@@ -1,12 +1,12 @@
-import { validationResult } from 'express-validator';
-import db from '../models/index.js';
-import {
-  BadRequestError,
-  UnauthorizedError,
-  ForbiddenError,
-  NotFoundError,
-  InternalServerError
-} from '../utils/errors.js';
+const { validationResult } = require('express-validator');
+const db = require('../models/index.js');
+const {
+    BadRequestError,
+    UnauthorizedError,
+    ForbiddenError,
+    NotFoundError,
+    InternalServerError
+  } = require('../utils/errors.js');
 
 const { Notification, User, Conversation, Message } = db.models;
 
@@ -755,4 +755,4 @@ class NotificationController {
   }
 }
 
-export default NotificationController;
+module.exports = NotificationController;
