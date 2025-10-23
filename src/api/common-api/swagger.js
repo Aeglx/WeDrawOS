@@ -366,7 +366,8 @@ function setupSwagger(app) {
     res.send(swaggerDocs);
   });
   
-  console.log('微信文档风格API文档（3栏式布局）已启动: http://localhost:3000/api-docs');
+  const PORT = process.env.PORT || 3001;
+  console.log(`微信文档风格API文档（3栏式布局）已启动: http://localhost:${PORT}/api-docs`);
 }
 
 module.exports = {

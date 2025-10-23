@@ -7436,3 +7436,97 @@
 {"timestamp":"2025-10-23T07:14:38.985Z","level":"INFO","message":"开始初始化WeDraw应用..."}
 {"timestamp":"2025-10-23T07:14:38.987Z","level":"INFO","message":"配置Express中间件..."}
 {"timestamp":"2025-10-23T07:14:39.326Z","level":"INFO","message":"初始化核心服务..."}
+{"timestamp":"2025-10-23T13:49:03.451Z","level":"INFO","message":"微信开发文档风格API文档初始化完成"}
+{"timestamp":"2025-10-23T13:49:03.452Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T13:49:52.502Z","level":"INFO","message":"微信开发文档风格API文档初始化完成"}
+{"timestamp":"2025-10-23T13:49:52.504Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T13:50:21.245Z","level":"INFO","message":"微信开发文档风格API文档初始化完成"}
+{"timestamp":"2025-10-23T13:50:21.247Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T13:50:48.912Z","level":"INFO","message":"微信开发文档风格API文档初始化完成"}
+{"timestamp":"2025-10-23T13:50:48.914Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T13:56:00.108Z","level":"INFO","message":"微信开发文档风格API文档初始化完成"}
+{"timestamp":"2025-10-23T13:56:00.109Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T13:56:05.216Z","level":"INFO","message":"微信开发文档风格API文档初始化完成"}
+{"timestamp":"2025-10-23T13:56:05.218Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:01:00.912Z","level":"INFO","message":"微信开发文档风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:01:00.913Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:01:01.886Z","level":"INFO","message":"微信开发文档风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:01:01.888Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:05:00.487Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:05:00.488Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:06:40.501Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:06:40.503Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:06:41.614Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:06:41.615Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:11:27.350Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:11:27.351Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:11:28.190Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:11:28.192Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:11:46.878Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:11:46.880Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:13:55.166Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:13:55.168Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:13:56.059Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:13:56.060Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:14:15.589Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:14:15.591Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:14:45.945Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:14:45.947Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:14:46.891Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:14:46.893Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:15:03.953Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:15:03.955Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:18:32.618Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:18:32.620Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:18:34.116Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:18:34.118Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:18:55.868Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:18:55.870Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:25:49.185Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:25:49.187Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:25:52.655Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:25:52.657Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:26:11.384Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:26:11.386Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:27:06.676Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:27:06.677Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:27:10.253Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:27:10.255Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:27:22.837Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:27:22.840Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:29:15.924Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:29:15.925Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:29:19.530Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:29:19.531Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:30:12.920Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:30:12.922Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:30:17.144Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:30:17.145Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:30:22.020Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:30:22.022Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:31:33.163Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:31:33.164Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:31:37.785Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:31:37.786Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:31:54.913Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:31:54.915Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:33:02.988Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:33:02.989Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:34:27.334Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:34:27.336Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:39:07.898Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:39:07.900Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:39:44.845Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:39:44.847Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:40:49.606Z","level":"INFO","message":"微信开放平台风格API文档初始化完成"}
+{"timestamp":"2025-10-23T14:40:49.608Z","level":"INFO","message":"API文档地址: http://localhost:3000/api/wechat-docs"}
+{"timestamp":"2025-10-23T14:58:55.624Z","level":"INFO","message":"初始化微信API文档系统"}
+{"timestamp":"2025-10-23T14:58:55.625Z","level":"INFO","message":"微信API文档系统初始化完成"}
+{"timestamp":"2025-10-23T14:59:15.001Z","level":"INFO","message":"初始化微信API文档系统"}
+{"timestamp":"2025-10-23T14:59:15.002Z","level":"INFO","message":"微信API文档系统初始化完成"}
+{"timestamp":"2025-10-23T14:59:23.695Z","level":"INFO","message":"访问微信文档风格API页面"}
+{"timestamp":"2025-10-23T14:59:23.883Z","level":"INFO","message":"请求API文档JSON数据"}
+{"timestamp":"2025-10-23T14:59:29.336Z","level":"INFO","message":"访问微信文档风格API页面"}
+{"timestamp":"2025-10-23T14:59:29.530Z","level":"INFO","message":"请求API文档JSON数据"}
+{"timestamp":"2025-10-23T15:00:47.946Z","level":"INFO","message":"访问微信文档风格API页面"}
+{"timestamp":"2025-10-23T15:00:48.112Z","level":"INFO","message":"请求API文档JSON数据"}
