@@ -1,84 +1,83 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Input, Space, Modal, Popconfirm, message } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { format } from 'date-fns';
 import './RecycleBin.css';
 
 const RecycleBin = () => {
-  // 根据设计图创建的会员数据
+  // 严格按照设计图的会员管理数据格式
   const mockData = [
     {
-      id: '1',
-      name: '29a86672db2fa010****74074c676034f',
+      key: '1',
+      memberId: '28a9867f2b20e11077c047b6d934e434',
       nickname: '用户已注销',
-      contact: 'c51a8c333d2310\n36678cc72d903b\n585bnull',
-      registerTime: '2025-10-13 21:04:38',
-      points: 10
+      contact: 'chJ3u3t223210\n386782209b\n555sshal\n',
+      registrationDate: '2025-10-13 21:41:38',
+      points: 10,
     },
     {
-      id: '2',
-      name: '9f67d7f10cc977e83ce2f44860b2c',
+      key: '2',
+      memberId: '9f67b97110c967f034a2486b062c',
       nickname: '用户已注销',
-      contact: '51b96b0916737\n4a4f468b58475\n9397e8ll',
-      registerTime: '2025-09-29 13:37:53',
-      points: 10
+      contact: 'S5m89p959173\n514f0d61b927\n448407e85481b\n',
+      registrationDate: '2025-09-29 13:37:53',
+      points: 10,
     },
     {
-      id: '3',
-      name: '85d0daa6ce952979047c09128f6de5e5',
+      key: '3',
+      memberId: '855da655c952907470179312905e605',
       nickname: '用户已注销',
-      contact: '0a4f67e8850681b\nddf778e5e6f143\n4c821***592689',
-      registerTime: '2025-09-25 17:53:38',
-      points: 10
+      contact: 'd4df788500618\n4527d11529989\n',
+      registrationDate: '2025-09-25 17:53:38',
+      points: 10,
     },
     {
-      id: '4',
-      name: '3df558433827e1f3ca18aa97a195715',
+      key: '4',
+      memberId: '3db334a382f78e210c8a9a47937f15',
       nickname: '用户已注销',
-      contact: 'e163f1b194d04b\nd5a3da11344064\n5d2266dll',
-      registerTime: '2025-08-11 19:36:58',
-      points: 10
+      contact: 'e61e319524829\n05d30400c0c44\n4a2c868f2ecc9\n',
+      registrationDate: '2025-08-11 19:36:58',
+      points: 10,
     },
     {
-      id: '5',
-      name: 'b03c73d4c308936e3e8140911ca217dc',
+      key: '5',
+      memberId: 'b0d3734d9823ea81e4910ca1271d0c',
       nickname: '用户已注销',
-      contact: 'ad28fa6217bccf9\n589cf8a829dc0\nnull\n1bb811060a712e',
-      registerTime: '2025-08-07 16:41:41',
-      points: 10
+      contact: '59a81c825990f\n599e\n',
+      registrationDate: '2025-08-07 16:41:41',
+      points: 10,
     },
     {
-      id: '6',
-      name: '63caaaf452c7680af403f5a6a4ee12370',
+      key: '6',
+      memberId: '63caaa85c28f80840358aea1e22270',
       nickname: '用户已注销',
-      contact: '1bb811060a712e\n4214d3c7d4f405\ne707dnul',
-      registerTime: '2025-08-07 13:15:20',
-      points: 10
+      contact: '128108600420\n831e7051757eb\n',
+      registrationDate: '2025-08-07 13:15:20',
+      points: 10,
     },
     {
-      id: '7',
-      name: 'e617f764c8b870d146bdeaba234a3dce',
+      key: '7',
+      memberId: 'e817764c888b014f6deeb3a243a38c',
       nickname: '用户已注销',
-      contact: '863d1075767eb5\n96104357c6467\n25fe3nul',
-      registerTime: '2025-07-31 21:09:15',
-      points: 12
+      contact: 'b06d4075c546f\n256b56a8e\n1625dd95d9647\n',
+      registrationDate: '2025-07-31 21:09:15',
+      points: 12,
     },
     {
-      id: '8',
-      name: '24ddd99dc8531cb82207997b9a7f6ec',
+      key: '8',
+      memberId: '240699e3651cb8d20799b9478f6ec',
       nickname: '用户已注销',
-      contact: '182d9d9fd49f67\n725170a46e46d\nd34nul',
-      registerTime: '2025-07-12 15:38:39',
-      points: 10
+      contact: '721704b04c63d\n337786443870\n',
+      registrationDate: '2025-07-12 15:38:39',
+      points: 10,
     },
     {
-      id: '9',
-      name: 'dc5794c435983a95f7683bd61b19ee7',
+      key: '9',
+      memberId: 'd6757c44358809768503d0b1f1ee7',
       nickname: '用户已注销',
-      contact: '3778f0a46c370\nd99e88e2b5e7d\n1e576nul',
-      registerTime: '2025-06-21 10:59:00',
-      points: 10
-    }
+      contact: '059b7d6c657\n165f0fbc0a\n',
+      registrationDate: '2025-06-21 10:29:00',
+      points: 10,
+    },
   ];
 
   const [data, setData] = useState(mockData);
@@ -86,6 +85,7 @@ const RecycleBin = () => {
   const [searchName, setSearchName] = useState('');
   const [searchContact, setSearchContact] = useState('');
   const [loading, setLoading] = useState(false);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   // 搜索过滤功能
   useEffect(() => {
@@ -94,7 +94,7 @@ const RecycleBin = () => {
     // 按会员名称搜索
     if (searchName) {
       result = result.filter(item => 
-        item.name.toLowerCase().includes(searchName.toLowerCase())
+        item.memberId.toLowerCase().includes(searchName.toLowerCase())
       );
     }
     
@@ -108,16 +108,60 @@ const RecycleBin = () => {
     setFilteredData(result);
   }, [searchName, searchContact, data]);
 
+  // 恢复选中项
+  const handleRestore = () => {
+    if (selectedRowKeys.length === 0) {
+      message.warning('请先选择要恢复的会员');
+      return;
+    }
+
+    const newData = data.filter((item) => !selectedRowKeys.includes(item.key));
+    setData(newData);
+    setSelectedRowKeys([]);
+    message.success(`已成功恢复 ${selectedRowKeys.length} 个会员`);
+  };
+
+  // 批量删除
+  const handleBatchDelete = () => {
+    if (selectedRowKeys.length === 0) {
+      message.warning('请先选择要删除的会员');
+      return;
+    }
+
+    const newData = data.filter((item) => !selectedRowKeys.includes(item.key));
+    setData(newData);
+    setSelectedRowKeys([]);
+    message.success(`已成功删除 ${selectedRowKeys.length} 个会员`);
+  };
+
+  // 清空回收站
+  const handleClearRecycleBin = () => {
+    setData([]);
+    setSelectedRowKeys([]);
+    message.success('回收站已清空');
+  };
+
+  // 选择配置
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: (newSelectedRowKeys) => {
+      setSelectedRowKeys(newSelectedRowKeys);
+    },
+    type: 'checkbox',
+  };
+  
+  // 搜索功能已在下方定义
+
   // 查看会员详情
   const handleView = (record) => {
     Modal.info({
       title: '会员详情',
       content: (
         <div>
-          <p>会员名称: {record.name}</p>
+          <p>会员名称: {record.memberId}</p>
           <p>昵称: {record.nickname}</p>
           <p>联系方式: {record.contact.replace(/\n/g, '<br/>')}</p>
-          <p>注册时间: {record.registerTime}</p>
+          <p>注册时间: {record.registrationDate}</p>
           <p>积分数量: {record.points}</p>
         </div>
       ),
@@ -130,13 +174,13 @@ const RecycleBin = () => {
     setLoading(true);
     Modal.confirm({
       title: '确认启用',
-      content: `确定要启用会员"${record.name}"吗？`,
+      content: `确定要启用会员"${record.memberId}"吗？`,
       okText: '确认',
       cancelText: '取消',
       onOk: () => {
         setTimeout(() => {
-          message.success(`已启用会员: ${record.name}`);
-          setData(data.filter(item => item.id !== record.id));
+          message.success(`已启用会员: ${record.memberId}`);
+          setData(data.filter(item => item.key !== record.key));
           setLoading(false);
         }, 500);
       },
@@ -144,12 +188,22 @@ const RecycleBin = () => {
     });
   };
 
-  // 编辑会员
+  // 删除会员
   const handleEdit = (record) => {
-    Modal.info({
-      title: '编辑会员',
-      content: <p>编辑功能待实现</p>,
-      okText: '确定'
+    setLoading(true);
+    Modal.confirm({
+      title: '确认删除',
+      content: `确定要删除会员"${record.memberId}"吗？`,
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        setTimeout(() => {
+          message.success(`已删除会员: ${record.memberId}`);
+          setData(data.filter(item => item.key !== record.key));
+          setLoading(false);
+        }, 500);
+      },
+      onCancel: () => setLoading(false)
     });
   };
 
@@ -163,8 +217,8 @@ const RecycleBin = () => {
   const columns = [
     {
       title: '会员名称',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'memberId',
+      key: 'memberId',
       width: 200,
     },
     {
@@ -173,22 +227,22 @@ const RecycleBin = () => {
       key: 'nickname',
       width: 120,
       render: (text) => (
-        <span style={{ color: '#999' }}>{text}</span>
+        <span style={{ color: '#999', fontSize: '14px' }}>{text}</span>
       ),
     },
     {
       title: '联系方式',
       dataIndex: 'contact',
       key: 'contact',
-      width: 250,
+      width: 180,
       render: (text) => (
-        <div style={{ whiteSpace: 'pre-line', color: '#1890ff' }}>{text}</div>
+        <div style={{ whiteSpace: 'pre-line' }}>{text}</div>
       ),
     },
     {
       title: '注册时间',
-      dataIndex: 'registerTime',
-      key: 'registerTime',
+      dataIndex: 'registrationDate',
+      key: 'registrationDate',
       width: 160,
     },
     {
@@ -202,134 +256,116 @@ const RecycleBin = () => {
       key: 'action',
       width: 180,
       render: (_, record) => (
-        <Space size="small">
-          <Button 
-            type="default" 
+        <>
+          <Button
+            type="primary"
             size="small"
-            style={{
-              backgroundColor: '#ff7a45',
-              borderColor: '#ff7a45',
-              color: '#fff',
-              borderRadius: '4px',
-              fontSize: '12px'
-            }}
+            style={{ backgroundColor: '#ff7a45', borderColor: '#ff7a45', marginRight: '4px' }}
             onClick={() => handleView(record)}
             loading={loading}
           >
             查看
           </Button>
-          <Button 
-            type="default" 
+          <Button
+            type="primary"
             size="small"
-            style={{
-              backgroundColor: '#52c41a',
-              borderColor: '#52c41a',
-              color: '#fff',
-              borderRadius: '4px',
-              fontSize: '12px'
-            }}
+            style={{ backgroundColor: '#52c41a', borderColor: '#52c41a', marginRight: '4px' }}
             onClick={() => handleEnable(record)}
             loading={loading}
           >
             启用
           </Button>
-          <Button 
-            type="default" 
+          <Button
+            type="primary"
             size="small"
-            style={{
-              backgroundColor: '#1890ff',
-              borderColor: '#1890ff',
-              color: '#fff',
-              borderRadius: '4px',
-              fontSize: '12px'
-            }}
+            style={{ backgroundColor: '#ff4d4f', borderColor: '#ff4d4f' }}
             onClick={() => handleEdit(record)}
             loading={loading}
           >
-            编辑
+            删除
           </Button>
-        </Space>
+        </>
       ),
     },
   ];
 
   return (
     <div className="recycle-bin-container">
-      {/* 搜索栏 */}
+      {/* 搜索栏 - 严格按照设计图的双搜索框样式 */}
       <div className="search-bar">
         <div className="search-item">
-          <label className="search-label">会员名称</label>
+          <span className="search-label">会员名称</span>
           <Input
             placeholder="请输入会员名称"
             value={searchName}
-            onChange={e => setSearchName(e.target.value)}
+            onChange={(e) => setSearchName(e.target.value)}
             style={{ width: 200 }}
           />
         </div>
         
         <div className="search-item">
-          <label className="search-label">联系方式</label>
+          <span className="search-label">联系方式</span>
           <Input
             placeholder="请输入会员联系方式"
             value={searchContact}
-            onChange={e => setSearchContact(e.target.value)}
+            onChange={(e) => setSearchContact(e.target.value)}
             style={{ width: 200 }}
           />
         </div>
         
         <Button
-          type="default"
-          style={{
-            backgroundColor: '#ff4d4f',
-            borderColor: '#ff4d4f',
-            color: '#fff',
-            height: 32
-          }}
+          type="primary"
+          style={{ backgroundColor: '#ff4d4f', borderColor: '#ff4d4f' }}
           onClick={handleSearch}
-          icon={<SearchOutlined />}
         >
           搜索
         </Button>
       </div>
 
+      {/* 工具栏按钮 - 严格按照设计图 */}
+      <div style={{ marginTop: '16px', marginBottom: '16px', display: 'flex', gap: '12px' }}>
+        <Button
+          type="primary"
+          onClick={handleRestore}
+          disabled={selectedRowKeys.length === 0}
+        >
+          恢复选中
+        </Button>
+        <Button
+          type="primary"
+          danger
+          onClick={handleBatchDelete}
+          disabled={selectedRowKeys.length === 0}
+        >
+          批量删除
+        </Button>
+        <Popconfirm
+          title="确认清空回收站?"
+          onConfirm={handleClearRecycleBin}
+          okText="确认"
+          cancelText="取消"
+          disabled={data.length === 0}
+        >
+          <Button danger disabled={data.length === 0}>
+            清空回收站
+          </Button>
+        </Popconfirm>
+      </div>
+
       {/* 表格 */}
       <Table
+        rowSelection={rowSelection}
         columns={columns}
         dataSource={filteredData}
-        rowKey="id"
         pagination={{
           pageSize: 10,
           showSizeChanger: true,
-          showTotal: (total) => `共 ${total} 条记录`,
-          pageSizeOptions: ['10', '20', '50', '100']
+          showTotal: (total, range) => 
+            `第 ${range[0]}-${range[1]} 条，共 ${total} 条`,
         }}
+        rowKey="key"
+        scroll={{ x: 1300 }}
         loading={loading}
-        locale={{
-          emptyText: '暂无数据',
-          triggerAsc: '点击升序',
-          triggerDesc: '点击降序',
-          cancelSort: '取消排序',
-        }}
-        style={{
-          border: '1px solid #f0f0f0',
-          borderRadius: '4px',
-          marginTop: '16px'
-        }}
-        components={{
-          header: {
-            wrapper: ({ className, children }) => (
-              <table
-                className={className}
-                style={{
-                  backgroundColor: '#fafafa',
-                  borderBottom: '1px solid #f0f0f0'
-                }}
-              >
-                {children}
-              </table>
-            )
-          }
-        }}
         rowClassName={(record, index) => index % 2 === 0 ? 'even-row' : 'odd-row'}
       />
     </div>

@@ -74,11 +74,17 @@
 
 /* 交替行样式 */
 .even-row {
-  background-color: #fff;
+  background-color: #fafafa;
 }
 
 .odd-row {
-  background-color: #fafafa;
+  background-color: #ffffff;
+
+  /* 确保行内样式优先 */
+  &:hover {
+    background-color: #e6f7ff !important;
+  }
+}
 }
 
 .ant-table-tbody > tr:hover {
@@ -143,19 +149,19 @@
   border-color: #73d13d !important;
 }
 
-/* 编辑按钮 - 蓝色 */
-.ant-table .ant-btn[style*="background-color: #1890ff"] {
-  background-color: #1890ff !important;
-  border-color: #1890ff !important;
+/* 删除按钮 - 红色 */
+.ant-table .ant-btn[style*="background-color: #ff4d4f"] {
+  background-color: #ff4d4f !important;
+  border-color: #ff4d4f !important;
   color: #fff !important;
 }
 
-.ant-table .ant-btn[style*="background-color: #1890ff"]:hover {
-  background-color: #40a9ff !important;
-  border-color: #40a9ff !important;
+.ant-table .ant-btn[style*="background-color: #ff4d4f"]:hover {
+  background-color: #ff7875 !important;
+  border-color: #ff7875 !important;
 }
 
-/* 搜索按钮 - 红色 */
+/* 搜索按钮和其他红色按钮 - 红色 */
 .ant-btn[style*="background-color: #ff4d4f"] {
   background-color: #ff4d4f !important;
   border-color: #ff4d4f !important;
@@ -167,9 +173,19 @@
   border-color: #ff7875 !important;
 }
 
+/* 批量操作按钮样式 */
+.recycle-bin-container > div:nth-child(2) .ant-btn {
+  margin-right: 12px;
+}
+
+/* 选中行样式增强 */
+.ant-table-tbody > tr.ant-table-row-selected,
+.ant-table-tbody > tr.ant-table-row-selected:hover {
+  background-color: #e6f7ff !important;
+}
+
 /* 联系方式文本样式 */
 .ant-table-tbody td[title*="联系方式"] > div {
-  color: #1890ff;
   font-size: 14px;
   line-height: 1.5;
 }
