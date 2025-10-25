@@ -1,0 +1,116 @@
+/* 登录页面样式 */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 480px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  background: #fff;
+}
+
+.login-card .ant-card-head {
+  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+  color: #fff;
+  padding: 20px 24px;
+  border-bottom: none;
+}
+
+.login-card .ant-card-head-title {
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  padding: 0;
+}
+
+.login-card .ant-card-body {
+  padding: 32px;
+}
+
+.login-card .ant-form-item-label > label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.login-button {
+  width: 100%;
+  padding: 12px 0;
+  font-size: 16px;
+  font-weight: 500;
+  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.login-button:hover {
+  background: linear-gradient(135deg, #40a9ff 0%, #1890ff 100%);
+  transform: translateY(-1px);
+}
+
+.login-button:active {
+  transform: translateY(0);
+}
+
+.login-button[disabled] {
+  background: #d9d9d9;
+  color: #fff;
+  cursor: not-allowed;
+}
+
+/* 输入框样式 */
+.login-card .ant-input,
+.login-card .ant-input-password {
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.login-card .ant-input:focus,
+.login-card .ant-input-password:focus {
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+/* 错误提示样式 */
+.login-card .ant-form-item-explain-error {
+  color: #ff4d4f;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .login-card {
+    max-width: 100%;
+  }
+  
+  .login-card .ant-card-body {
+    padding: 24px;
+  }
+  
+  .login-card .ant-card-head-title {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    padding: 10px;
+  }
+  
+  .login-card .ant-card-body {
+    padding: 20px;
+  }
+  
+  .login-card .ant-card-head-title {
+    font-size: 18px;
+  }
+}

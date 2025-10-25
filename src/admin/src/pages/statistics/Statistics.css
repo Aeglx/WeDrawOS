@@ -1,0 +1,289 @@
+/* 统计分析页面样式 */
+.statistics-page {
+  padding: 0;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+/* 页面头部 */
+.statistics-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e8e8e8;
+  background-color: white;
+  padding: 16px 24px;
+  margin: 0 -24px 24px -24px;
+}
+
+.statistics-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.statistics-filters {
+  display: flex;
+  align-items: center;
+}
+
+/* 统计卡片样式 */
+.statistics-cards {
+  margin-bottom: 24px;
+}
+
+.statistics-cards .ant-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.statistics-cards .ant-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.statistics-cards .ant-statistic-title {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.statistics-cards .ant-statistic-content {
+  font-size: 28px;
+  font-weight: 600;
+  color: white;
+}
+
+/* 为每个统计卡片设置不同的背景色 */
+.statistics-cards .ant-col:nth-child(1) .ant-card {
+  background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+}
+
+.statistics-cards .ant-col:nth-child(2) .ant-card {
+  background: linear-gradient(135deg, #ffa726, #ffb74d);
+}
+
+.statistics-cards .ant-col:nth-child(3) .ant-card {
+  background: linear-gradient(135deg, #42a5f5, #64b5f6);
+}
+
+.statistics-cards .ant-col:nth-child(4) .ant-card {
+  background: linear-gradient(135deg, #7e57c2, #9575cd);
+}
+
+/* 卡片中的图标颜色 */
+.statistics-cards .anticon {
+  color: white !important;
+}
+
+/* 详细统计信息 */
+.statistics-details {
+  margin-bottom: 24px;
+}
+
+.statistics-details .ant-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e8e8e8;
+  background-color: white;
+}
+
+.statistics-details .ant-card-head-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* 待办事项列表 */
+.todo-list {
+  padding: 0;
+}
+
+.todo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.2s;
+}
+
+.todo-item:hover {
+  background-color: #fafafa;
+}
+
+.todo-item:last-child {
+  border-bottom: none;
+}
+
+.todo-label {
+  font-size: 14px;
+  color: #666;
+}
+
+.todo-count {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ff4d4f;
+  background: #fff2f0;
+  padding: 2px 8px;
+  border-radius: 12px;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* 在线人数 */
+.online-users {
+  text-align: center;
+  padding: 30px 0;
+}
+
+.online-count {
+  font-size: 64px;
+  font-weight: 700;
+  color: #1890ff;
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+.online-label {
+  font-size: 14px;
+  color: #666;
+}
+
+/* 今日概括 */
+.summary-list {
+  padding: 0;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.summary-item:last-child {
+  border-bottom: none;
+}
+
+.summary-label {
+  font-size: 14px;
+  color: #666;
+}
+
+.summary-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1890ff;
+}
+
+/* 高亮显示金额和数量 */
+.summary-value.primary {
+  color: #ff4d4f;
+}
+
+.summary-value.success {
+  color: #52c41a;
+}
+
+/* 流量概括 */
+.traffic-overview .ant-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e8e8e8;
+  background-color: white;
+  margin-bottom: 24px;
+}
+
+.traffic-overview .ant-card-head-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.traffic-stat {
+  text-align: center;
+  padding: 24px 12px;
+  border-radius: 8px;
+  background: #fafafa;
+  transition: all 0.3s ease;
+  margin: 0 4px;
+}
+
+.traffic-stat:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.traffic-title {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.traffic-value {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1890ff;
+  line-height: 1.2;
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+  .statistics-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .statistics-filters {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 768px) {
+  .statistics-filters {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .statistics-filters .ant-select {
+    width: 100%;
+    margin-right: 0;
+  }
+  
+  .statistics-cards .ant-col {
+    margin-bottom: 16px;
+  }
+  
+  .statistics-details .ant-col {
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .statistics-header h2 {
+    font-size: 18px;
+  }
+  
+  .statistics-cards .ant-statistic-content {
+    font-size: 20px;
+  }
+  
+  .online-count {
+    font-size: 36px;
+  }
+  
+  .traffic-value {
+    font-size: 20px;
+  }
+}

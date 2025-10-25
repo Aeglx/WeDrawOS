@@ -1,0 +1,647 @@
+/* Dashboard页面样式 */
+.dashboard {
+  padding: 20px;
+  background: #f0f2f5;
+  min-height: 100vh;
+}
+
+/* 卡片通用样式 */
+.ant-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  background: #fff;
+}
+
+.ant-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-1px);
+}
+
+.ant-card-head {
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.ant-card-head-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  padding: 16px 0;
+}
+
+.ant-card-body {
+  padding: 20px;
+}
+
+/* 统计卡片样式 */
+.stats-row {
+  margin-bottom: 24px;
+}
+
+/* 重新设计的统计卡片 - 添加背景渐变和丰富交互 */
+.stat-card {
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform: translateY(0);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  border: none;
+  overflow: hidden;
+}
+
+/* 产品统计卡片渐变背景 */
+.product-card {
+  background: linear-gradient(135deg, #ff7675 0%, #fd79a8 50%, #fab1a0 100%);
+  color: white;
+}
+
+.product-card:hover {
+  background: linear-gradient(135deg, #e84393 0%, #fd79a8 50%, #fdcb6e 100%);
+}
+
+/* 会员统计卡片渐变背景 */
+.user-card {
+  background: linear-gradient(135deg, #ff9ff3 0%, #feca57 50%, #ff9ff3 100%);
+  color: white;
+}
+
+.user-card:hover {
+  background: linear-gradient(135deg, #feca57 0%, #ff9ff3 50%, #ee5a6f 100%);
+}
+
+/* 订单统计卡片渐变背景 */
+.order-card {
+  background: linear-gradient(135deg, #54a0ff 0%, #0abde3 50%, #5f27cd 100%);
+  color: white;
+}
+
+.order-card:hover {
+  background: linear-gradient(135deg, #0abde3 0%, #5f27cd 50%, #54a0ff 100%);
+}
+
+/* 销售统计卡片渐变背景 */
+.sales-card {
+  background: linear-gradient(135deg, #5f27cd 0%, #a29bfe 50%, #6c5ce7 100%);
+  color: white;
+}
+
+.sales-card:hover {
+  background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 50%, #5f27cd 100%);
+}
+
+/* 统计卡片共同的鼠标交互效果 */
+.stat-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  filter: brightness(1.05);
+}
+
+/* 统计卡片内部发光效果 */
+.stat-card::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+  transform: scale(0.5);
+  opacity: 0;
+  transition: all 0.5s ease;
+}
+
+.stat-card:hover::after {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.ant-statistic {
+  text-align: center;
+}
+
+.ant-statistic-title {
+  font-size: 14px !important;
+  color: #666 !important;
+  margin-bottom: 8px;
+}
+
+.ant-statistic-content {
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  transition: all 0.3s ease;
+}
+
+.ant-statistic-content-prefix {
+  font-size: 24px;
+  margin-right: 8px;
+}
+
+/* 第二行样式 */
+.second-row {
+  margin-bottom: 24px;
+}
+
+/* 待办事项卡片增强 - 高优先级样式 */
+.todo-card .ant-card-body {
+  padding: 24px !important;
+}
+
+.todo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+/* 待办事项卡片样式 */
+.todo-grid > div {
+  padding: 18px 16px !important;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
+  border-radius: 12px !important;
+  text-align: center !important;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  cursor: pointer !important;
+  border: none !important;
+  margin: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 120px !important;
+}
+
+/* 有数量的待办项 */
+.todo-grid > div.has-count {
+  background: linear-gradient(135deg, #fff1f0 0%, #ffccc7 100%) !important;
+}
+
+/* 伪元素 */
+.todo-grid > div::after {
+  content: '' !important;
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 4px !important;
+  background: transparent !important;
+  transition: all 0.3s ease !important;
+  z-index: 1 !important;
+}
+
+/* 悬停效果 */
+.todo-grid > div:hover {
+  background: linear-gradient(135deg, #e6f7ff 0%, #bae7ff 100%) !important;
+  transform: translateY(-4px) !important;
+  box-shadow: 0 8px 25px rgba(24, 144, 255, 0.25) !important;
+}
+
+.todo-grid > div:hover::after {
+  background: linear-gradient(90deg, #1890ff, #096dd9) !important;
+}
+
+/* 有数量的待办项悬停效果 */
+.todo-grid > div.has-count:hover {
+  background: linear-gradient(135deg, #fff2e8 0%, #ffbb96 100%) !important;
+  box-shadow: 0 8px 25px rgba(255, 77, 79, 0.25) !important;
+}
+
+.todo-grid > div.has-count::after {
+  background: linear-gradient(90deg, #ff4d4f, #cf1322) !important;
+}
+
+/* 内容样式 */
+.todo-grid > div > div {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  position: relative !important;
+  z-index: 2 !important;
+  width: 100% !important;
+}
+
+.todo-grid > div > div > span.todo-name {
+  font-size: 15px !important;
+  color: #333 !important;
+  margin-bottom: 8px !important;
+  font-weight: 500 !important;
+}
+
+.todo-grid > div > div > span.todo-count {
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  color: #ff4d4f !important;
+}
+
+/* 最高优先级覆盖 */
+#root .todo-card .todo-grid > div,
+#root .todo-card .todo-grid > div.has-count {
+  background: linear-gradient(135deg, #fff1f0 0%, #ffccc7 100%) !important;
+  border-radius: 12px !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+}
+
+/* 在线人数卡片 */
+.online-card {
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+.online-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(24, 144, 255, 0.2);
+}
+
+.online-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 200px;
+  background: radial-gradient(circle at center, rgba(24, 144, 255, 0.1) 0%, rgba(24, 144, 255, 0) 70%);
+  pointer-events: none;
+  transition: all 0.5s ease;
+}
+
+.online-card:hover::after {
+  background: radial-gradient(circle at center, rgba(24, 144, 255, 0.15) 0%, rgba(24, 144, 255, 0) 70%);
+}
+
+.online-info {
+  padding: 20px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.online-number {
+  font-size: 60px;
+  font-weight: 800;
+  color: #1890ff;
+  text-shadow: 0 4px 8px rgba(24, 144, 255, 0.2);
+  transition: all 0.3s ease;
+  animation: pulse 2s infinite;
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+/* 第三行样式 */
+.third-row {
+  margin-bottom: 24px;
+}
+
+/* 流量概览卡片 */
+.traffic-card .ant-card-body {
+  padding: 20px;
+}
+
+.traffic-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.traffic-item {
+  text-align: center;
+  padding: 20px 16px;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f2f5 100%);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.traffic-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #1890ff, #096dd9);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.traffic-item:hover {
+  background: linear-gradient(135deg, #e6f7ff 0%, #f0f9ff 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(24, 144, 255, 0.15);
+}
+
+.traffic-item:hover::before {
+  transform: scaleX(1);
+}
+
+.traffic-label {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.traffic-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1890ff;
+}
+
+/* 今日概括卡片 */
+.daily-card .ant-card-body {
+  padding: 20px;
+}
+
+.daily-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.daily-item {
+  text-align: center;
+  padding: 18px 12px;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f2f5 100%);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.daily-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #52c41a, #389e0d);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.daily-item:hover {
+  background: linear-gradient(135deg, #f6ffed 0%, #f0f9ff 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(82, 196, 26, 0.15);
+}
+
+.daily-item:hover::after {
+  width: 100%;
+}
+
+.daily-label {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.daily-value {
+  font-size: 20px;
+  font-weight: 600;
+  color: #52c41a;
+}
+
+/* 图表行样式 */
+.charts-row {
+  margin-bottom: 24px;
+}
+
+/* 图表样式优化 */
+.ant-card .ResponsiveContainer {
+  margin-top: 10px;
+}
+
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: #f0f0f0;
+}
+
+.recharts-xaxis-tick text,
+.recharts-yaxis-tick text {
+  fill: #666;
+  font-size: 12px;
+}
+
+.recharts-legend-item-text {
+  font-size: 13px;
+  color: #333;
+}
+
+.recharts-tooltip-wrapper {
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 列表行样式 */
+.lists-row {
+  margin-bottom: 24px;
+}
+
+/* TOP10列表样式 */
+.top-list {
+  padding: 0;
+}
+
+.top-list .list-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border-radius: 6px;
+  margin-bottom: 4px;
+}
+
+.top-list .list-item:hover {
+  background: linear-gradient(135deg, #f6ffed 0%, #e6f7ff 100%);
+  padding-left: 10px;
+  padding-right: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.list-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.list-rank {
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #666;
+  margin-right: 16px;
+  transition: all 0.3s ease;
+}
+
+/* TOP3特殊样式 */
+.list-item:nth-child(1) .list-rank {
+  background: linear-gradient(135deg, #ffd700 0%, #ffc107 100%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+}
+
+.list-item:nth-child(2) .list-rank {
+  background: linear-gradient(135deg, #c0c0c0 0%, #d3d3d3 100%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(192, 192, 192, 0.3);
+}
+
+.list-item:nth-child(3) .list-rank {
+  background: linear-gradient(135deg, #cd7f32 0%, #d2b48c 100%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(205, 127, 50, 0.3);
+}
+
+.list-info {
+  flex: 1;
+  overflow: hidden;
+}
+
+.list-name {
+  font-size: 15px;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+
+.list-price {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ff4d4f;
+  margin-right: 24px;
+  min-width: 100px;
+  text-align: right;
+}
+
+.list-sales {
+  font-size: 14px;
+  color: #1890ff;
+  min-width: 60px;
+  text-align: right;
+  font-weight: 500;
+}
+
+/* 加载状态 */
+.loading-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+  .dashboard {
+    padding: 16px;
+  }
+  
+  .daily-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .todo-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  .traffic-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .daily-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  .ant-statistic-content {
+    font-size: 24px !important;
+  }
+  
+  .online-number {
+    font-size: 48px;
+  }
+  
+  .list-item {
+    flex-wrap: wrap;
+    padding: 12px 0;
+  }
+  
+  .list-price,
+  .list-sales {
+    margin-top: 8px;
+    min-width: auto;
+    flex: 1;
+    text-align: left;
+  }
+  
+  .list-price {
+    margin-right: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard {
+    padding: 12px;
+  }
+  
+  .todo-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .daily-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .online-number {
+    font-size: 40px;
+  }
+  
+  .ant-card-body {
+    padding: 16px;
+  }
+  
+  .list-rank {
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    font-size: 14px;
+  }
+  
+  .list-name {
+    font-size: 14px;
+  }
+  
+  .list-price {
+    font-size: 15px;
+  }
+}
+}

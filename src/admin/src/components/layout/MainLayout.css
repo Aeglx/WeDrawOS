@@ -1,0 +1,583 @@
+/* 全局布局样式 */
+.main-layout {
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+/* 侧边栏容器样式 - 简洁设计 */
+.ant-layout-sider {
+  background: #1f2937 !important;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+/* 侧边栏折叠状态 */
+.ant-layout-sider-collapsed {
+  width: 56px !important;
+}
+
+/* 侧边栏子元素容器 */
+.ant-layout-sider-children {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-top: 8px;
+}
+
+/* Logo样式 - 简化版 */
+.logo-container {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #4b5563;
+  margin: 0 8px 12px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.logo-title {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+.ant-layout-sider-collapsed .logo-title {
+  opacity: 0;
+  width: 0;
+}
+
+/* 菜单容器样式 */
+.ant-menu {
+  background: transparent !important;
+  border-right: none;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 4px 12px;
+}
+
+/* 统一所有级别菜单的颜色 */
+.ant-menu-dark .ant-menu-item,
+.ant-menu-dark .ant-menu-submenu-title,
+.ant-menu-dark .ant-menu-sub .ant-menu-item,
+.ant-menu-dark .ant-menu-sub .ant-menu-submenu-title,
+.ant-menu-dark .ant-menu-sub .ant-menu-sub .ant-menu-item {
+  color: rgba(255, 255, 255, 0.95) !important;
+  font-weight: 500;
+  animation: menuSlideIn 0.3s ease-out;
+  animation-fill-mode: both;
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+/* 延迟动画，为每个菜单项创建顺序出现效果 */
+.ant-menu-item:nth-child(1), .ant-menu-submenu:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.ant-menu-item:nth-child(2), .ant-menu-submenu:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.ant-menu-item:nth-child(3), .ant-menu-submenu:nth-child(3) {
+  animation-delay: 0.15s;
+}
+.ant-menu-item:nth-child(4), .ant-menu-submenu:nth-child(4) {
+  animation-delay: 0.2s;
+}
+.ant-menu-item:nth-child(5), .ant-menu-submenu:nth-child(5) {
+  animation-delay: 0.25s;
+}
+.ant-menu-item:nth-child(6), .ant-menu-submenu:nth-child(6) {
+  animation-delay: 0.3s;
+}
+.ant-menu-item:nth-child(7), .ant-menu-submenu:nth-child(7) {
+  animation-delay: 0.35s;
+}
+.ant-menu-item:nth-child(8), .ant-menu-submenu:nth-child(8) {
+  animation-delay: 0.4s;
+}
+.ant-menu-item:nth-child(9), .ant-menu-submenu:nth-child(9) {
+  animation-delay: 0.45s;
+}
+.ant-menu-item:nth-child(10), .ant-menu-submenu:nth-child(10) {
+  animation-delay: 0.5s;
+}
+
+/* 子菜单动画 */
+.ant-menu-sub {
+  overflow: hidden;
+}
+
+.ant-menu-sub .ant-menu-item, 
+.ant-menu-sub .ant-menu-submenu-title {
+  animation: subMenuSlideIn 0.25s ease-out;
+  animation-fill-mode: both;
+  opacity: 0;
+  transform: translateX(-8px);
+}
+
+/* 子菜单项延迟动画 */
+.ant-menu-sub .ant-menu-item:nth-child(1),
+.ant-menu-sub .ant-menu-submenu:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.ant-menu-sub .ant-menu-item:nth-child(2),
+.ant-menu-sub .ant-menu-submenu:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.ant-menu-sub .ant-menu-item:nth-child(3),
+.ant-menu-sub .ant-menu-submenu:nth-child(3) {
+  animation-delay: 0.15s;
+}
+.ant-menu-sub .ant-menu-item:nth-child(4),
+.ant-menu-sub .ant-menu-submenu:nth-child(4) {
+  animation-delay: 0.2s;
+}
+
+/* 三级子菜单动画 */
+.ant-menu-sub .ant-menu-sub .ant-menu-item {
+  animation: deepSubMenuSlideIn 0.2s ease-out;
+  transform: translateX(-6px);
+}
+
+/* 侧边栏折叠展开动画增强 */
+.ant-layout-sider {
+  transition: all 0.35s cubic-bezier(0.645, 0.045, 0.355, 1) !important;
+}
+
+/* 主菜单项滑入动画 */
+@keyframes menuSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 子菜单项滑入动画 */
+@keyframes subMenuSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 三级子菜单项滑入动画 */
+@keyframes deepSubMenuSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 菜单展开时的平滑过渡 */
+.ant-menu-submenu-open > .ant-menu-sub {
+  animation: subMenuExpand 0.25s ease-out;
+}
+
+@keyframes subMenuExpand {
+  0% {
+    opacity: 0;
+    max-height: 0;
+    transform-origin: top;
+    transform: scaleY(0.95);
+  }
+  100% {
+    opacity: 1;
+    max-height: 1000px;
+    transform-origin: top;
+    transform: scaleY(1);
+  }
+}
+
+/* 统一悬停状态颜色 */
+.ant-menu-dark .ant-menu-item:hover,
+.ant-menu-dark .ant-menu-submenu-title:hover,
+.ant-menu-dark .ant-menu-sub .ant-menu-item:hover,
+.ant-menu-dark .ant-menu-sub .ant-menu-submenu-title:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* 统一选中状态颜色 */
+.ant-menu-dark .ant-menu-item-selected,
+.ant-menu-dark .ant-menu-sub .ant-menu-item-selected,
+.ant-menu-dark .ant-menu-sub .ant-menu-sub .ant-menu-item-selected {
+  color: #ffffff !important;
+  background: #4b5563 !important;
+}
+
+/* 延迟动画，为每个菜单项创建顺序出现效果 */
+.ant-menu-item:nth-child(1), .ant-menu-submenu:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.ant-menu-item:nth-child(2), .ant-menu-submenu:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.ant-menu-item:nth-child(3), .ant-menu-submenu:nth-child(3) {
+  animation-delay: 0.15s;
+}
+.ant-menu-item:nth-child(4), .ant-menu-submenu:nth-child(4) {
+  animation-delay: 0.2s;
+}
+.ant-menu-item:nth-child(5), .ant-menu-submenu:nth-child(5) {
+  animation-delay: 0.25s;
+}
+.ant-menu-item:nth-child(6), .ant-menu-submenu:nth-child(6) {
+  animation-delay: 0.3s;
+}
+.ant-menu-item:nth-child(7), .ant-menu-submenu:nth-child(7) {
+  animation-delay: 0.35s;
+}
+.ant-menu-item:nth-child(8), .ant-menu-submenu:nth-child(8) {
+  animation-delay: 0.4s;
+}
+.ant-menu-item:nth-child(9), .ant-menu-submenu:nth-child(9) {
+  animation-delay: 0.45s;
+}
+.ant-menu-item:nth-child(10), .ant-menu-submenu:nth-child(10) {
+  animation-delay: 0.5s;
+}
+
+/* 子菜单动画 */
+.ant-menu-sub {
+  overflow: hidden;
+}
+
+.ant-menu-sub .ant-menu-item, 
+.ant-menu-sub .ant-menu-submenu-title {
+  animation: subMenuSlideIn 0.25s ease-out;
+  animation-fill-mode: both;
+  opacity: 0;
+  transform: translateX(-8px);
+}
+
+/* 子菜单项延迟动画 */
+.ant-menu-sub .ant-menu-item:nth-child(1),
+.ant-menu-sub .ant-menu-submenu:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.ant-menu-sub .ant-menu-item:nth-child(2),
+.ant-menu-sub .ant-menu-submenu:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.ant-menu-sub .ant-menu-item:nth-child(3),
+.ant-menu-sub .ant-menu-submenu:nth-child(3) {
+  animation-delay: 0.15s;
+}
+.ant-menu-sub .ant-menu-item:nth-child(4),
+.ant-menu-sub .ant-menu-submenu:nth-child(4) {
+  animation-delay: 0.2s;
+}
+
+/* 三级子菜单动画 */
+.ant-menu-sub .ant-menu-sub .ant-menu-item {
+  animation: deepSubMenuSlideIn 0.2s ease-out;
+  transform: translateX(-6px);
+}
+
+/* 侧边栏折叠展开动画增强 */
+.ant-layout-sider {
+  transition: all 0.35s cubic-bezier(0.645, 0.045, 0.355, 1) !important;
+}
+
+/* 主菜单项滑入动画 */
+@keyframes menuSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 子菜单项滑入动画 */
+@keyframes subMenuSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 三级子菜单项滑入动画 */
+@keyframes deepSubMenuSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 菜单展开时的平滑过渡 */
+.ant-menu-submenu-open > .ant-menu-sub {
+  animation: subMenuExpand 0.25s ease-out;
+}
+
+@keyframes subMenuExpand {
+  0% {
+    opacity: 0;
+    max-height: 0;
+    transform-origin: top;
+    transform: scaleY(0.95);
+  }
+  100% {
+    opacity: 1;
+    max-height: 1000px;
+    transform-origin: top;
+    transform: scaleY(1);
+  }
+}
+
+/* 主菜单项样式 - 简化设计 */
+.ant-menu-dark .ant-menu-item,
+.ant-menu-dark .ant-menu-submenu-title {
+  height: 38px;
+  line-height: 38px;
+  margin: 0;
+  padding: 0 12px !important;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9) !important;
+  border-radius: 4px;
+  margin-bottom: 2px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+/* 菜单项悬停效果 - 简单平滑 */
+.ant-menu-dark .ant-menu-item:hover,
+.ant-menu-dark .ant-menu-submenu-title:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+}
+
+/* 菜单项选中样式 - 简洁单色 */
+.ant-menu-dark .ant-menu-item-selected {
+  background: #4b5563 !important;
+  color: #ffffff !important;
+}
+
+/* 子菜单展开箭头 - 简化 */
+.ant-menu-dark .ant-menu-submenu-arrow {
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.2s ease;
+}
+
+.ant-menu-dark .ant-menu-submenu:hover .ant-menu-submenu-arrow {
+  color: #ffffff;
+}
+
+.ant-menu-dark .ant-menu-submenu-open .ant-menu-submenu-arrow {
+  transform: rotate(180deg);
+}
+
+/* 子菜单容器样式 - 简洁 */
+.ant-menu-dark .ant-menu-sub {
+  background: #111827 !important;
+  border-radius: 4px;
+  margin: 0 2px 6px;
+  padding: 2px 0;
+}
+
+/* 二级菜单项样式 - 简化 */
+.ant-menu-dark .ant-menu-sub .ant-menu-item {
+  height: 34px;
+  line-height: 34px;
+  padding: 0 12px 0 24px !important;
+  margin-bottom: 0;
+  border-radius: 3px;
+  margin: 1px 4px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+/* 二级菜单项选中样式 - 简洁 */
+.ant-menu-dark .ant-menu-sub .ant-menu-item-selected {
+  background: #4b5563 !important;
+  color: #ffffff !important;
+}
+
+/* 三级菜单容器样式 */
+.ant-menu-dark .ant-menu-sub .ant-menu-sub {
+  background: #0f172a !important;
+  margin: 0 1px;
+  padding: 1px 0;
+}
+
+/* 三级菜单项样式 */
+.ant-menu-dark .ant-menu-sub .ant-menu-sub .ant-menu-item {
+  padding: 0 12px 0 36px !important;
+  font-size: 11px;
+  height: 32px;
+  line-height: 32px;
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* 图标样式优化 - 简洁 */
+.ant-menu-item-icon,
+.ant-menu-submenu-icon {
+  font-size: 14px !important;
+  margin-right: 8px;
+  transition: all 0.2s ease;
+}
+
+/* 侧边栏滚动条样式 - 极简 */
+.ant-menu::-webkit-scrollbar {
+  width: 2px;
+}
+
+.ant-menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ant-menu::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1px;
+}
+
+.ant-menu::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* 主内容区域样式 */
+.main-layout > .ant-layout {
+  flex: 1;
+  margin-left: 128px;
+  transition: margin-left 0.3s ease;
+  background: #f9fafb;
+  min-height: 100vh;
+}
+
+/* 侧边栏折叠时的内容区域偏移 */
+.main-layout.sider-collapsed > .ant-layout {
+  margin-left: 56px;
+}
+
+/* 顶部导航栏样式 */
+.header {
+  height: 56px;
+  padding: 0 20px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* 折叠按钮样式 - 简化 */
+.header .trigger {
+  font-size: 16px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  color: #6b7280;
+  margin-right: 12px;
+}
+
+.header .trigger:hover {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+/* 内容包装器样式 */
+.content-wrapper {
+  padding: 20px;
+  background: #fff;
+  min-height: calc(100vh - 56px);
+  border-radius: 8px;
+  margin: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* 用户信息区域样式 */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.user-info:hover {
+  background-color: #f3f4f6;
+}
+
+.user-avatar {
+  background: #4b5563;
+  font-size: 12px;
+  width: 32px;
+  height: 32px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .ant-layout-sider {
+    position: fixed;
+    transform: translateX(-100%);
+    z-index: 1001;
+  }
+  
+  .ant-layout-sider-collapsed {
+    transform: translateX(0) !important;
+    width: 240px !important;
+  }
+  
+  .main-layout > .ant-layout {
+    margin-left: 0;
+  }
+  
+  .main-layout.sider-collapsed > .ant-layout {
+    margin-left: 0;
+  }
+  
+  .content-wrapper {
+    margin: 8px;
+    padding: 12px;
+  }
+}

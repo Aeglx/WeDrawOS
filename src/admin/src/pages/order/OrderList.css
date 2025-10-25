@@ -1,0 +1,144 @@
+/* 订单列表页面样式 */
+.order-list {
+  padding: 0;
+}
+
+/* 页面头部 */
+.order-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e8e8e8;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.order-list-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+/* 表格样式 */
+.order-table {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.order-table .ant-table-thead > tr > th {
+  background: #fafafa;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.order-table .ant-table-tbody > tr:hover {
+  background: #f5f5f5;
+}
+
+/* 标签样式 */
+.ant-tag {
+  font-size: 12px;
+  padding: 2px 8px;
+}
+
+/* 按钮样式 */
+.ant-btn {
+  font-size: 14px;
+}
+
+.ant-btn-link {
+  padding: 4px 8px;
+}
+
+/* 筛选器样式 */
+.ant-select {
+  font-size: 14px;
+}
+
+/* 搜索框样式 */
+.ant-input-search {
+  width: 300px;
+}
+
+.ant-input-search .ant-input {
+  border-radius: 6px;
+}
+
+/* 金额显示 */
+.amount-cell {
+  font-weight: 600;
+  color: #ff4d4f;
+}
+
+/* 状态标签特殊样式 */
+.status-tag {
+  font-weight: 500;
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+  .header-actions {
+    justify-content: flex-start;
+  }
+  
+  .order-list-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-actions {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .ant-select {
+    width: 100%;
+    margin-right: 0;
+  }
+  
+  .ant-input-search {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .order-list-header h2 {
+    font-size: 18px;
+  }
+}
+
+/* 加载状态 */
+.ant-table-loading {
+  min-height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 订单号显示 */
+.order-id {
+  font-family: monospace;
+  font-size: 13px;
+}
+
+/* 操作按钮组 */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
