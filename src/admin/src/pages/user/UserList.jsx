@@ -39,7 +39,7 @@ const UserList = () => {
         mockUsers.push({
           id: `U${String(i).padStart(10, '0')}`,
           username: `用户${i}`,
-          avatar: `https://via.placeholder.com/40`,
+          avatar: `https://picsum.photos/40/40`,
           email: `user${i}@example.com`,
           phone: `1380013800${i}`,
           openid: `o${String(i).padStart(20, '0')}`,
@@ -167,7 +167,7 @@ const UserList = () => {
         const newMember = {
           id: `U${String(users.length + 1).padStart(10, '0')}`,
           username: values.username,
-          avatar: 'https://via.placeholder.com/40',
+          avatar: 'https://picsum.photos/40/40',
           email: values.email,
           phone: values.phone,
           openid: values.openid || `o${String(users.length + 1).padStart(20, '0')}`,
@@ -284,7 +284,7 @@ const UserList = () => {
         const newUsers = validData.map((row, index) => ({
           id: `U${String(users.length + index + 1).padStart(10, '0')}`,
           username: row.用户名,
-          avatar: 'https://via.placeholder.com/40',
+          avatar: 'https://picsum.photos/40/40',
           email: row.邮箱 || '',
           phone: row.手机号 || '',
           openid: `o${String(users.length + index + 1).padStart(20, '0')}`,

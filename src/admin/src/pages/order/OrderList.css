@@ -1,80 +1,101 @@
-/* 订单列表页面样式 */
+/* 订单列表页面样式 - 严格按照图片要求开发 */
 .order-list {
-  padding: 16px;
-  background: #f0f2f5;
+  background: #f5f5f5;
+  padding: 20px;
   min-height: 100vh;
-  font-size: 12px;
+  font-size: 14px;
 }
 
-/* 搜索区域 */
+/* 搜索区域 - 简化为图片中的样式 */
 .search-area {
   background: #fff;
   padding: 16px;
-  border-radius: 6px;
-  margin-bottom: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  font-size: 12px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 /* 搜索区域标签文本样式 */
 .search-area span {
-  font-size: 12px !important;
+  font-size: 14px;
   color: #666;
+  margin-right: 8px;
 }
 
-.search-area .ant-row {
-  margin-bottom: 12px;
+/* 搜索框样式 */
+.search-area .ant-input {
+  width: 180px;
+  height: 32px;
+  border-radius: 4px;
+  border-color: #d9d9d9;
+  font-size: 14px;
 }
 
-.search-area .ant-row:last-child {
-  margin-bottom: 0;
+.search-area .ant-input:focus {
+  border-color: #ff4d4f;
+  box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
 }
 
-/* 订单列表容器 - 包含标签和表格的整体容器 */
+/* 日期选择器样式 */
+.search-area .ant-picker {
+  width: 240px;
+  height: 32px;
+  border-radius: 4px;
+  border-color: #d9d9d9;
+}
+
+.search-area .ant-picker:focus {
+  border-color: #ff4d4f;
+  box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
+}
+
+/* 搜索按钮样式 */
+.search-area .ant-btn-primary {
+  width: 80px;
+  height: 32px;
+  background-color: #ff4d4f;
+  border-color: #ff4d4f;
+  border-radius: 4px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-area .ant-btn-primary:hover {
+  background-color: #ff7875;
+  border-color: #ff7875;
+}
+
+/* 订单列表容器 */
 .order-table-container {
   background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
   overflow: hidden;
-  margin-bottom: 16px;
 }
 
-/* 状态标签区域 */
+/* 状态标签区域 - 严格按照图片中的标签样式 */
 .status-tabs {
-  padding: 0 16px;
+  padding: 16px 0;
   border-bottom: 1px solid #f0f0f0;
 }
 
 /* 标签列表容器 */
 .tab-list {
   display: flex;
-  align-items: center;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  min-height: 40px;
-  padding: 6px 0;
-}
-
-/* 隐藏滚动条但保留功能 */
-.tab-list::-webkit-scrollbar {
-  display: none;
-}
-
-.tab-list {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  padding-left: 16px;
 }
 
 /* 状态标签样式 */
 .status-tab {
+  padding: 0 16px;
+  height: 32px;
+  line-height: 32px;
   cursor: pointer;
-  padding: 6px 12px;
-  margin-right: 6px;
-  font-size: 12px;
   color: #666;
+  margin-right: 16px;
+  transition: all 0.3s;
   position: relative;
   white-space: nowrap;
-  transition: color 0.3s;
 }
 
 /* 标签悬停效果 */
@@ -85,7 +106,7 @@
 /* 激活状态样式 */
 .status-tab.active {
   color: #ff4d4f;
-  font-weight: 500;
+  font-weight: bold;
 }
 
 /* 激活状态下划线 */
@@ -93,140 +114,151 @@
   content: '';
   position: absolute;
   bottom: 0;
-  left: 12px;
-  right: 12px;
+  left: 0;
+  right: 0;
   height: 2px;
   background-color: #ff4d4f;
 }
 
-/* 标签数量样式 */
-.tab-count {
-  margin-left: 4px;
-  font-size: 12px;
-  font-weight: normal;
-}
-
-/* 响应式调整 */
-@media (max-width: 768px) {
-  .status-tab {
-    padding: 6px 12px;
-    font-size: 13px;
-  }
-}
-
 /* 表格样式 */
 .order-table {
-  width: 100%;
-  overflow: hidden;
-  font-size: 12px;
+  padding: 0 16px;
 }
 
 .order-table .ant-table-thead > tr > th {
-  background: #fafafa;
-  font-weight: 600;
+  background-color: #fff;
+  border-bottom: 1px solid #f0f0f0;
+  text-align: left;
+  font-weight: 500;
   color: #333;
-  border-bottom: 1px solid #e8e8e8;
-  padding: 8px 12px;
-  font-size: 12px;
+  padding: 12px 16px;
+  font-size: 14px;
 }
 
 .order-table .ant-table-tbody > tr > td {
-  padding: 8px 12px;
+  padding: 12px 16px;
   border-bottom: 1px solid #f0f0f0;
-  font-size: 12px;
+  color: #666;
+  font-size: 14px;
 }
 
-.order-table .ant-table-tbody > tr:hover {
-  background: #f5f5f5;
+.order-table .ant-table-tbody > tr:hover > td {
+  background-color: #fafafa;
 }
 
-/* 标签样式 */
+/* 标签颜色样式 - 严格匹配图片中的颜色 */
 .ant-tag {
-  font-size: 11px;
-  padding: 1px 6px;
-  border-radius: 3px;
-}
-
-/* 按钮样式 */
-.ant-btn {
+  border-radius: 4px;
   font-size: 12px;
-  height: 28px;
-  padding: 2px 12px;
+  padding: 0 8px;
+  height: 20px;
+  line-height: 20px;
 }
 
-.ant-btn-primary {
-  background-color: #ff4d4f;
-  border-color: #ff4d4f;
+/* 未付款/待核验标签颜色 - 橙色 */
+.ant-tag-orange {
+  background-color: #fff2e8;
+  border-color: #ffbb96;
+  color: #fa8c16;
 }
 
-.ant-btn-primary:hover {
-  background-color: #ff7875;
-  border-color: #ff7875;
+/* 已付款标签颜色 - 蓝色 */
+.ant-tag-blue {
+  background-color: #e6f7ff;
+  border-color: #91d5ff;
+  color: #1890ff;
 }
 
-/* 输入框和选择器样式 */
-.ant-input,
-.ant-select,
-.ant-picker {
-  font-size: 12px;
-  height: 28px;
+/* 已完成标签颜色 - 绿色 */
+.ant-tag-green {
+  background-color: #f6ffed;
+  border-color: #b7eb8f;
+  color: #52c41a;
 }
 
-.ant-input {
-  border-radius: 6px;
-}
-
-.ant-select {
-  width: 100%;
-}
-
-.ant-picker {
-  width: 100%;
-}
-
-/* 金额显示 */
-.ant-table-tbody .ant-table-cell:nth-child(8) {
-  font-weight: 600;
+/* 已关闭标签颜色 - 红色 */
+.ant-tag-red {
+  background-color: #fff1f0;
+  border-color: #ffccc7;
   color: #ff4d4f;
 }
 
-/* 状态标签特殊样式 */
-.status-tag {
-  font-weight: 500;
+/* 操作按钮样式 */
+.order-table .ant-btn-link {
+  padding: 4px 0;
+  margin-right: 16px;
+  height: auto;
+  font-size: 14px;
+}
+
+.order-table .ant-btn-link:nth-child(1) {
+  color: #999;
+}
+
+.order-table .ant-btn-link:nth-child(1):hover {
+  color: #ff4d4f;
+}
+
+.order-table .ant-btn-link:nth-child(2) {
+  color: #ff4d4f;
+}
+
+.order-table .ant-btn-link:nth-child(2):hover {
+  color: #ff7875;
 }
 
 /* 分页样式 */
 .order-table .ant-pagination {
   margin: 16px 0;
-  padding: 0 16px;
+  text-align: right;
 }
 
-/* 响应式设计 */
-@media (max-width: 1400px) {
-  .search-area .ant-row .ant-col {
-    margin-bottom: 16px;
-  }
-  
-  .search-area .ant-row .ant-col:last-child {
-    margin-bottom: 0;
-  }
+.order-table .ant-pagination-total-text {
+  color: #666;
+  font-size: 14px;
 }
 
+.order-table .ant-pagination-item-active a {
+  color: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+.order-table .ant-pagination-item-active:hover a {
+  color: #ff7875;
+  border-color: #ff7875;
+}
+
+.order-table .ant-pagination-item:hover a {
+  color: #ff4d4f;
+}
+
+.order-table .ant-pagination-prev:hover .ant-pagination-item-link,
+.order-table .ant-pagination-next:hover .ant-pagination-item-link {
+  color: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+/* 响应式调整 */
 @media (max-width: 768px) {
   .order-list {
     padding: 10px;
   }
   
-  .search-area {
-    padding: 16px;
+  .tab-list {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 8px;
   }
   
-  .status-tabs {
-    padding: 12px 16px;
+  .search-area .ant-input,
+  .search-area .ant-picker {
+    width: 100%;
+    margin-top: 8px;
   }
   
-  .status-tabs .ant-tag {
-    margin-bottom: 8px;
+  .search-area .ant-btn-primary {
+    width: 100%;
+    margin-top: 8px;
   }
   
   .order-table .ant-table-thead > tr > th,
@@ -234,67 +266,4 @@
     padding: 8px;
     font-size: 12px;
   }
-}
-
-/* 固定列样式调整 */
-.order-table .ant-table-fixed-left {
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.06);
-}
-
-.order-table .ant-table-fixed-right {
-  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.06);
-}
-
-/* 表头排序图标样式 */
-.order-table .ant-table-column-sorters {
-  padding: 0;
-}
-
-/* 空状态样式 */
-.order-table .ant-empty {
-  padding: 60px 0;
-}
-
-@media (max-width: 768px) {
-  .header-actions {
-    width: 100%;
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .ant-select {
-    width: 100%;
-    margin-right: 0;
-  }
-  
-  .ant-input-search {
-    width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .order-list-header h2 {
-    font-size: 18px;
-  }
-}
-
-/* 加载状态 */
-.ant-table-loading {
-  min-height: 400px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* 订单号显示 */
-.order-id {
-  font-family: monospace;
-  font-size: 13px;
-}
-
-/* 操作按钮组 */
-.action-buttons {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
 }

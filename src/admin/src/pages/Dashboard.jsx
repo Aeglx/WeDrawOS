@@ -48,7 +48,7 @@ const Dashboard = () => {
   if (loading) {
     return (
       <div className="loading-wrapper">
-        <Spin size="large" tip="加载中..." />
+        <Spin size="large" />
       </div>
     );
   }
