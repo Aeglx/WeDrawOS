@@ -79,140 +79,80 @@
   background-color: #40a9ff;
 }
 
-/* 搜索区域样式 - 完全移除滚动条，确保搜索元素完整显示 */
+/* 固定宽度按钮 */
+.fixed-width-button {
+  width: 80px;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+/* 搜索操作区域 */
+.search-actions {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* 搜索区域 - 更紧凑设计 */
 .search-section {
-  background-color: #ffffff !important;
-  border-radius: 4px !important;
-  padding: 16px !important;
-  margin-bottom: 16px !important;
-  margin-top: 0 !important;
-  border: 1px solid #e8e8e8 !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
-  display: block !important;
-  visibility: visible !important;
-  position: relative !important;
-  overflow: visible !important;
-  max-height: none !important;
-  min-height: auto !important;
+  background-color: #ffffff;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  padding: 12px;
 }
 
-/* 全局滚动条隐藏 */
-::-webkit-scrollbar {
-  display: none !important;
-}
-
-* {
-  -ms-overflow-style: none !important;
-  scrollbar-width: none !important;
-  overflow: visible !important;
-  overflow-x: visible !important;
-  overflow-y: visible !important;
-}
-
-/* 移除所有可能导致滚动条的容器限制 */
-.search-section,
-.search-section > *,
-.search-section > div,
-.search-section > form,
-.search-row,
-.search-row > * {
-  overflow: visible !important;
-  overflow-x: visible !important;
-  overflow-y: visible !important;
-  width: auto !important;
-  max-width: none !important;
-  min-width: auto !important;
-  position: static !important;
-  height: auto !important;
-  z-index: 1 !important;
-  white-space: nowrap !important;
-  box-sizing: border-box !important;
-}
-
-/* 移除左侧灰色容器 */
-.search-section .ant-table-filter-column,
-.search-section > div:first-child:has(.ant-table-filter-column),
-.search-section > div:first-child > div.ant-table-filter-column {
-  display: none !important;
-  visibility: hidden !important;
-  width: 0 !important;
-  height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* 搜索表单 - 确保元素正确排列 */
-.search-section > form {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  align-items: center !important;
-  width: 100% !important;
-  gap: 20px !important;
-}
-
-/* 搜索行 - 确保所有元素完整显示 */
+/* 搜索行 - 强制一行显示 */
 .search-row {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  align-items: center !important;
-  gap: 20px !important;
-  padding: 0 !important;
-  margin-bottom: 0 !important;
-  flex: 1 1 auto !important;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
 }
 
-/* 搜索项 - 确保标签和输入框完整显示 */
+/* 搜索项 - 自动适应空间 */
 .search-item {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-  white-space: nowrap !important;
-  min-height: 32px !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-  background: none !important;
-  position: static !important;
-  z-index: 1 !important;
+  flex: 1 1 auto;
+  min-width: 80px;
+  display: flex;
+  flex-direction: column;
+  margin-right: 0;
 }
 
-/* 标签样式 - 确保完整显示 */
+/* 标签样式 - 缩小字号 */
 .search-item label {
-  font-size: 14px !important;
-  color: rgba(0, 0, 0, 0.85) !important;
-  font-weight: 400 !important;
-  white-space: nowrap !important;
-  min-width: 60px !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  display: inline-block !important;
-  height: 32px !important;
-  line-height: 32px !important;
-  position: static !important;
+  font-size: 11px;
+  color: #666;
+  margin-bottom: 4px;
+  font-weight: 500;
+  line-height: 1;
 }
 
-/* 输入框和选择框样式 - 确保完整显示 */
+/* 输入框样式 - 缩小尺寸 */
 .search-item input,
 .search-item select,
 .search-input-field,
 .search-input .ant-input,
 .search-select-field .ant-select-selector {
-  width: 180px !important;
-  height: 32px !important;
-  font-size: 14px !important;
-  padding: 0 11px !important;
-  border-radius: 4px !important;
-  border: 1px solid #d9d9d9 !important;
-  position: static !important;
-  z-index: 1 !important;
-  box-sizing: border-box !important;
+  width: 100%;
+  height: 28px;
+  font-size: 11px;
+  padding: 0 6px;
+  border: 1px solid #d9d9d9;
+  border-radius: 3px;
+  box-sizing: border-box;
+  transition: all 0.3s;
+  background-color: #ffffff;
 }
 
-/* 选择框样式 */
+/* 选择框特殊样式调整 */
 .search-select-field .ant-select-selector {
-  height: 32px !important;
-  padding: 0 11px !important;
+  display: flex;
+  align-items: center;
+  height: 28px !important;
+  padding: 0 8px !important;
 }
 
 /* 交互状态样式 */
@@ -221,206 +161,47 @@
 .search-input-field:focus,
 .search-input .ant-input:focus,
 .search-select-field .ant-select-selector:focus-within {
-  border-color: #1890ff !important;
-  box-shadow: 0 0 0 1px rgba(24, 144, 255, 0.2) !important;
-  outline: none !important;
+  border-color: #1890ff;
+  box-shadow: 0 0 0 1px rgba(24, 144, 255, 0.2);
+  outline: none;
 }
 
 /* 操作按钮区域 */
 .operation-buttons,
-.search-actions {
-  display: flex !important;
-  gap: 12px !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  background-color: transparent !important;
-  width: auto !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  position: static !important;
-  z-index: 1 !important;
-  flex-shrink: 0 !important;
-}
-
-/* 搜索按钮样式 */
-.search-button,
-.search-action .ant-btn-primary {
-  height: 32px !important;
-  font-size: 12px !important;
-  padding: 0 16px !important;
-  border-radius: 4px !important;
-  cursor: pointer !important;
-  white-space: nowrap !important;
-  background-color: #ff4d4f !important;
-  border-color: #ff4d4f !important;
-  color: #fff !important;
-  min-width: 60px !important;
-  position: static !important;
-  z-index: 1 !important;
-}
-
-/* 重置按钮样式 */
-.reset-button {
-  height: 32px !important;
-  font-size: 12px !important;
-  padding: 0 16px !important;
-  border-radius: 4px !important;
-  cursor: pointer !important;
-  white-space: nowrap !important;
-  background-color: #fff !important;
-  border-color: #d9d9d9 !important;
-  color: #666 !important;
-  min-width: 60px !important;
-  position: static !important;
-  z-index: 1 !important;
-}
-
-/* 响应式设计 - 确保在所有屏幕尺寸下都能正确显示 */
-@media screen and (max-width: 1199px) {
-  .search-section > form {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 16px !important;
-  }
-  
-  .search-actions {
-    margin-top: 0 !important;
-    margin-left: 0 !important;
-  }
-}
-
-/* 小屏幕优化 */
-@media screen and (max-width: 768px) {
-  .search-row {
-    gap: 16px !important;
-  }
-  
-  .search-item input,
-  .search-item select,
-  .search-input-field,
-  .search-input .ant-input,
-  .search-select-field .ant-select-selector {
-    width: 150px !important;
-  }
-}
-
-/* 确保整个页面不会产生滚动条 */
-body,
-html {
-  overflow-x: visible !important;
-}
-
-/* 确保所有元素都能正确显示 */
-.search-section * {
-  display: block;
-  visibility: visible;
-  width: auto;
-  height: auto;
-}
-
-/* 特殊修复 - 确保搜索表单元素不被隐藏 */
-.search-section form,
-.search-section form > *,
-.search-section .search-row > *:not(.ant-table-filter-column) {
+.search-item.search-action {
   display: flex;
-  visibility: visible;
-  width: auto;
-  height: auto;
+  gap: 6px;
+  margin-left: auto;
+  grid-column: auto;
+  justify-self: auto;
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
 }
 
-/* 重置按钮样式 */
-.reset-button {
-  background-color: #fff;
-  border-color: #d9d9d9;
-  color: #666;
-}
-
-/* 容器层级控制 */
-.user-list-container {
-  position: relative;
-  z-index: 0;
-  overflow: visible;
-}
-
-.user-list-header {
-  position: relative;
-  z-index: 10;
-  overflow: visible;
-}
-
-.function-buttons {
-  position: relative;
-  z-index: 11;
-}
-}
-
-/* 防止任何元素溢出搜索区域 */
-.search-section > * {
-  overflow: visible !important;
-  box-sizing: border-box !important;
-}
-
-/* 确保搜索区域不会与其他容器重叠 */
-.search-section {
-  margin-top: 8px !important;
-  margin-bottom: 16px !important;
-  clear: both !important;
-}
-
-/* 确保功能按钮区域不会与搜索区域重叠 */
-.function-buttons {
-  margin-bottom: 12px !important;
-  padding-bottom: 8px !important;
-  border-bottom: 1px solid #f0f0f0 !important;
-}
-
-/* 搜索和重置按钮样式 - 确保在容器内显示 */
-.search-button.fixed-width-button,
+/* 按钮样式 - 缩小尺寸 */
 .search-button,
-.ant-btn-primary {
-  position: relative !important;
-  z-index: 9999 !important;
-  background-color: #1890ff !important;
-  border-color: #1890ff !important;
-  color: #fff !important;
-  overflow: hidden !important;
-  white-space: nowrap !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  box-sizing: border-box !important;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-  padding: 0 16px !important;
-  flex-shrink: 0 !important;
-  width: auto !important;
-  min-width: 60px !important;
-  max-width: none !important;
-  text-align: center !important;
+.reset-button,
+.search-action .ant-btn {
+  height: 28px;
+  font-size: 11px;
+  padding: 0 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+  border: none;
+  box-shadow: none;
+  min-width: unset;
+  flex-shrink: 0;
 }
 
-/* 重置按钮样式 */
-.reset-button.fixed-width-button,
-.reset-button {
-  position: relative !important;
-  z-index: 9999 !important;
-  background-color: #fff !important;
-  border-color: #d9d9d9 !important;
-  color: #666 !important;
-  overflow: hidden !important;
-  white-space: nowrap !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  box-sizing: border-box !important;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-  padding: 0 16px !important;
-  flex-shrink: 0 !important;
-  width: auto !important;
-  min-width: 60px !important;
-  max-width: none !important;
-  text-align: center !important;
+/* 确保搜索按钮不会因为页面长度而增加 */
+.search-button.fixed-width-button,
+.reset-button.fixed-width-button {
+  width: 80px !important;
+  padding: 0 !important;
+  text-align: center;
 }
 
 /* 搜索按钮 */
