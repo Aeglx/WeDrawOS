@@ -79,11 +79,11 @@ const VirtualOrder = () => {
     }, 500);
   };
 
-  // 筛选订单
-  const filterOrders = () => {
+  // 获取筛选后订单的基础数据（不包含状态筛选部分）
+  const getBaseFilteredOrders = () => {
     let result = [...orders];
     
-    // 根据搜索条件筛选
+    // 仅应用搜索条件筛选，不包含状态筛选
     if (searchParams.orderId) {
       result = result.filter(order => 
         order.id.toLowerCase().includes(searchParams.orderId.toLowerCase())
@@ -104,9 +104,17 @@ const VirtualOrder = () => {
       });
     }
     
-    // 根据状态筛选
-    if (selectedStatus !== 'all') {
-      result = result.filter(order => order.status === selectedStatus);
+    return result;
+  };
+
+  // 筛选订单 - 支持传入特定状态进行筛选
+  const filterOrders = (statusToFilter = null) => {
+    let result = getBaseFilteredOrders();
+    
+    // 使用传入的状态或当前状态进行筛选
+    const status = statusToFilter !== null ? statusToFilter : selectedStatus;
+    if (status !== 'all') {
+      result = result.filter(order => order.status === status);
     }
     
     setFilteredOrders(result);
@@ -126,7 +134,7 @@ const VirtualOrder = () => {
       orderTime: null
     });
     setSelectedStatus('all');
-    filterOrders();
+    filterOrders('all'); // 直接传入'all'确保立即使用新状态
   };
 
   // 收款处理
@@ -139,10 +147,10 @@ const VirtualOrder = () => {
     message.info(`查看订单 ${orderId} 详情`);
   };
 
-  // 状态标签切换
+  // 状态标签切换 - 直接传入新状态到filterOrders确保立即使用
   const handleStatusChange = (status) => {
     setSelectedStatus(status);
-    filterOrders();
+    filterOrders(status); // 直接传入新状态，避免依赖异步更新
   };
 
   // 组件挂载时加载数据
@@ -232,14 +240,15 @@ const VirtualOrder = () => {
     },
   ];
 
-  // 状态标签配置
+  // 状态标签配置 - 基于当前搜索条件（不含状态筛选）计算数量
+  const baseFilteredOrders = getBaseFilteredOrders();
   const statusTabs = [
-    { key: 'all', label: '全部', count: orders.length },
-    { key: 'unpaid', label: '未付款', count: orders.filter(o => o.status === 'unpaid').length },
-    { key: 'paid', label: '已付款', count: orders.filter(o => o.status === 'paid').length },
-    { key: 'pending', label: '待核验', count: orders.filter(o => o.status === 'pending').length },
-    { key: 'completed', label: '已完成', count: orders.filter(o => o.status === 'completed').length },
-    { key: 'closed', label: '已关闭', count: orders.filter(o => o.status === 'closed').length },
+    { key: 'all', label: '全部', count: baseFilteredOrders.length },
+    { key: 'unpaid', label: '未付款', count: baseFilteredOrders.filter(o => o.status === 'unpaid').length },
+    { key: 'paid', label: '已付款', count: baseFilteredOrders.filter(o => o.status === 'paid').length },
+    { key: 'pending', label: '待核验', count: baseFilteredOrders.filter(o => o.status === 'pending').length },
+    { key: 'completed', label: '已完成', count: baseFilteredOrders.filter(o => o.status === 'completed').length },
+    { key: 'closed', label: '已关闭', count: baseFilteredOrders.filter(o => o.status === 'closed').length },
   ];
 
   // 计算分页数据
