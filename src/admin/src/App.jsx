@@ -17,6 +17,7 @@ import NotFound from './pages/NotFound';
 // 占位页面组件 - 实际项目中应替换为真实组件
 import PlaceholderPage from './pages/PlaceholderPage';
 import VirtualOrder from './pages/order/VirtualOrder';
+import AfterSales from './pages/order/AfterSales';
 import RechargeRecord from './pages/member/member-manage/deposit/RechargeRecord';
 import WithdrawApply from './pages/member/member-manage/deposit/WithdrawApply';
 import PointsHistory from './pages/member/member-manage/points/PointsHistory';
@@ -61,7 +62,7 @@ const App = () => {
                 {/* 订单相关路由 */}
                 <Route path="/order/product-order" element={<OrderList />} />
                 <Route path="/order/virtual-order" element={<VirtualOrder />} />
-                <Route path="/order/after-sale/after-sale-manage" element={<PlaceholderPage title="售后管理" />} />
+                <Route path="/order/after-sale/after-sale-manage" element={<AfterSales />} />
                 <Route path="/order/after-sale/trade-complaint" element={<PlaceholderPage title="交易投诉" />} />
                 <Route path="/order/after-sale/after-sale-reason" element={<PlaceholderPage title="售后原因" />} />
                 <Route path="/order/flow/collection-record" element={<PlaceholderPage title="收款记录" />} />

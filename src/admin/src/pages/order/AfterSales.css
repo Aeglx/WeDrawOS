@@ -1,0 +1,449 @@
+.after-sales-container {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 搜索区域样式 - 强制标签和搜索框在同一行 */
+.search-section {
+  background-color: #f5f5f5;
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+  white-space: nowrap;
+  position: relative;
+}
+
+/* 强制整行不换行 */
+.search-row {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  align-items: center !important;
+  -webkit-flex-wrap: nowrap !important;
+  flex-wrap: nowrap !important;
+  gap: 24px !important;
+  margin-bottom: 0 !important;
+  width: 100%;
+}
+
+/* 每个搜索项强制一行显示 */
+.search-item {
+  display: -webkit-inline-box !important;
+  display: -webkit-inline-flex !important;
+  display: inline-flex !important;
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+  min-height: 28px !important;
+}
+
+/* 标签样式 */
+.search-item label {
+  color: #666 !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  white-space: nowrap !important;
+  min-width: 70px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
+  height: 28px !important;
+  line-height: 28px !important;
+}
+
+/* 强制所有子元素在同一行 */
+.search-item > * {
+  display: inline-block !important;
+  vertical-align: middle !important;
+  flex-shrink: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 输入框样式 - 强制固定尺寸 */
+.search-item .ant-input,
+.search-item .ant-select,
+.search-item .ant-picker {
+  width: 160px !important;
+  min-width: 160px !important;
+  max-width: 160px !important;
+  font-size: 12px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  max-height: 28px !important;
+  display: inline-block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 4px !important;
+}
+
+/* Ant Design Select组件特殊处理 */
+.search-item .ant-select {
+  display: inline-block !important;
+  width: 160px !important;
+  min-width: 160px !important;
+  max-width: 160px !important;
+}
+
+.search-item .ant-select-selector {
+  width: 160px !important;
+  min-width: 160px !important;
+  max-width: 160px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  max-height: 28px !important;
+  line-height: 28px !important;
+  padding: 0 11px !important;
+  border-radius: 4px !important;
+}
+
+.search-item .ant-select-selection-item {
+  height: 28px !important;
+  line-height: 28px !important;
+  font-size: 12px !important;
+}
+
+/* 日期选择器特殊处理 */
+.search-item .ant-picker {
+  padding: 0 !important;
+}
+
+.search-item .ant-picker-input > input {
+  height: 28px !important;
+  line-height: 28px !important;
+  font-size: 12px !important;
+  padding: 0 11px !important;
+}
+
+/* 搜索按钮区域 */
+.search-actions {
+  display: inline-flex !important;
+  align-items: center !important;
+  margin-left: auto !important;
+  flex-shrink: 0 !important;
+  min-height: 28px !important;
+}
+
+.search-actions .ant-btn {
+  height: 28px !important;
+  min-height: 28px !important;
+  max-height: 28px !important;
+  font-size: 12px !important;
+  padding: 0 16px !important;
+  background-color: #1890ff !important;
+  border-color: #1890ff !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 4px !important;
+}
+
+/* 全局重置，确保没有其他样式干扰 */
+.search-section * {
+  box-sizing: border-box !important;
+}
+
+/* 修复可能的Ant Design样式冲突 */
+.search-section :deep(.ant-row) {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+}
+
+.search-section :deep(.ant-form-item) {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  margin-bottom: 0 !important;
+}
+
+.search-section :deep(.ant-form-item-label) {
+  white-space: nowrap !important;
+  margin-right: 8px !important;
+  margin-bottom: 0 !important;
+  padding: 0 !important;
+}
+
+.search-section :deep(.ant-form-item-control) {
+  margin: 0 !important;
+}
+
+/* 确保Ant Design组件样式覆盖 */
+.ant-input,
+.ant-select,
+.ant-picker,
+.ant-btn {
+  font-size: 12px !important;
+}
+
+.ant-input {
+  height: 28px !important;
+}
+
+.ant-select {
+  height: 28px !important;
+  min-width: 160px;
+}
+
+.ant-select-selector {
+  height: 28px !important;
+  line-height: 28px !important;
+  min-width: 160px;
+}
+
+.ant-picker {
+  height: 28px !important;
+  min-width: 160px;
+}
+
+.ant-btn {
+  height: 28px !important;
+  padding: 0 16px !important;
+}
+
+/* 状态标签样式 */
+.status-tabs {
+  display: flex;
+  background-color: #f5f5f5;
+  padding: 4px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+  white-space: nowrap;
+  min-height: 40px;
+}
+
+.status-tab {
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #666;
+  margin-right: 4px;
+}
+
+.status-tab:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.status-tab.active {
+  background-color: #fff;
+  color: #ff4d4f;
+  font-weight: 500;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.tab-count {
+  font-size: 12px;
+  color: #8c8c8c;
+  font-weight: normal;
+}
+
+.status-tab.active .tab-count {
+  color: #ff4d4f;
+}
+
+/* 售后列表样式 */
+.after-sales-list {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 0;
+}
+
+/* 表格样式调整 */
+.after-sales-list .ant-table {
+  margin: 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.after-sales-list .ant-table-thead > tr > th {
+  background-color: #fafafa;
+  font-weight: 500;
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 12px;
+  padding: 8px;
+}
+
+.after-sales-list .ant-table-tbody > tr > td {
+  border-bottom: 1px solid #fafafa;
+  color: #333;
+  padding: 8px;
+  font-size: 12px;
+}
+
+.after-sales-list .ant-table-tbody > tr:hover > td {
+  background-color: #fafafa;
+}
+
+/* 按钮样式调整 */
+.ant-btn-primary {
+  background-color: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+.ant-btn-primary:hover {
+  background-color: #ff7875;
+  border-color: #ff7875;
+}
+
+.ant-btn-link {
+  color: #1890ff;
+}
+
+.ant-btn-link:hover {
+  color: #40a9ff;
+}
+
+/* 分页样式 */
+.ant-pagination {
+  margin-top: 20px;
+  justify-content: flex-end;
+}
+
+.ant-pagination-item-active {
+  border-color: #ff4d4f;
+}
+
+.ant-pagination-item-active a {
+  color: #ff4d4f;
+}
+
+/* 标签颜色 */
+.ant-tag-red {
+  background-color: #fff2f0;
+  border-color: #ffccc7;
+  color: #ff4d4f;
+}
+
+.ant-tag-blue {
+  background-color: #e6f7ff;
+  border-color: #91d5ff;
+  color: #1890ff;
+}
+
+.ant-tag-yellow {
+  background-color: #fffbe6;
+  border-color: #ffe58f;
+  color: #faad14;
+}
+
+.ant-tag-green {
+  background-color: #f6ffed;
+  border-color: #b7eb8f;
+  color: #52c41a;
+}
+
+.ant-tag-orange {
+  background-color: #fff7e6;
+  border-color: #ffd591;
+  color: #fa8c16;
+}
+
+.ant-tag-cyan {
+  background-color: #e6fffb;
+  border-color: #91f2de;
+  color: #13c2c2;
+}
+
+.ant-tag-purple {
+  background-color: #f9f0ff;
+  border-color: #d3adf7;
+  color: #9254de;
+}
+
+.ant-tag-lime {
+  background-color: #f0fff4;
+  border-color: #b7eb8f;
+  color: #52c41a;
+}
+
+/* 商品图片样式 */
+.ant-image {
+  border: 1px solid #f0f0f0;
+  border-radius: 4px;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .search-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .search-item {
+    min-width: unset;
+  }
+  
+  .search-actions {
+    margin-left: 0;
+    justify-content: flex-start;
+  }
+  
+  .status-tabs {
+    justify-content: flex-start;
+  }
+  
+  .after-sales-container {
+    padding: 10px;
+  }
+}
+
+/* 调整表格单元格内容对齐 */
+.ant-table-tbody > tr > td {
+  text-align: left;
+  vertical-align: middle;
+}
+
+/* 调整状态标签的最小宽度 */
+.status-tab {
+  min-width: fit-content;
+}
+
+/* 搜索按钮区域调整 */
+.search-actions {
+  align-self: flex-end;
+}
+
+/* 修复日期选择器显示问题 */
+.ant-input[readonly] {
+  background-color: #fff;
+  cursor: pointer;
+}
+
+/* 确保表格内容显示完整 */
+.ant-table {
+  overflow-x: auto;
+}
+
+/* 调整滚动条样式 */
+.status-tabs::-webkit-scrollbar {
+  height: 4px;
+}
+
+.status-tabs::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 2px;
+}
+
+.status-tabs::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 2px;
+}
+
+.status-tabs::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
