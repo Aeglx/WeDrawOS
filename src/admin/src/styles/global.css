@@ -406,7 +406,8 @@ a:hover {
   box-sizing: border-box !important;
 }
 
-/* 超高优先级样式重置 */
+/* 超高优先级样式重置 - 使用!important和多种选择器确保覆盖 */
+/* 1. 基础样式重置 */
 *[class*="search"][class*="item"],
 *[class*="search"][class*="row"],
 *[class*="search"][class*="section"],
@@ -414,4 +415,258 @@ a:hover {
 *[class*="search"][class*="container"],
 *[class*="search"][class*="bar"] {
   box-sizing: border-box !important;
+}
+
+/* 2. 标签选择器配合类选择器，提高优先级 */
+div.search-section,
+div.search-area,
+div.search-container,
+div.searchContainer,
+div.search-bar {
+  background-color: #f5f5f5 !important;
+  padding: 12px 16px !important;
+  border-radius: 4px !important;
+  margin-bottom: 16px !important;
+  overflow-x: auto !important;
+  white-space: nowrap !important;
+}
+
+/* 3. 行内元素强制不换行 */
+div.search-row,
+form.search-row,
+section.search-row {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  gap: 24px !important;
+  margin-bottom: 0 !important;
+  width: 100% !important;
+}
+
+/* 4. 搜索项强制一行显示 */
+div.search-item,
+form.search-item,
+section.search-item,
+div.searchItem,
+form.searchItem,
+section.searchItem {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+  min-height: 28px !important;
+  flex: none !important;
+}
+
+/* 5. 标签文字样式强制 */
+label,
+span.search-label,
+.search-area span {
+  color: #666 !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  white-space: nowrap !important;
+  min-width: 70px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
+  height: 28px !important;
+  line-height: 28px !important;
+}
+
+/* 6. 输入框、选择框、日期选择器强制样式 */
+input[type="text"],
+input[type="search"],
+select,
+.ant-input,
+.ant-select,
+.ant-picker {
+  width: 160px !important;
+  min-width: 160px !important;
+  max-width: 160px !important;
+  font-size: 12px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  max-height: 28px !important;
+  display: inline-block !important;
+  margin: 0 !important;
+  padding: 0 11px !important;
+  border-radius: 4px !important;
+}
+
+/* 7. 按钮强制样式 */
+button,
+.ant-btn {
+  height: 28px !important;
+  min-height: 28px !important;
+  max-height: 28px !important;
+  font-size: 12px !important;
+  padding: 0 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 4px !important;
+}
+
+/* 8. 搜索按钮特定样式 */
+button.ant-btn-primary,
+.search-button,
+.ant-btn-primary {
+  background-color: #1890ff !important;
+  border-color: #1890ff !important;
+  color: #fff !important;
+}
+
+/* 9. 使用ID选择器增强优先级（如果存在） */
+#root .search-section,
+#root .search-area,
+#root .search-container,
+#root .searchContainer,
+#root .search-bar {
+  background-color: #f5f5f5 !important;
+  padding: 12px 16px !important;
+  border-radius: 4px !important;
+  margin-bottom: 16px !important;
+  overflow-x: auto !important;
+  white-space: nowrap !important;
+}
+
+/* 10. 深层嵌套选择器确保覆盖 */
+.app-container .content-wrapper .search-section,
+.app-container .content-wrapper .search-area,
+.app-container .content-wrapper .search-container,
+.app-container .content-wrapper .searchContainer,
+.app-container .content-wrapper .search-bar {
+  background-color: #f5f5f5 !important;
+  padding: 12px 16px !important;
+  border-radius: 4px !important;
+  margin-bottom: 16px !important;
+  overflow-x: auto !important;
+  white-space: nowrap !important;
+}
+
+/* 11. 使用HTML属性选择器 */
+[class^="search"],[class*=" search"] {
+  box-sizing: border-box !important;
+}
+
+/* 12. 直接为页面容器添加样式规则 */
+.order-list .search-area,
+.virtual-order-container .search-section,
+.user-list-container .search-section,
+.review-list-container .search-container,
+.recycle-bin-container .search-bar,
+.member-fund-container .searchContainer {
+  background-color: #f5f5f5 !important;
+  padding: 12px 16px !important;
+  border-radius: 4px !important;
+  margin-bottom: 16px !important;
+  overflow-x: auto !important;
+  white-space: nowrap !important;
+}
+
+/* 13. 深层样式穿透：处理Ant Design组件的内部结构 */
+:deep(.search-section .ant-select),
+:deep(.search-area .ant-select),
+:deep(.search-container .ant-select),
+:deep(.searchContainer .ant-select),
+:deep(.search-bar .ant-select) {
+  width: 160px !important;
+  min-width: 160px !important;
+  max-width: 160px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  max-height: 28px !important;
+}
+
+:deep(.search-section .ant-select-selector),
+:deep(.search-area .ant-select-selector),
+:deep(.search-container .ant-select-selector),
+:deep(.searchContainer .ant-select-selector),
+:deep(.search-bar .ant-select-selector) {
+  height: 28px !important;
+  min-height: 28px !important;
+  max-height: 28px !important;
+  padding: 0 11px !important;
+}
+
+:deep(.search-section .ant-select-selection-item),
+:deep(.search-area .ant-select-selection-item),
+:deep(.search-container .ant-select-selection-item),
+:deep(.searchContainer .ant-select-selection-item),
+:deep(.search-bar .ant-select-selection-item) {
+  line-height: 26px !important;
+  font-size: 12px !important;
+}
+
+:deep(.search-section .ant-picker),
+:deep(.search-area .ant-picker),
+:deep(.search-container .ant-picker),
+:deep(.searchContainer .ant-picker),
+:deep(.search-bar .ant-picker) {
+  width: 160px !important;
+  min-width: 160px !important;
+  max-width: 160px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  max-height: 28px !important;
+  font-size: 12px !important;
+}
+
+:deep(.search-section .ant-picker-input > input),
+:deep(.search-area .ant-picker-input > input),
+:deep(.search-container .ant-picker-input > input),
+:deep(.searchContainer .ant-picker-input > input),
+:deep(.search-bar .ant-picker-input > input) {
+  font-size: 12px !important;
+  height: 26px !important;
+  line-height: 26px !important;
+}
+
+/* 14. 确保所有搜索项内的元素都在同一行 */
+.search-item > *,
+.searchItem > * {
+  display: inline-block !important;
+  vertical-align: middle !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 15. 防止任何元素在搜索区域内换行 */
+.search-section *,
+.search-area *,
+.search-container *,
+.searchContainer *,
+.search-bar * {
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+}
+
+/* 16. 确保表单元素也遵循相同的样式 */
+.search-section form,
+.search-area form,
+.search-container form,
+.searchContainer form,
+.search-bar form {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  gap: 24px !important;
+}
+
+/* 17. 最后一道防线：使用更具体的选择器确保样式覆盖 */
+body > * > * > * > .search-section,
+body > * > * > * > .search-area,
+body > * > * > * > .search-container,
+body > * > * > * > .searchContainer,
+body > * > * > * > .search-bar {
+  background-color: #f5f5f5 !important;
+  padding: 12px 16px !important;
+  border-radius: 4px !important;
+  margin-bottom: 16px !important;
+  overflow-x: auto !important;
+  white-space: nowrap !important;
 }
