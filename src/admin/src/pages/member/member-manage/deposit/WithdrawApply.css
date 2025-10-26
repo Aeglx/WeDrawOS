@@ -1,0 +1,238 @@
+/* 容器样式 */
+.container {
+  padding: 20px;
+  background-color: #f0f2f5;
+  min-height: 100vh;
+}
+
+/* 搜索区域样式 */
+.searchContainer {
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.searchItem {
+  display: flex;
+  align-items: center;
+}
+
+.searchLabel {
+  margin-right: 8px;
+  font-weight: 500;
+  color: #333;
+  white-space: nowrap;
+}
+
+/* 表格容器样式 */
+.tableContainer {
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+/* 表格样式 */
+.ant-table {
+  font-size: 14px;
+}
+
+.ant-table-thead > tr > th {
+  background-color: #fafafa;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.ant-table-tbody > tr > td {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 12px 8px;
+}
+
+/* 表格行样式 */
+.evenRow {
+  background-color: #fff;
+}
+
+.oddRow {
+  background-color: #fafafa;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background-color: #f5f5f5;
+}
+
+/* 单元格样式 */
+.applyNo {
+  color: #333;
+  font-size: 13px;
+}
+
+.usernameCell {
+  color: #333;
+  font-weight: 500;
+}
+
+.amount {
+  color: #ff4d4f;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* 状态标签样式 */
+.statusTag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.statusTag.pending {
+  background-color: #ff7a45;
+  color: #fff;
+}
+
+.statusTag.failed {
+  background-color: #1890ff;
+  color: #fff;
+}
+
+.timeCell {
+  color: #666;
+  font-size: 13px;
+}
+
+/* 按钮样式 */
+.auditButton {
+  background-color: #ff4d4f;
+  border-color: #ff4d4f;
+  color: #fff;
+}
+
+.auditButton:hover {
+  background-color: #ff7875;
+  border-color: #ff7875;
+  color: #fff;
+}
+
+.viewButton {
+  background-color: #fff;
+  border-color: #d9d9d9;
+  color: #333;
+}
+
+.viewButton:hover {
+  border-color: #40a9ff;
+  color: #40a9ff;
+}
+
+/* 搜索按钮样式 */
+.searchButton {
+  background-color: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+.searchButton:hover {
+  background-color: #ff7875;
+  border-color: #ff7875;
+}
+
+.searchButton:focus {
+  background-color: #ff7875;
+  border-color: #ff7875;
+  box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
+}
+
+/* 分页样式 */
+.paginationContainer {
+  margin-top: 20px;
+  background-color: #fff;
+  padding: 16px 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.ant-pagination-total-text {
+  color: #666;
+  margin-right: 16px;
+}
+
+.ant-pagination-item-active {
+  background-color: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+.ant-pagination-item-active a {
+  color: #fff;
+}
+
+.ant-pagination-item:hover {
+  border-color: #ff4d4f;
+}
+
+.ant-pagination-item:hover a {
+  color: #ff4d4f;
+}
+
+/* 输入框样式 */
+.ant-input {
+  border-radius: 4px;
+}
+
+.ant-input:focus {
+  border-color: #ff4d4f;
+  box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
+}
+
+/* 下拉框样式 */
+.ant-select-selector {
+  border-radius: 4px !important;
+}
+
+.ant-select-focused .ant-select-selector {
+  border-color: #ff4d4f !important;
+  box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2) !important;
+}
+
+/* 日期选择器样式 */
+.ant-picker {
+  border-radius: 4px;
+}
+
+.ant-picker:focus {
+  border-color: #ff4d4f;
+  box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .searchContainer {
+    padding: 16px;
+  }
+  
+  .searchItem {
+    margin-bottom: 12px;
+    width: 100%;
+  }
+  
+  .ant-table {
+    font-size: 12px;
+  }
+  
+  .ant-table-tbody > tr > td {
+    padding: 8px 4px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .searchItem {
+    margin-bottom: 12px;
+  }
+}

@@ -1,0 +1,128 @@
+.container {
+  padding: 20px;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.searchContainer {
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.tableContainer {
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.paginationContainer {
+  background-color: #fff;
+  padding: 16px 20px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* 表格样式 */
+.usernameCell {
+  font-family: monospace;
+}
+
+.reasonCell {
+  color: #333;
+}
+
+.addPoints {
+  color: #52c41a;
+  font-weight: 500;
+}
+
+.positiveChange {
+  color: #52c41a;
+  font-weight: 500;
+}
+
+.negativeChange {
+  color: #ff4d4f;
+  font-weight: 500;
+}
+
+.currentPoints {
+  color: #1890ff;
+  font-weight: 500;
+}
+
+.timestamp {
+  color: #666;
+  font-size: 13px;
+}
+
+/* 表格头部样式 */
+.ant-table-thead > tr > th {
+  background-color: #fafafa;
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* 表格行样式 */
+.ant-table-tbody > tr > td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #fafafa;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background-color: #fafafa;
+}
+
+/* 搜索框样式 */
+.ant-input-search {
+  width: 300px;
+}
+
+.ant-input-search .ant-input {
+  border-radius: 4px 0 0 4px;
+  height: 36px;
+}
+
+.ant-input-search .ant-btn {
+  height: 36px;
+  border-radius: 0 4px 4px 0;
+}
+
+/* 分页样式 */
+.ant-pagination {
+  margin: 0;
+}
+
+.ant-pagination-item-active a {
+  color: #1890ff;
+}
+
+.ant-pagination-item-active {
+  border-color: #1890ff;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+  
+  .searchContainer,
+  .tableContainer,
+  .paginationContainer {
+    padding: 10px;
+  }
+  
+  .ant-input-search {
+    width: 100%;
+  }
+}

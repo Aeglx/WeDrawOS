@@ -16,6 +16,10 @@ import Statistics from './pages/statistics/Statistics';
 import NotFound from './pages/NotFound';
 // 占位页面组件 - 实际项目中应替换为真实组件
 import PlaceholderPage from './pages/PlaceholderPage';
+import RechargeRecord from './pages/member/member-manage/deposit/RechargeRecord';
+import WithdrawApply from './pages/member/member-manage/deposit/WithdrawApply';
+import PointsHistory from './pages/member/member-manage/points/PointsHistory';
+import MemberFund from './pages/member/member-manage/deposit/MemberFund';
 import RecycleBin from './pages/recyclebin/RecycleBin';
 import ReviewList from './pages/review/ReviewList';
 
@@ -48,10 +52,10 @@ const App = () => {
                 <Route path="/member/member-manage/member-list" element={<UserList />} />
                 <Route path="/member/member-manage/recycle-bin" element={<RecycleBin />} />
                 <Route path="/member/member-manage/comment/member-comment" element={<ReviewList />} />
-                <Route path="/member/member-manage/points/points-history" element={<PlaceholderPage title="积分历史" />} />
-                <Route path="/member/member-manage/deposit/member-fund" element={<PlaceholderPage title="会员资金" />} />
-                <Route path="/member/member-manage/deposit/recharge-record" element={<PlaceholderPage title="充值记录" />} />
-                <Route path="/member/member-manage/deposit/withdraw-apply" element={<PlaceholderPage title="提现申请" />} />
+                <Route path="/member/member-manage/points/points-history" element={<PointsHistory />} />
+                <Route path="/member/member-manage/deposit/member-fund" element={<MemberFund />} />
+                <Route path="/member/member-manage/deposit/recharge-record" element={<RechargeRecord />} />
+                <Route path="/member/member-manage/deposit/withdraw-apply" element={<WithdrawApply />} />
                 
                 {/* 订单相关路由 */}
                 <Route path="/order/product-order" element={<OrderList />} />

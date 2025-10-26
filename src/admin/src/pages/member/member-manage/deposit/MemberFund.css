@@ -1,0 +1,167 @@
+.container {
+  padding: 20px;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.searchContainer {
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.searchItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.searchLabel {
+  white-space: nowrap;
+  color: #333;
+  font-size: 14px;
+}
+
+.tableContainer {
+  background-color: #fff;
+  padding: 0;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.paginationContainer {
+  background-color: #fff;
+  padding: 16px 20px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* 表格样式 */
+.usernameCell {
+  font-family: monospace;
+  color: #333;
+}
+
+.positiveAmount {
+  color: #52c41a;
+  font-weight: 500;
+}
+
+.negativeAmount {
+  color: #ff4d4f;
+  font-weight: 500;
+}
+
+.timestamp {
+  color: #666;
+  font-size: 13px;
+}
+
+.businessType {
+  color: #333;
+  font-size: 14px;
+}
+
+.detail {
+  color: #333;
+  font-size: 14px;
+  word-break: break-all;
+}
+
+/* 表格行样式 */
+.evenRow {
+  background-color: #fafafa;
+}
+
+.oddRow {
+  background-color: #fff;
+}
+
+/* 表格头部样式 */
+.ant-table-thead > tr > th {
+  background-color: #fafafa;
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 12px 16px;
+}
+
+/* 表格单元格样式 */
+.ant-table-tbody > tr > td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background-color: #f5f5f5;
+}
+
+/* 搜索框样式 */
+.ant-input-search .ant-input {
+  border-radius: 4px;
+  height: 32px;
+}
+
+/* 日期选择器样式 */
+.ant-picker {
+  height: 32px;
+  border-radius: 4px;
+}
+
+/* 搜索按钮样式 */
+.ant-btn-primary {
+  background-color: #ff4d4f !important;
+  border-color: #ff4d4f !important;
+  height: 32px;
+}
+
+.ant-btn-primary:hover {
+  background-color: #ff7875 !important;
+  border-color: #ff7875 !important;
+}
+
+/* 分页样式 */
+.ant-pagination {
+  margin: 0;
+}
+
+.ant-pagination-item-active a {
+  color: #1890ff;
+}
+
+.ant-pagination-item-active {
+  border-color: #1890ff;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+  
+  .searchContainer,
+  .paginationContainer {
+    padding: 10px;
+  }
+  
+  .searchItem {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .ant-space {
+    flex-direction: column;
+  }
+  
+  .ant-input-search,
+  .ant-picker {
+    width: 100%;
+  }
+}
