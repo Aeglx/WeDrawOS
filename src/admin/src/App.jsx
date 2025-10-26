@@ -17,6 +17,7 @@ import NotFound from './pages/NotFound';
 // 占位页面组件 - 实际项目中应替换为真实组件
 import PlaceholderPage from './pages/PlaceholderPage';
 import RecycleBin from './pages/recyclebin/RecycleBin';
+import ReviewList from './pages/review/ReviewList';
 
 // 导入布局组件
 import MainLayout from './components/layout/MainLayout';
@@ -40,10 +41,13 @@ const App = () => {
                 {/* 仪表盘 */}
                 <Route index element={<Dashboard />} />
                 
+                {/* 测试路由 - 直接访问会员评价 */}
+                <Route path="/review-test" element={<ReviewList />} />
+                
                 {/* 会员相关路由 */}
                 <Route path="/member/member-manage/member-list" element={<UserList />} />
                 <Route path="/member/member-manage/recycle-bin" element={<RecycleBin />} />
-                <Route path="/member/member-manage/comment/member-comment" element={<PlaceholderPage title="会员评价" />} />
+                <Route path="/member/member-manage/comment/member-comment" element={<ReviewList />} />
                 <Route path="/member/member-manage/points/points-history" element={<PlaceholderPage title="积分历史" />} />
                 <Route path="/member/member-manage/deposit/member-fund" element={<PlaceholderPage title="会员资金" />} />
                 <Route path="/member/member-manage/deposit/recharge-record" element={<PlaceholderPage title="充值记录" />} />

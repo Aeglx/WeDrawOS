@@ -1,0 +1,250 @@
+.review-list-container {
+  padding: 20px;
+  background-color: #f0f2f5;
+  min-height: calc(100vh - 64px);
+}
+
+.review-list-header {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.search-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-label {
+  font-size: 14px;
+  color: #333;
+  white-space: nowrap;
+}
+
+.search-input {
+  width: 300px;
+}
+
+.review-table-container {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.review-table {
+  width: 100%;
+}
+
+.review-table .ant-table-thead > tr > th {
+  background-color: #fafafa;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.review-table .ant-table-tbody > tr:nth-child(odd) {
+  background-color: #fff;
+}
+
+.review-table .ant-table-tbody > tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.review-table .ant-table-tbody > tr:hover {
+  background-color: #e6f7ff;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  padding: 4px 12px;
+  font-size: 12px;
+  border-radius: 4px;
+}
+
+.view-btn {
+  background-color: #1890ff;
+  color: white;
+  border-color: #1890ff;
+}
+
+.view-btn:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #ff4d4f;
+  color: white;
+  border-color: #ff4d4f;
+}
+
+.delete-btn:hover {
+  background-color: #ff7875;
+  border-color: #ff7875;
+  color: white;
+}
+
+/* 评价类型标签样式 */
+.review-good {
+  background-color: #52c41a;
+  color: white;
+}
+
+.review-medium {
+  background-color: #faad14;
+  color: white;
+}
+
+.review-bad {
+  background-color: #ff4d4f;
+  color: white;
+}
+
+/* 详情模态框样式 */
+.review-detail {
+  padding: 10px 0;
+}
+
+.detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  width: 120px;
+  font-weight: 500;
+  color: #666;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.detail-value {
+  flex: 1;
+  color: #333;
+  font-size: 14px;
+  word-break: break-word;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .review-list-container {
+    padding: 10px;
+  }
+  
+  .search-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .search-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .search-input {
+    width: 100%;
+  }
+  
+  .review-table-container {
+    padding: 10px;
+    overflow-x: auto;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+/* 加载状态 */
+.ant-table-loading {
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 分页样式 */
+.ant-pagination {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.ant-pagination-total-text {
+  margin-right: 16px;
+}
+
+/* 空状态样式 */
+.ant-empty {
+  padding: 60px 0;
+}
+
+/* 开关样式 */
+.ant-switch {
+  margin: 0;
+}
+
+.ant-switch-checked {
+  background-color: #1890ff;
+}
+
+/* 标签样式 */
+.ant-tag {
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+/* 按钮通用样式 */
+.ant-btn {
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.ant-btn:hover {
+  opacity: 0.9;
+}
+
+/* 搜索框样式 */
+.ant-input-search {
+  width: 100%;
+}
+
+.ant-input-search .ant-input {
+  border-radius: 4px;
+  height: 36px;
+}
+
+.ant-input-search-button {
+  height: 36px;
+  border-radius: 0 4px 4px 0;
+}

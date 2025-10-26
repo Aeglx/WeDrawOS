@@ -7530,3 +7530,13 @@
 {"timestamp":"2025-10-23T14:59:29.530Z","level":"INFO","message":"请求API文档JSON数据"}
 {"timestamp":"2025-10-23T15:00:47.946Z","level":"INFO","message":"访问微信文档风格API页面"}
 {"timestamp":"2025-10-23T15:00:48.112Z","level":"INFO","message":"请求API文档JSON数据"}
+{"timestamp":"2025-10-26T10:53:24.054Z","level":"INFO","message":"初始化微信API文档系统"}
+{"timestamp":"2025-10-26T10:53:24.061Z","level":"INFO","message":"微信API文档系统初始化完成"}
+{"timestamp":"2025-10-26T10:53:45.458Z","level":"INFO","message":"访问微信文档风格API页面"}
+{"timestamp":"2025-10-26T10:53:50.226Z","level":"INFO","message":"请求API文档JSON数据"}
+{"timestamp":"2025-10-26T10:54:10.123Z","level":"INFO","message":"请求API文档JSON数据"}
+{"timestamp":"2025-10-26T10:54:13.451Z","level":"INFO","message":"请求API文档JSON数据"}
+{"timestamp":"2025-10-26T10:55:11.267Z","level":"INFO","message":"初始化微信API文档系统"}
+{"timestamp":"2025-10-26T10:55:11.268Z","level":"INFO","message":"微信API文档系统初始化完成"}
+{"timestamp":"2025-10-26T10:56:40.616Z","level":"INFO","message":"初始化微信API文档系统"}
+{"timestamp":"2025-10-26T10:56:40.618Z","level":"INFO","message":"微信API文档系统初始化完成"}
