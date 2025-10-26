@@ -15,6 +15,7 @@ const OrderList = () => {
   
   // 搜索参数状态
   const [searchParams, setSearchParams] = useState({
+    keyword: '',
     orderId: '',
     memberName: '',
     productName: '',
@@ -85,6 +86,97 @@ const OrderList = () => {
     loadOrders();
   }, []);
 
+  // 统一的筛选函数
+  const filterOrders = (tabKey = activeTab) => {
+    try {
+      let filteredOrders = [...originalOrders];
+      
+      // 应用搜索条件
+      // 根据关键字搜索
+      if (searchParams.keyword) {
+        const keyword = searchParams.keyword.toLowerCase();
+        filteredOrders = filteredOrders.filter(order => 
+          order.id.toLowerCase().includes(keyword) || 
+          order.buyerName.toLowerCase().includes(keyword) ||
+          order.storeName.toLowerCase().includes(keyword)
+        );
+      }
+      
+      // 根据订单号搜索
+      if (searchParams.orderId) {
+        filteredOrders = filteredOrders.filter(order => 
+          order.id.toLowerCase().includes(searchParams.orderId.toLowerCase())
+        );
+      }
+      
+      // 根据会员名称搜索
+      if (searchParams.memberName) {
+        filteredOrders = filteredOrders.filter(order => 
+          order.buyerName.toLowerCase().includes(searchParams.memberName.toLowerCase())
+        );
+      }
+      
+      // 根据商品名称搜索（在模拟数据中我们通过订单号模糊匹配模拟）
+      if (searchParams.productName) {
+        filteredOrders = filteredOrders.filter(order => 
+          order.id.toLowerCase().includes(searchParams.productName.toLowerCase())
+        );
+      }
+      
+      // 根据收货人搜索（在模拟数据中我们通过买家名称模糊匹配模拟）
+      if (searchParams.consignee) {
+        filteredOrders = filteredOrders.filter(order => 
+          order.buyerName.toLowerCase().includes(searchParams.consignee.toLowerCase())
+        );
+      }
+      
+      // 根据订单来源搜索
+      if (searchParams.orderSource) {
+        const sourceMapping = {
+          'mobile': '移动端',
+          'pc': 'PC端',
+          'wechat': '微信小程序'
+        };
+        const sourceText = sourceMapping[searchParams.orderSource] || searchParams.orderSource;
+        filteredOrders = filteredOrders.filter(order => 
+          order.source.includes(sourceText)
+        );
+      }
+      
+      // 根据支付方式搜索
+      if (searchParams.paymentMethod) {
+        const paymentMapping = {
+          'wechat': '微信支付',
+          'alipay': '支付宝',
+          'cod': '货到付款'
+        };
+        const paymentText = paymentMapping[searchParams.paymentMethod] || searchParams.paymentMethod;
+        filteredOrders = filteredOrders.filter(order => 
+          order.paymentMethod.includes(paymentText)
+        );
+      }
+      
+      // 根据日期范围搜索
+      if (searchParams.dateRange && searchParams.dateRange.length === 2) {
+        const [startDate, endDate] = searchParams.dateRange;
+        filteredOrders = filteredOrders.filter(order => {
+          const orderDate = new Date(order.createdAt);
+          return orderDate >= startDate && orderDate <= endDate;
+        });
+      }
+      
+      // 应用状态筛选
+      if (tabKey !== 'all') {
+        filteredOrders = filteredOrders.filter(order => order.status === tabKey);
+      }
+      
+      return filteredOrders;
+    } catch (error) {
+      console.error('筛选订单失败:', error);
+      return originalOrders;
+    }
+  };
+
   // 搜索功能
   const handleSearch = () => {
     setLoading(true);
@@ -92,84 +184,13 @@ const OrderList = () => {
     // 模拟搜索延迟
     setTimeout(() => {
       try {
-        let filteredOrders = [...originalOrders];
-        
-        // 根据订单号搜索
-        if (searchParams.orderId) {
-          filteredOrders = filteredOrders.filter(order => 
-            order.id.toLowerCase().includes(searchParams.orderId.toLowerCase())
-          );
-        }
-        
-        // 根据会员名称搜索
-        if (searchParams.memberName) {
-          filteredOrders = filteredOrders.filter(order => 
-            order.buyerName.toLowerCase().includes(searchParams.memberName.toLowerCase())
-          );
-        }
-        
-        // 根据商品名称搜索（在模拟数据中我们通过订单号模糊匹配模拟）
-        if (searchParams.productName) {
-          // 注意：在实际项目中，这里应该基于实际的商品名称字段进行搜索
-          filteredOrders = filteredOrders.filter(order => 
-            order.id.toLowerCase().includes(searchParams.productName.toLowerCase())
-          );
-        }
-        
-        // 根据收货人搜索（在模拟数据中我们通过买家名称模糊匹配模拟）
-        if (searchParams.consignee) {
-          // 注意：在实际项目中，这里应该基于实际的收货人字段进行搜索
-          filteredOrders = filteredOrders.filter(order => 
-            order.buyerName.toLowerCase().includes(searchParams.consignee.toLowerCase())
-          );
-        }
-        
-        // 根据订单来源搜索
-        if (searchParams.orderSource) {
-          const sourceMapping = {
-            'mobile': '移动端',
-            'pc': 'PC端',
-            'wechat': '微信小程序'
-          };
-          const sourceText = sourceMapping[searchParams.orderSource] || searchParams.orderSource;
-          filteredOrders = filteredOrders.filter(order => 
-            order.source.includes(sourceText)
-          );
-        }
-        
-        // 根据支付方式搜索
-        if (searchParams.paymentMethod) {
-          const paymentMapping = {
-            'wechat': '微信支付',
-            'alipay': '支付宝',
-            'cod': '货到付款'
-          };
-          const paymentText = paymentMapping[searchParams.paymentMethod] || searchParams.paymentMethod;
-          filteredOrders = filteredOrders.filter(order => 
-            order.paymentMethod.includes(paymentText)
-          );
-        }
-        
-        // 根据日期范围搜索
-        if (searchParams.dateRange && searchParams.dateRange.length === 2) {
-          const [startDate, endDate] = searchParams.dateRange;
-          filteredOrders = filteredOrders.filter(order => {
-            const orderDate = new Date(order.createdAt);
-            return orderDate >= startDate && orderDate <= endDate;
-          });
-        }
-        
-        // 如果当前有激活的状态标签，需要同时考虑状态筛选
-        if (activeTab !== 'all') {
-          filteredOrders = filteredOrders.filter(order => order.status === activeTab);
-        }
-        
+        const filteredOrders = filterOrders();
         setOrders(filteredOrders);
         message.success(`找到 ${filteredOrders.length} 条订单`);
       } catch (error) {
         console.error('搜索订单失败:', error);
         message.error('搜索订单失败，请重试');
-        setOrders(originalOrders); // 出错时显示全部订单
+        setOrders(originalOrders);
       } finally {
         setLoading(false);
       }
@@ -179,6 +200,7 @@ const OrderList = () => {
   // 重置搜索条件
   const handleReset = () => {
     setSearchParams({
+      keyword: '',
       orderId: '',
       memberName: '',
       productName: '',
@@ -196,35 +218,40 @@ const OrderList = () => {
     setActiveTab(tabKey);
     setLoading(true);
     
-    try {
-      // 简单直接的状态筛选逻辑
-      if (tabKey === 'all') {
-        // 如果有搜索参数，应用搜索条件
-        let hasSearchParams = false;
-        Object.values(searchParams).forEach(value => {
-          if (value && (typeof value === 'string' || Array.isArray(value))) {
-            hasSearchParams = true;
-          }
-        });
-        
-        if (hasSearchParams) {
-          handleSearch(); // 调用搜索函数应用搜索条件
-        } else {
-          setOrders(originalOrders); // 显示所有订单
-        }
-      } else {
-        // 只根据状态筛选，忽略其他搜索条件
-        const filteredOrders = originalOrders.filter(order => order.status === tabKey);
+    // 模拟筛选延迟
+    setTimeout(() => {
+      try {
+        const filteredOrders = filterOrders(tabKey);
         setOrders(filteredOrders);
-        message.success(`找到 ${filteredOrders.length} 条${getStatusText(tabKey)}订单`);
+        const statusText = tabKey === 'all' ? '' : getStatusText(tabKey);
+        message.success(`找到 ${filteredOrders.length} 条${statusText}订单`);
+      } catch (error) {
+        console.error('状态筛选失败:', error);
+        message.error('筛选订单失败，请重试');
+        setOrders(originalOrders);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error('状态筛选失败:', error);
-      message.error('筛选订单失败，请重试');
-      setOrders(originalOrders);
-    } finally {
-      setLoading(false);
-    }
+    }, 300);
+  };
+  
+  // 导出订单功能
+  const handleExport = () => {
+    setLoading(true);
+    
+    // 模拟导出延迟
+    setTimeout(() => {
+      try {
+        // 实际项目中，这里应该调用后端API导出订单
+        // 这里我们只做一个简单的模拟
+        message.success('订单导出成功！');
+      } catch (error) {
+        console.error('导出订单失败:', error);
+        message.error('导出订单失败，请重试');
+      } finally {
+        setLoading(false);
+      }
+    }, 500);
   };
   
   // 根据状态值获取状态文本
@@ -375,68 +402,111 @@ const OrderList = () => {
     <div className="order-list">
       {/* 搜索区域 */}
       <div className="search-area">
+        <Row gutter={16} style={{ marginBottom: '16px' }}>
+          <Col span={24}>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+              <span style={{ marginRight: '8px', whiteSpace: 'nowrap' }}>关键字:</span>
+              <Input 
+                placeholder="请输入商品名称/收货人/收货人手机/店铺名称" 
+                value={searchParams.keyword || ''} 
+                onChange={(e) => setSearchParams({...searchParams, keyword: e.target.value})} 
+                style={{ flex: 1 }}
+              />
+            </div>
+          </Col>
+        </Row>
+        
         <Row gutter={16}>
           <Col span={5}>
-            <Input 
-              placeholder="订单号" 
-              value={searchParams.orderId} 
-              onChange={(e) => setSearchParams({...searchParams, orderId: e.target.value})} 
-            />
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+              <span style={{ marginRight: '8px', whiteSpace: 'nowrap' }}>订单号:</span>
+              <Input 
+                placeholder="请输入订单号" 
+                value={searchParams.orderId} 
+                onChange={(e) => setSearchParams({...searchParams, orderId: e.target.value})} 
+                style={{ flex: 1 }}
+              />
+            </div>
           </Col>
           <Col span={5}>
-            <Input 
-              placeholder="会员名称" 
-              value={searchParams.memberName} 
-              onChange={(e) => setSearchParams({...searchParams, memberName: e.target.value})} 
-            />
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+              <span style={{ marginRight: '8px', whiteSpace: 'nowrap' }}>会员名称:</span>
+              <Input 
+                placeholder="请输入会员名称" 
+                value={searchParams.memberName} 
+                onChange={(e) => setSearchParams({...searchParams, memberName: e.target.value})} 
+                style={{ flex: 1 }}
+              />
+            </div>
           </Col>
           <Col span={5}>
-            <Input 
-              placeholder="商品名称" 
-              value={searchParams.productName} 
-              onChange={(e) => setSearchParams({...searchParams, productName: e.target.value})} 
-            />
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+              <span style={{ marginRight: '8px', whiteSpace: 'nowrap' }}>商品名称:</span>
+              <Input 
+                placeholder="请输入商品名称" 
+                value={searchParams.productName} 
+                onChange={(e) => setSearchParams({...searchParams, productName: e.target.value})} 
+                style={{ flex: 1 }}
+              />
+            </div>
           </Col>
           <Col span={5}>
-            <Input 
-              placeholder="收货人" 
-              value={searchParams.consignee} 
-              onChange={(e) => setSearchParams({...searchParams, consignee: e.target.value})} 
-            />
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+              <span style={{ marginRight: '8px', whiteSpace: 'nowrap' }}>收货人:</span>
+              <Input 
+                placeholder="请输入收货人姓名" 
+                value={searchParams.consignee} 
+                onChange={(e) => setSearchParams({...searchParams, consignee: e.target.value})} 
+                style={{ flex: 1 }}
+              />
+            </div>
           </Col>
+
         </Row>
         
         <Row gutter={16} style={{ marginTop: 16 }}>
           <Col span={5}>
-            <Select 
-              placeholder="订单来源" 
-              value={searchParams.orderSource} 
-              onChange={(value) => setSearchParams({...searchParams, orderSource: value})}
-              allowClear
-            >
-              <Option value="mobile">移动端</Option>
-              <Option value="pc">PC端</Option>
-              <Option value="wechat">微信小程序</Option>
-            </Select>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+              <span style={{ marginRight: '8px', whiteSpace: 'nowrap' }}>订单来源:</span>
+              <Select 
+                placeholder="请选择" 
+                value={searchParams.orderSource} 
+                onChange={(value) => setSearchParams({...searchParams, orderSource: value})}
+                allowClear
+                style={{ flex: 1 }}
+              >
+                <Option value="mobile">移动端</Option>
+                <Option value="pc">PC端</Option>
+                <Option value="wechat">微信小程序</Option>
+              </Select>
+            </div>
           </Col>
           <Col span={5}>
-            <Select 
-              placeholder="支付方式" 
-              value={searchParams.paymentMethod} 
-              onChange={(value) => setSearchParams({...searchParams, paymentMethod: value})}
-              allowClear
-            >
-              <Option value="wechat">微信支付</Option>
-              <Option value="alipay">支付宝</Option>
-              <Option value="cod">货到付款</Option>
-            </Select>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+              <span style={{ marginRight: '8px', whiteSpace: 'nowrap' }}>支付方式:</span>
+              <Select 
+                placeholder="请选择" 
+                value={searchParams.paymentMethod} 
+                onChange={(value) => setSearchParams({...searchParams, paymentMethod: value})}
+                allowClear
+                style={{ flex: 1 }}
+              >
+                <Option value="wechat">微信支付</Option>
+                <Option value="alipay">支付宝</Option>
+                <Option value="cod">货到付款</Option>
+              </Select>
+            </div>
           </Col>
           <Col span={8}>
-            <RangePicker 
-              placeholder={['开始时间', '结束时间']}
-              value={searchParams.dateRange}
-              onChange={(dates) => setSearchParams({...searchParams, dateRange: dates})}
-            />
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+              <span style={{ marginRight: '8px', whiteSpace: 'nowrap' }}>下单时间:</span>
+              <RangePicker 
+                placeholder={['开始时间', '结束时间']}
+                value={searchParams.dateRange}
+                onChange={(dates) => setSearchParams({...searchParams, dateRange: dates})}
+                style={{ flex: 1 }}
+              />
+            </div>
           </Col>
           <Col span={2}>
             <Button type="primary" onClick={handleSearch} style={{ width: '100%' }}>
@@ -451,41 +521,48 @@ const OrderList = () => {
         </Row>
       </div>
 
-      {/* 状态标签区域 */}
-      <div className="status-tabs">
-        <Space size="middle">
-          {statusTabs.map(tab => (
-            <Button
-              key={tab.key}
-              type={activeTab === tab.key ? 'primary' : 'default'}
-              onClick={() => handleTabChange(tab.key)}
-              className="status-tab-btn"
-              size="middle"
-              style={{
-                borderRadius: '16px',
-                borderColor: activeTab === tab.key ? '#ff4d4f' : '#d9d9d9',
-                backgroundColor: activeTab === tab.key ? '#ff4d4f' : '#fff',
-                color: activeTab === tab.key ? '#fff' : '#333',
-                padding: '4px 16px',
-                fontSize: '14px'
-              }}
-            >
-              {tab.label}
-              {tab.count !== null && <span className="tab-count" style={{marginLeft: '4px', fontSize: '12px'}}>({tab.count})</span>}
-            </Button>
-          ))}
-        </Space>
-      </div>
+      {/* 订单列表容器 - 包含标签和表格 */}
+      <div className="order-table-container">
+        {/* 状态标签区域 */}
+        <div className="status-tabs">
+          <div className="tab-list">
+            {statusTabs.map(tab => (
+              <div
+                key={tab.key}
+                className={`status-tab ${activeTab === tab.key ? 'active' : ''}`}
+                onClick={() => handleTabChange(tab.key)}
+              >
+                {tab.label}
+                {tab.count !== null && <span className="tab-count">({tab.count})</span>}
+              </div>
+            ))}
+          </div>
+        </div>
 
-      {/* 表格区域 */}
-      <Table
-        columns={columns}
-        dataSource={orders}
-        rowKey="id"
-        loading={loading}
-        pagination={{ pageSize: 20 }}
-        className="order-table"
-      />
+        {/* 导出按钮区域 */}
+        <div style={{ textAlign: 'right', marginBottom: '16px', paddingRight: '20px' }}>
+          <Button 
+            type="primary" 
+            onClick={handleExport} 
+            style={{ 
+              backgroundColor: '#1890ff', 
+              borderColor: '#1890ff' 
+            }}
+          >
+            导出订单
+          </Button>
+        </div>
+
+        {/* 表格区域 */}
+        <Table
+          columns={columns}
+          dataSource={orders}
+          rowKey="id"
+          loading={loading}
+          pagination={{ pageSize: 20 }}
+          className="order-table"
+        />
+      </div>
     </div>
   );
 };

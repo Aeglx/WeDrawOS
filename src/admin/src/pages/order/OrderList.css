@@ -1,67 +1,124 @@
 /* 订单列表页面样式 */
 .order-list {
-  padding: 20px;
+  padding: 16px;
   background: #f0f2f5;
   min-height: 100vh;
+  font-size: 12px;
 }
 
 /* 搜索区域 */
 .search-area {
   background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  margin-bottom: 16px;
+  padding: 16px;
+  border-radius: 6px;
+  margin-bottom: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-size: 12px;
+}
+
+/* 搜索区域标签文本样式 */
+.search-area span {
+  font-size: 12px !important;
+  color: #666;
 }
 
 .search-area .ant-row {
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .search-area .ant-row:last-child {
   margin-bottom: 0;
 }
 
+/* 订单列表容器 - 包含标签和表格的整体容器 */
+.order-table-container {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
 /* 状态标签区域 */
 .status-tabs {
-  background: #fff;
-  padding: 16px 20px;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 0 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* 标签列表容器 */
+.tab-list {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  min-height: 40px;
+  padding: 6px 0;
 }
 
-.status-tabs .ant-tag {
+/* 隐藏滚动条但保留功能 */
+.tab-list::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-list {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* 状态标签样式 */
+.status-tab {
   cursor: pointer;
-  font-size: 14px;
-  padding: 4px 12px;
-  transition: all 0.3s;
+  padding: 6px 12px;
+  margin-right: 6px;
+  font-size: 12px;
+  color: #666;
+  position: relative;
+  white-space: nowrap;
+  transition: color 0.3s;
 }
 
-.status-tabs .ant-tag:hover {
-  opacity: 0.8;
+/* 标签悬停效果 */
+.status-tab:hover {
+  color: #ff4d4f;
 }
 
-.status-tabs .ant-tag.active-tab {
+/* 激活状态样式 */
+.status-tab.active {
+  color: #ff4d4f;
+  font-weight: 500;
+}
+
+/* 激活状态下划线 */
+.status-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 12px;
+  right: 12px;
+  height: 2px;
   background-color: #ff4d4f;
-  color: #fff;
-  font-weight: 600;
 }
 
-.status-tabs .tab-count {
+/* 标签数量样式 */
+.tab-count {
   margin-left: 4px;
+  font-size: 12px;
   font-weight: normal;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .status-tab {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
 }
 
 /* 表格样式 */
 .order-table {
-  background: #fff;
-  border-radius: 8px;
+  width: 100%;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-size: 12px;
 }
 
 .order-table .ant-table-thead > tr > th {
@@ -69,12 +126,14 @@
   font-weight: 600;
   color: #333;
   border-bottom: 1px solid #e8e8e8;
-  padding: 12px 16px;
+  padding: 8px 12px;
+  font-size: 12px;
 }
 
 .order-table .ant-table-tbody > tr > td {
-  padding: 12px 16px;
+  padding: 8px 12px;
   border-bottom: 1px solid #f0f0f0;
+  font-size: 12px;
 }
 
 .order-table .ant-table-tbody > tr:hover {
@@ -83,16 +142,16 @@
 
 /* 标签样式 */
 .ant-tag {
-  font-size: 12px;
-  padding: 2px 8px;
-  border-radius: 4px;
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 3px;
 }
 
 /* 按钮样式 */
 .ant-btn {
-  font-size: 14px;
-  height: 32px;
-  padding: 4px 15px;
+  font-size: 12px;
+  height: 28px;
+  padding: 2px 12px;
 }
 
 .ant-btn-primary {
@@ -109,8 +168,8 @@
 .ant-input,
 .ant-select,
 .ant-picker {
-  font-size: 14px;
-  height: 32px;
+  font-size: 12px;
+  height: 28px;
 }
 
 .ant-input {
