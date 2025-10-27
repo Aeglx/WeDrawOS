@@ -262,7 +262,8 @@ const options = {
   apis: [
     path.join(__dirname, '../**/routes/**/*.js'),
     path.join(__dirname, '../**/controllers/**/*.js'),
-    path.join(__dirname, '../**/services/**/*.js')
+    path.join(__dirname, '../**/services/**/*.js'),
+    path.join(__dirname, '../ai-service/**/*.js')
   ]
 };
 

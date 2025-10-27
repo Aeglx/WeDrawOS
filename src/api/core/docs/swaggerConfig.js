@@ -413,7 +413,8 @@ const options = {
     path.join(__dirname, '../../seller-api/routes/**/*.js'),
     path.join(__dirname, '../../admin-api/routes/**/*.js'),
     path.join(__dirname, '../../im-api/routes/**/*.js'),
-    path.join(__dirname, '../../common-api/routes/**/*.js')
+    path.join(__dirname, '../../common-api/routes/**/*.js'),
+    path.join(__dirname, '../../ai-service/**/*.js')
   ]
 };
 

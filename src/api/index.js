@@ -33,6 +33,12 @@ const path = require('path');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// 导入AI服务路由
+const aiRoutes = require('./ai-service/aiRoutes');
+// 使用AI服务路由，挂载到/api/ai路径下
+app.use('/api/ai', aiRoutes);
+console.log('✅ AI服务路由已注册到 /api/ai 路径')
+
 // 基本的Swagger配置
 function setupBasicSwagger(app) {
   console.log('📚 设置基础API文档路由');
@@ -592,6 +598,18 @@ app.get('/api/info', (req, res) => {
 
 // 注册API路由
 function registerApiRoutes(app) {
+  // 先单独注册AI服务路由
+  try {
+    const aiRoutes = require('./ai-service/aiRoutes');
+    if (aiRoutes) {
+      app.use('/api/ai', aiRoutes);
+      console.log('✅ AI服务路由已注册到 /api/ai 路径');
+    }
+  } catch (error) {
+    console.warn('⚠️  加载AI服务路由失败:', error.message);
+  }
+  
+  // 注册其他API路由
   const apiDirs = [
     'common-api',
     'buyer-api',
