@@ -251,7 +251,7 @@ const RechargeRecord = () => {
               type="primary"
               icon={<SearchOutlined />}
               onClick={handleSearch}
-              style={{ width: 80, height: 32, backgroundColor: '#ff4d4f', borderColor: '#ff4d4f' }}
+              style={{ width: 80, height: 32, backgroundColor: '#ff4d4f', borderColor: '#ff4d4f', color: '#fff' }}
             >
               搜索
             </Button>
