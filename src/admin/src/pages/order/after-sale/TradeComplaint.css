@@ -1,0 +1,68 @@
+.trade-complaint-container {
+  padding: 20px;
+  background: #fff;
+  border-radius: 4px;
+}
+
+.search-section {
+  background: #fafafa;
+  padding: 16px;
+  border-radius: 4px;
+  border: 1px solid #f0f0f0;
+}
+
+.complaint-detail p {
+  margin-bottom: 12px;
+  line-height: 1.8;
+}
+
+.table-section {
+  background: #fff;
+}
+
+/* 优化表格样式 */
+.trade-complaint-container .ant-table {
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.trade-complaint-container .ant-table-thead > tr > th {
+  background: #fafafa;
+  font-weight: 600;
+}
+
+.trade-complaint-container .ant-table-tbody > tr:hover {
+  background: #fafafa;
+}
+
+/* 优化按钮样式 */
+.trade-complaint-container .ant-btn-primary {
+  background-color: #ff0000 !important;
+  border-color: #ff0000 !important;
+  color: #ffffff !important;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0 16px;
+}
+
+.trade-complaint-container .ant-btn-primary:hover {
+  background-color: #ff7875 !important;
+  border-color: #ff7875 !important;
+  color: #ffffff !important;
+}
+
+/* 优化输入框样式 */
+.trade-complaint-container .ant-input {
+  border-radius: 4px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .search-section {
+    padding: 12px;
+  }
+  
+  .trade-complaint-container {
+    padding: 12px;
+  }
+}

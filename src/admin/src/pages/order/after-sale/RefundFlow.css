@@ -1,0 +1,131 @@
+.refund-flow-container {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.search-area {
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.table-container {
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  padding: 16px;
+}
+
+/* 表格行样式 */
+.even-row {
+  background-color: #fafafa;
+}
+
+.odd-row {
+  background-color: #ffffff;
+}
+
+/* 状态标签样式 */
+.status-tag {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-success {
+  background-color: #f6ffed;
+  color: #52c41a;
+  border: 1px solid #b7eb8f;
+}
+
+.status-processing {
+  background-color: #e6f7ff;
+  color: #1890ff;
+  border: 1px solid #91d5ff;
+}
+
+.status-error {
+  background-color: #fff2f0;
+  color: #ff4d4f;
+  border: 1px solid #ffccc7;
+}
+
+.status-default {
+  background-color: #f5f5f5;
+  color: #8c8c8c;
+  border: 1px solid #d9d9d9;
+}
+
+/* 搜索区域样式增强 */
+.search-area .ant-col {
+  display: flex;
+  align-items: center;
+}
+
+.search-area label {
+  margin-right: 8px;
+  white-space: nowrap;
+}
+
+/* 表格列样式 */
+.ant-table-thead > tr > th {
+  background-color: #fafafa;
+  font-weight: 600;
+  color: #262626;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.ant-table-tbody > tr > td {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background-color: #f5f5f5;
+}
+
+/* 分页样式 */
+.ant-pagination {
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* 输入框和选择框样式统一 */
+.ant-input,
+.ant-select-selector {
+  border-radius: 4px;
+}
+
+/* 按钮样式强调 */
+.ant-btn-primary {
+  background-color: #ff0000 !important;
+  border-color: #ff0000 !important;
+  color: #ffffff !important;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0 16px;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.ant-btn-primary:hover {
+  background-color: #ff7875 !important;
+  border-color: #ff7875 !important;
+  opacity: 0.9;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .refund-flow-container {
+    padding: 12px;
+  }
+  
+  .search-area {
+    padding: 12px;
+  }
+  
+  .ant-table {
+    overflow-x: auto;
+  }
+}

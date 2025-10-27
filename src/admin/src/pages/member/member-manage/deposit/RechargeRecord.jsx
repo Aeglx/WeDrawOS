@@ -248,11 +248,11 @@ const RechargeRecord = () => {
         <Row gutter={16} align="middle">
           <Col>
             <Button
-              type="primary"
-              icon={<SearchOutlined />}
-              onClick={handleSearch}
-              style={{ width: 80, height: 32, backgroundColor: '#ff4d4f', borderColor: '#ff4d4f', color: '#fff' }}
-            >
+            type="primary"
+            icon={<SearchOutlined />}
+            onClick={handleSearch}
+            style={{ width: 80, height: 32, backgroundColor: '#ff0000', borderColor: '#ff0000', color: '#ffffff !important', fontWeight: '500', fontSize: '14px', padding: '0 16px' }}
+          >
               搜索
             </Button>
           </Col>

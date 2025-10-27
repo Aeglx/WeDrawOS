@@ -132,20 +132,25 @@
 
 /* 搜索按钮样式 */
 .searchButton {
-  background-color: #ff4d4f;
-  border-color: #ff4d4f;
-  color: #fff !important;
+  width: 80px;
+  height: 32px;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #ff0000;
+  border-color: #ff0000;
+  color: #ffffff !important;
+  margin-left: 16px;
 }
 
 .searchButton:hover {
-  background-color: #ff7875;
-  border-color: #ff7875;
+  background-color: #ff4d4f;
+  border-color: #ff4d4f;
 }
 
 .searchButton:focus {
-  background-color: #ff7875;
-  border-color: #ff7875;
-  box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
+  background-color: #d32f2f;
+  border-color: #d32f2f;
+  box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.2);
 }
 
 /* 分页样式 */

@@ -10,7 +10,7 @@ body {
   font-size: 14px;
   line-height: 1.5;
   color: #333;
-  background-color: #f0f2f5;
+  background-color: #f5f5f5;
 }
 
 #root {
@@ -44,6 +44,7 @@ a {
 
 a:hover {
   color: #40a9ff;
+  text-decoration: underline;
 }
 
 /* 按钮通用样式 */
@@ -60,6 +61,22 @@ a:hover {
   border: 1px solid transparent;
   border-radius: 4px;
   transition: all 0.3s;
+}
+
+/* 全局主按钮样式 */
+.ant-btn-primary {
+  background-color: #ff0000 !important;
+  border-color: #ff0000 !important;
+  color: #ffffff !important;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0 16px;
+}
+
+.ant-btn-primary:hover {
+  background-color: #ff7875 !important;
+  border-color: #ff7875 !important;
+  color: #ffffff !important;
 }
 
 /* 布局容器 */

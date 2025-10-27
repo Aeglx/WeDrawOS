@@ -52,19 +52,21 @@
 .search-area .ant-btn-primary {
   width: 80px;
   height: 32px;
-  background-color: #ff4d4f;
-  border-color: #ff4d4f;
+  background-color: #ff0000 !important;
+  border-color: #ff0000 !important;
   border-radius: 4px;
   font-size: 14px;
+  font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff !important;
+  color: #ffffff !important;
 }
 
 .search-area .ant-btn-primary:hover {
-  background-color: #ff7875;
-  border-color: #ff7875;
+  background-color: #ff7875 !important;
+  border-color: #ff7875 !important;
+  color: #ffffff !important;
 }
 
 /* 订单列表容器 */

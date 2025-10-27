@@ -299,9 +299,13 @@ const VirtualOrder = () => {
               style={{ 
                 width: 80, 
                 height: 32, 
-                backgroundColor: '#ff4d4f', 
-                borderColor: '#ff4d4f',
-                color: '#fff'
+                backgroundColor: '#ff0000', 
+                borderColor: '#ff0000',
+                color: '#ffffff',
+                '&:hover': {
+                  backgroundColor: '#ff4d4f',
+                  borderColor: '#ff4d4f'
+                }
               }}
             >
               搜索

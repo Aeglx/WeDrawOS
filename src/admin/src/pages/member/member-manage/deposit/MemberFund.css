@@ -117,10 +117,13 @@
 
 /* 搜索按钮样式 */
 .ant-btn-primary {
-  background-color: #ff4d4f !important;
-  border-color: #ff4d4f !important;
+  background-color: #ff0000 !important;
+  border-color: #ff0000 !important;
   height: 32px;
-  color: #fff !important;
+  color: #ffffff !important;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0 16px;
 }
 
 .ant-btn-primary:hover {

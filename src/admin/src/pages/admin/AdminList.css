@@ -75,12 +75,14 @@
 
 /* 按钮样式 */
 .ant-btn-primary {
-  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
-  border: none;
+  background-color: #ff0000 !important;
+  border-color: #ff0000 !important;
+  color: #ffffff !important;
 }
 
 .ant-btn-primary:hover {
-  background: linear-gradient(135deg, #40a9ff 0%, #1890ff 100%);
+  background-color: #ff7875 !important;
+  border-color: #ff7875 !important;
 }
 
 /* 搜索框样式 */

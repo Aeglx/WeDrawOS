@@ -210,13 +210,14 @@ const AdminList = () => {
         <h2>管理员管理</h2>
         <div className="header-actions">
           <Search
-            placeholder="搜索用户名"
+            placeholder="搜索管理员名称"
             allowClear
             enterButton={<SearchOutlined />}
             size="middle"
             value={searchText}
             onChange={(e) => handleSearch(e.target.value)}
-            style={{ width: 250, marginRight: 16 }}
+            style={{ width: 250 }}
+            buttonStyle={{ backgroundColor: '#ff0000', borderColor: '#ff0000', color: '#ffffff' }}
           />
           <Button type="primary" icon={<PlusOutlined />} onClick={handleAdd}>
             添加管理员

@@ -278,7 +278,7 @@ const WithdrawApply = () => {
             type="primary"
             icon={<SearchOutlined />}
             onClick={handleSearch}
-            size="middle"
+            style={{ backgroundColor: '#ff0000', borderColor: '#ff0000', color: '#ffffff' }}
             className="searchButton"
           >
             搜索

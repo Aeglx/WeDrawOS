@@ -97,6 +97,22 @@
   border-radius: 0 4px 4px 0;
 }
 
+/* 按钮样式 */
+.ant-btn-primary {
+  background-color: #ff0000 !important;
+  border-color: #ff0000 !important;
+  color: #ffffff !important;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0 16px;
+  height: 32px;
+}
+
+.ant-btn-primary:hover {
+  background-color: #ff7875 !important;
+  border-color: #ff7875 !important;
+}
+
 /* 分页样式 */
 .ant-pagination {
   margin: 0;

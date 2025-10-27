@@ -1,0 +1,231 @@
+.after-sale-reasons-container {
+  padding: 20px;
+  background: #fff;
+  min-height: 100vh;
+}
+
+/* 标签页样式 */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 20px;
+  padding-bottom: 1px;
+}
+
+.tab {
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #666;
+  position: relative;
+  transition: color 0.3s;
+}
+
+.tab:hover {
+  color: #ff4d4f;
+}
+
+.tab.active {
+  color: #ff4d4f;
+  font-weight: 500;
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #ff4d4f;
+}
+
+/* 添加按钮容器 */
+.add-button-container {
+  margin-bottom: 16px;
+}
+
+/* 表格样式 */
+.ant-table {
+  font-size: 12px;
+}
+
+.ant-table-thead > tr > th {
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+  font-weight: normal;
+  color: #333;
+  font-size: 12px;
+  padding: 12px;
+}
+
+.ant-table-tbody > tr > td {
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+  font-size: 12px;
+  padding: 12px;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background-color: #fff;
+}
+
+.ant-table-tbody > tr > td:last-child {
+  padding-left: 12px;
+}
+
+/* 分页样式 */
+.ant-pagination {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 12px;
+}
+
+.ant-pagination-total-text {
+  color: #666;
+  font-size: 12px;
+  margin-right: 8px;
+}
+
+.ant-pagination-item {
+  font-size: 12px;
+  min-width: 28px;
+  height: 28px;
+  line-height: 28px;
+  margin: 0 4px;
+  border-radius: 0;
+  border: 1px solid #d9d9d9;
+}
+
+.ant-pagination-item a {
+  font-size: 12px;
+  color: #333;
+}
+
+.ant-pagination-item:hover {
+  border-color: #ff4d4f;
+}
+
+.ant-pagination-item:hover a {
+  color: #ff4d4f;
+}
+
+.ant-pagination-item-active {
+  border-color: #ff4d4f;
+  background-color: #fff;
+}
+
+.ant-pagination-item-active a {
+  color: #ff4d4f;
+  font-weight: 500;
+}
+
+.ant-pagination-prev, .ant-pagination-next {
+  border-radius: 0;
+  border: 1px solid #d9d9d9;
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  margin: 0 4px;
+}
+
+.ant-pagination-prev:hover, .ant-pagination-next:hover {
+  border-color: #ff4d4f;
+  color: #ff4d4f;
+}
+
+.ant-pagination-prev:hover .ant-pagination-item-link,
+.ant-pagination-next:hover .ant-pagination-item-link {
+  color: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+.ant-pagination-item-link {
+  border-radius: 0;
+  border: 1px solid #d9d9d9;
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ant-pagination-options {
+  margin-left: 8px;
+}
+
+.ant-pagination-options-size-changer {
+  font-size: 12px;
+  margin-right: 8px;
+}
+
+.ant-pagination-jump-prev .ant-pagination-item-container .ant-pagination-item-link-icon,
+.ant-pagination-jump-next .ant-pagination-item-container .ant-pagination-item-link-icon {
+  font-size: 12px;
+}
+
+.ant-pagination-jump-prev:hover .ant-pagination-item-container .ant-pagination-item-link-icon,
+.ant-pagination-jump-next:hover .ant-pagination-item-container .ant-pagination-item-link-icon {
+  color: #ff4d4f;
+}
+
+/* 按钮样式 */
+.ant-btn {
+  font-size: 12px;
+  height: 32px;
+  padding: 0 15px;
+  border-radius: 0;
+}
+
+.ant-btn-primary {
+  background-color: #ff0000 !important;
+  border-color: #ff0000 !important;
+  color: #ffffff !important;
+}
+
+.ant-btn-primary:hover {
+  background-color: #ff7875 !important;
+  border-color: #ff7875 !important;
+  color: #ffffff !important;
+}
+
+.ant-btn-link {
+  color: #ff4d4f;
+  padding: 0 4px;
+  font-size: 12px;
+}
+
+.ant-btn-link:hover {
+  color: #ff7875;
+  border-color: transparent;
+}
+
+/* 去除表格边框圆角 */
+.ant-table-wrapper {
+  border-radius: 0;
+  border: 1px solid #f0f0f0;
+  border-bottom: none;
+}
+
+.ant-table {
+  border-radius: 0;
+}
+
+.ant-table-thead > tr:first-child > th:first-child {
+  border-radius: 0;
+}
+
+.ant-table-thead > tr:first-child > th:last-child {
+  border-radius: 0;
+}
+
+.ant-table-tbody > tr:last-child > td:last-child {
+  border-radius: 0;
+}
+
+.ant-table-tbody > tr:last-child > td:first-child {
+  border-radius: 0;
+}

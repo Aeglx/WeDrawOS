@@ -247,4 +247,9 @@
 .ant-input-search-button {
   height: 36px;
   border-radius: 0 4px 4px 0;
+  background-color: #ff0000 !important;
+  border-color: #ff0000 !important;
+  color: #ffffff !important;
+  font-weight: 500;
+  font-size: 14px;
 }

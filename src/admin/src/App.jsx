@@ -24,6 +24,10 @@ import PointsHistory from './pages/member/member-manage/points/PointsHistory';
 import MemberFund from './pages/member/member-manage/deposit/MemberFund';
 import RecycleBin from './pages/recyclebin/RecycleBin';
 import ReviewList from './pages/review/ReviewList';
+import AfterSaleReasons from './pages/order/after-sale/AfterSaleReasons';
+import TradeComplaint from './pages/order/after-sale/TradeComplaint';
+import CollectionRecord from './pages/order/flow/CollectionRecord';
+import RefundFlow from './pages/order/after-sale/RefundFlow';
 
 // 导入布局组件
 import MainLayout from './components/layout/MainLayout';
@@ -63,10 +67,10 @@ const App = () => {
                 <Route path="/order/product-order" element={<OrderList />} />
                 <Route path="/order/virtual-order" element={<VirtualOrder />} />
                 <Route path="/order/after-sale/after-sale-manage" element={<AfterSales />} />
-                <Route path="/order/after-sale/trade-complaint" element={<PlaceholderPage title="交易投诉" />} />
-                <Route path="/order/after-sale/after-sale-reason" element={<PlaceholderPage title="售后原因" />} />
-                <Route path="/order/flow/collection-record" element={<PlaceholderPage title="收款记录" />} />
-                <Route path="/order/flow/refund-flow" element={<PlaceholderPage title="退款流水" />} />
+                <Route path="/order/after-sale/trade-complaint" element={<TradeComplaint />} />
+                <Route path="/order/after-sale/after-sale-reason" element={<AfterSaleReasons />} />
+                <Route path="/order/flow/collection-record" element={<CollectionRecord />} />
+                <Route path="/order/flow/refund-flow" element={<RefundFlow />} />
                 
                 {/* 商品相关路由 */}
                 <Route path="/product/product-manage/platform-product" element={<ProductList />} />

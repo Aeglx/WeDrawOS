@@ -139,8 +139,9 @@
   max-height: 28px !important;
   font-size: 12px !important;
   padding: 0 16px !important;
-  background-color: #1890ff !important;
-  border-color: #1890ff !important;
+  background-color: #ff0000 !important;
+  border-color: #ff0000 !important;
+  color: #ffffff !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -292,13 +293,15 @@
 
 /* 按钮样式调整 */
 .ant-btn-primary {
-  background-color: #ff4d4f;
-  border-color: #ff4d4f;
+  background-color: #ff0000 !important;
+  border-color: #ff0000 !important;
+  color: #ffffff !important;
 }
 
 .ant-btn-primary:hover {
-  background-color: #ff7875;
-  border-color: #ff7875;
+  background-color: #ff7875 !important;
+  border-color: #ff7875 !important;
+  color: #ffffff !important;
 }
 
 .ant-btn-link {

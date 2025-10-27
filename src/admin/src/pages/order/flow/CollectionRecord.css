@@ -1,0 +1,150 @@
+/* 收款记录页面样式 */
+.collection-record {
+  padding: 20px;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+/* 搜索区域样式 */
+.search-area {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+/* 表格样式 */
+.collection-table {
+  background-color: #fff;
+}
+
+.collection-table .ant-table-thead > tr > th {
+  background-color: #fafafa;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 12px 16px;
+}
+
+.collection-table .ant-table-tbody > tr > td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #666;
+}
+
+.collection-table .ant-table-tbody > tr:hover {
+  background-color: #fafafa;
+}
+
+/* 支付方式样式 */
+.payment-method {
+  color: #1890ff;
+}
+
+/* 金额样式 */
+.amount {
+  color: #333;
+  font-weight: 500;
+}
+
+/* 状态标签样式 */
+.status-success {
+  background-color: #f6ffed;
+  border-color: #b7eb8f;
+  color: #52c41a;
+}
+
+.status-pending {
+  background-color: #fff1f0;
+  border-color: #ffccc7;
+  color: #ff4d4f;
+}
+
+/* 分页样式 */
+.pagination-area {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.pagination-area .ant-pagination {
+  margin: 0;
+}
+
+.pagination-area .ant-pagination-total-text {
+  color: #666;
+  font-size: 14px;
+  margin-right: 16px;
+}
+
+/* 分页按钮样式 */
+.pagination-area .ant-pagination-item-active a {
+  color: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+.pagination-area .ant-pagination-item-active:hover a {
+  color: #ff7875;
+  border-color: #ff7875;
+}
+
+.pagination-area .ant-pagination-item:hover a {
+  color: #ff4d4f;
+}
+
+.pagination-area .ant-pagination-prev:hover .ant-pagination-item-link,
+.pagination-area .ant-pagination-next:hover .ant-pagination-item-link {
+  color: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+/* 响应式调整 */
+@media (max-width: 1200px) {
+  .search-area {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 992px) {
+  .collection-record {
+    padding: 16px;
+  }
+  
+  .search-area {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .search-area > div {
+    margin-bottom: 12px;
+  }
+  
+  .collection-table {
+    font-size: 13px;
+  }
+  
+  .collection-table .ant-table-thead > tr > th,
+  .collection-table .ant-table-tbody > tr > td {
+    padding: 8px 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .collection-record {
+    padding: 12px;
+  }
+  
+  .pagination-area {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .total-text {
+    order: 2;
+  }
+  
+  .ant-pagination {
+    order: 1;
+  }
+}

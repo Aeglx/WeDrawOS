@@ -319,9 +319,12 @@ const RecycleBin = () => {
               style={{ 
                 width: 80, 
                 height: 32, 
-                backgroundColor: '#ff4d4f', 
-                borderColor: '#ff4d4f',
-                color: '#fff'
+                backgroundColor: '#ff0000', 
+                borderColor: '#ff0000',
+                color: '#ffffff !important',
+                fontWeight: '500',
+                fontSize: '14px',
+                padding: '0 16px'
               }}
               onClick={handleSearch}
             >

@@ -1,35 +1,90 @@
+/* 全局字体设置 */
+.product-list * {
+  font-size: 12px !important;
+}
+
 /* 商品列表页面样式 */
 .product-list {
-  padding: 0;
+  padding: 16px;
+  background: #fff;
 }
 
-/* 页面头部 */
-.product-list-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #e8e8e8;
-  flex-wrap: wrap;
-  gap: 16px;
+/* 搜索区域样式 */
+.search-area {
+  background: #fff;
+  padding: 16px;
+  border-radius: 4px;
+  margin-bottom: 16px;
 }
 
-.product-list-header h2 {
-  font-size: 20px;
-  font-weight: 600;
+.search-item:last-child {
+  margin-right: 0;
+}
+
+.search-label {
+  margin-right: 8px;
+  font-size: 12px !important;
   color: #333;
-  margin: 0;
+  font-weight: normal;
+  min-width: auto;
+  text-align: left;
 }
 
-.header-actions {
+/* 移除不需要的旧样式 */
+
+/* 状态标签区域 */
+.status-tabs {
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 16px;
+  background-color: #fff;
+  padding: 4px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
-/* 表格样式 */
+.status-tab {
+  padding: 8px 16px;
+  margin-right: 24px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #666;
+  position: relative;
+}
+
+.status-tab:hover {
+  color: #1890ff;
+}
+
+.status-tab.active {
+  color: #ff4d4f;
+  font-weight: 500;
+}
+
+.status-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #ff4d4f;
+}
+
+/* 批量操作区域 */
+.batch-operations {
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.batch-operations .ant-btn {
+  font-size: 12px !important;
+  padding: 4px 16px;
+  height: 28px;
+}
+
+/* 商品表格 */
 .product-table {
   background: #fff;
   border-radius: 8px;
@@ -41,6 +96,12 @@
   font-weight: 600;
   color: #333;
   border-bottom: 1px solid #e8e8e8;
+  padding: 12px;
+}
+
+.product-table .ant-table-tbody > tr > td {
+  padding: 12px;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .product-table .ant-table-tbody > tr:hover {
@@ -51,100 +112,105 @@
 .ant-tag {
   font-size: 12px;
   padding: 2px 8px;
+  margin: 0;
 }
 
-/* 按钮样式 */
-.ant-btn {
-  font-size: 14px;
+/* 操作链接样式 */
+.product-table a {
+  color: #1890ff;
+  margin-right: 16px;
 }
 
-.ant-btn-link {
-  padding: 4px 8px;
+.product-table a:hover {
+  color: #40a9ff;
 }
 
-.ant-btn-primary {
-  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
-  border: none;
+/* 复选框样式 */
+.product-table .ant-checkbox-wrapper {
+  margin: 0;
 }
 
-.ant-btn-primary:hover {
-  background: linear-gradient(135deg, #40a9ff 0%, #1890ff 100%);
-}
-
-/* 筛选器样式 */
-.ant-select {
-  font-size: 14px;
-}
-
-/* 搜索框样式 */
-.ant-input-search {
-  width: 300px;
-}
-
-.ant-input-search .ant-input {
-  border-radius: 6px;
-}
-
-/* 价格和库存显示 */
-.price-cell {
-  font-weight: 500;
+/* 价格样式 */
+.product-table .ant-table-tbody > tr > td:nth-child(5) {
   color: #ff4d4f;
-}
-
-.stock-cell {
   font-weight: 500;
 }
 
-.stock-low {
-  color: #ff4d4f;
+/* 分页样式 */
+.product-table .ant-pagination {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.product-table .ant-pagination-total-text {
+  margin-right: 16px;
+  color: #666;
 }
 
 /* 响应式设计 */
 @media (max-width: 1200px) {
-  .header-actions {
-    justify-content: flex-start;
+  .search-row {
+    flex-wrap: wrap;
   }
   
-  .product-list-header {
-    flex-direction: column;
-    align-items: flex-start;
+  .search-item {
+    margin-bottom: 12px;
+  }
+  
+  .search-row:last-child .search-item {
+    margin-bottom: 0;
+  }
+  
+  .status-tabs {
+    flex-wrap: wrap;
+  }
+  
+  .status-tab {
+    margin-bottom: 8px;
   }
 }
 
 @media (max-width: 768px) {
-  .header-actions {
-    width: 100%;
-    flex-direction: column;
-    align-items: stretch;
+  .product-list {
+    padding: 8px;
   }
   
-  .ant-select {
-    width: 100%;
-    margin-right: 0;
+  .search-area {
+    padding: 12px;
   }
   
-  .ant-input-search {
+  .search-item {
     width: 100%;
     margin-right: 0;
+    margin-bottom: 16px;
   }
-}
-
-@media (max-width: 480px) {
-  .product-list-header h2 {
-    font-size: 18px;
+  
+  .search-label {
+    min-width: 70px;
   }
-}
-
-/* 加载状态 */
-.ant-table-loading {
-  min-height: 400px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* 操作按钮组 */
-.action-buttons {
-  display: flex;
-  gap: 8px;
+  
+  .search-item .ant-input,
+  .search-item .ant-select {
+    width: calc(100% - 78px) !important;
+  }
+  
+  .batch-operations {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .batch-operations .ant-btn {
+    margin-bottom: 8px;
+  }
+  
+  .product-table {
+    font-size: 12px;
+  }
+  
+  .product-table .ant-table-thead > tr > th,
+  .product-table .ant-table-tbody > tr > td {
+    padding: 8px 4px;
+  }
 }

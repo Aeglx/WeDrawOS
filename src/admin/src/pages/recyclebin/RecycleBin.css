@@ -117,6 +117,16 @@
   padding: 0 12px;
 }
 
+/* 通用主按钮样式 */
+.ant-btn-primary {
+  background-color: #ff0000 !important;
+  border-color: #ff0000 !important;
+  color: #ffffff !important;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0 16px;
+}
+
 /* 操作按钮特殊样式 */
 .ant-table .ant-btn {
   height: 28px;
@@ -150,27 +160,27 @@
 }
 
 /* 删除按钮 - 红色 */
-.ant-table .ant-btn[style*="background-color: #ff4d4f"],
-.ant-btn[style*="background-color: #ff4d4f"],
+.ant-table .ant-btn[style*="background-color: #ff0000"],
+.ant-btn[style*="background-color: #ff0000"],
 .search-bar .ant-btn {
-  background-color: #ff4d4f !important;
-  border-color: #ff4d4f !important;
-  color: #fff !important;
+  background-color: #ff0000 !important;
+  border-color: #ff0000 !important;
+  color: #ffffff !important;
 }
 
-.ant-table .ant-btn[style*="background-color: #ff4d4f"]:hover {
+.ant-table .ant-btn[style*="background-color: #ff0000"]:hover {
   background-color: #ff7875 !important;
   border-color: #ff7875 !important;
 }
 
 /* 搜索按钮和其他红色按钮 - 红色 */
-.ant-btn[style*="background-color: #ff4d4f"] {
-  background-color: #ff4d4f !important;
-  border-color: #ff4d4f !important;
-  color: #fff !important;
+.ant-btn[style*="background-color: #ff0000"] {
+  background-color: #ff0000 !important;
+  border-color: #ff0000 !important;
+  color: #ffffff !important;
 }
 
-.ant-btn[style*="background-color: #ff4d4f"]:hover {
+.ant-btn[style*="background-color: #ff0000"]:hover {
   background-color: #ff7875 !important;
   border-color: #ff7875 !important;
 }
