@@ -72,8 +72,58 @@ const ProductList = () => {
 
   // 处理搜索
   const handleSearch = () => {
-    message.info('搜索功能开发中');
-    // 这里可以实现搜索逻辑
+    setLoading(true);
+    try {
+      // 模拟API请求延迟
+      setTimeout(() => {
+        // 根据搜索参数过滤商品
+        let filteredProducts = generateMockProducts();
+        
+        // 商品名称搜索
+        if (searchParams.productName) {
+          const keyword = searchParams.productName.toLowerCase();
+          filteredProducts = filteredProducts.filter(product => 
+            product.name.toLowerCase().includes(keyword)
+          );
+        }
+        
+        // 商品编号搜索
+        if (searchParams.productCode) {
+          filteredProducts = filteredProducts.filter(product => 
+            product.productId.includes(searchParams.productCode)
+          );
+        }
+        
+        // 店铺名称搜索（在实际应用中会有店铺字段）
+        if (searchParams.shopName) {
+          // 这里仅作为示例，实际应根据数据结构调整
+          message.info(`按店铺名称搜索: ${searchParams.shopName}`);
+        }
+        
+        // 销售模式筛选
+        if (searchParams.salesMode) {
+          filteredProducts = filteredProducts.filter(product => 
+            product.salesMode.toLowerCase() === searchParams.salesMode.toLowerCase()
+          );
+        }
+        
+        // 商品类型筛选
+        if (searchParams.productType) {
+          filteredProducts = filteredProducts.filter(product => 
+            product.productType.toLowerCase() === searchParams.productType.toLowerCase()
+          );
+        }
+        
+        // 更新商品列表
+        setProducts(filteredProducts);
+        message.success(`搜索完成，找到 ${filteredProducts.length} 个商品`);
+        setLoading(false);
+      }, 500);
+    } catch (error) {
+      console.error('Search error:', error);
+      message.error('搜索失败，请重试');
+      setLoading(false);
+    }
   };
 
   // 处理批量操作
@@ -192,75 +242,93 @@ const ProductList = () => {
     <div className="product-list">
       {/* 搜索区域 - 严格按照参考截图样式，使用Row和Col实现响应式布局 */}
       <div className="search-area" style={{ padding: '20px', backgroundColor: '#fff', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '24px' }}>
-        <Row gutter={24} align="middle" wrap>
-          <Col>
-            <span style={{ marginRight: '8px', color: '#666' }}>商品名称</span>
-            <Input 
-              placeholder="请输入商品名称" 
-              value={searchParams.productName}
-              onChange={(e) => setSearchParams({...searchParams, productName: e.target.value})}
-              style={{ width: 180, height: 32, fontSize: '14px' }}
-            />
+        <Row gutter={[24, 16]} align="middle" wrap>
+          <Col span={24}>
+            <Row gutter={24} align="middle" wrap>
+              <Col>
+                <span style={{ marginRight: '8px', color: '#666' }}>商品名称</span>
+                <Input 
+                  placeholder="请输入商品名称" 
+                  value={searchParams.productName}
+                  onChange={(e) => setSearchParams({...searchParams, productName: e.target.value})}
+                  style={{ width: 180, height: 32, fontSize: '14px' }}
+                />
+              </Col>
+              <Col>
+                <span style={{ marginRight: '8px', color: '#666' }}>商品编号</span>
+                <Input 
+                  placeholder="请输入商品编号" 
+                  value={searchParams.productCode}
+                  onChange={(e) => setSearchParams({...searchParams, productCode: e.target.value})}
+                  style={{ width: 150, height: 32, fontSize: '14px' }}
+                />
+              </Col>
+              <Col>
+                <span style={{ marginRight: '8px', color: '#666' }}>店铺名称</span>
+                <Input 
+                  placeholder="请输入店铺名称" 
+                  value={searchParams.shopName}
+                  onChange={(e) => setSearchParams({...searchParams, shopName: e.target.value})}
+                  style={{ width: 150, height: 32, fontSize: '14px' }}
+                />
+              </Col>
+            </Row>
           </Col>
-          <Col>
-            <span style={{ marginRight: '8px', color: '#666' }}>商品编号</span>
-            <Input 
-              placeholder="请输入商品编号" 
-              value={searchParams.productCode}
-              onChange={(e) => setSearchParams({...searchParams, productCode: e.target.value})}
-              style={{ width: 150, height: 28 }}
-            />
-          </Col>
-          <Col>
-            <span style={{ marginRight: '8px', color: '#666' }}>店铺名称</span>
-            <Input 
-              placeholder="请输入店铺名称" 
-              value={searchParams.shopName}
-              onChange={(e) => setSearchParams({...searchParams, shopName: e.target.value})}
-              style={{ width: 150, height: 28 }}
-            />
-          </Col>
-          <Col>
-            <span style={{ marginRight: '8px', color: '#666' }}>销售模式</span>
-            <Select 
-              placeholder="全部" 
-              style={{ width: 120, height: 32, fontSize: '14px' }}
-              value={searchParams.salesMode}
-              onChange={(value) => setSearchParams({...searchParams, salesMode: value})}
-            >
-              <Option value="">全部</Option>
-              <Option value="retail">零售</Option>
-              <Option value="wholesale">批发</Option>
-            </Select>
-          </Col>
-          <Col>
-            <span style={{ marginRight: '8px', color: '#666' }}>商品类型</span>
-            <Select 
-              placeholder="全部" 
-              style={{ width: 120, height: 28 }}
-              value={searchParams.productType}
-              onChange={(value) => setSearchParams({...searchParams, productType: value})}
-            >
-              <Option value="">全部</Option>
-              <Option value="physical">实物商品</Option>
-              <Option value="digital">虚拟商品</Option>
-            </Select>
-          </Col>
-          <Col>
-            <Button 
-              type="primary" 
-              icon={<SearchOutlined />} 
-              onClick={handleSearch}
-              style={{ backgroundColor: '#ff0000', borderColor: '#ff0000', color: '#ffffff', marginRight: 8, height: 32, padding: '0 16px', fontSize: '14px', fontWeight: '500' }}
-            >
-              搜索
-            </Button>
-            <Button 
-              onClick={() => setSearchParams({ productName: '', productCode: '', shopName: '', salesMode: '', productType: '' })}
-              style={{ height: 32, padding: '0 16px', fontSize: '14px' }}
-            >
-              重置
-            </Button>
+          <Col span={24}>
+            <Row gutter={24} align="middle" wrap>
+              <Col>
+                <span style={{ marginRight: '8px', color: '#666' }}>销售模式</span>
+                <Select 
+                  placeholder="全部" 
+                  style={{ width: 120, height: 32, fontSize: '14px' }}
+                  value={searchParams.salesMode}
+                  onChange={(value) => setSearchParams({...searchParams, salesMode: value})}
+                >
+                  <Option value="">全部</Option>
+                  <Option value="retail">零售</Option>
+                  <Option value="wholesale">批发</Option>
+                </Select>
+              </Col>
+              <Col>
+                <span style={{ marginRight: '8px', color: '#666' }}>商品类型</span>
+                <Select 
+                  placeholder="全部" 
+                  style={{ width: 120, height: 32, fontSize: '14px' }}
+                  value={searchParams.productType}
+                  onChange={(value) => setSearchParams({...searchParams, productType: value})}
+                >
+                  <Option value="">全部</Option>
+                  <Option value="physical">实物商品</Option>
+                  <Option value="digital">虚拟商品</Option>
+                </Select>
+              </Col>
+              <Col>
+                <Button 
+                  type="primary" 
+                  icon={<SearchOutlined />} 
+                  onClick={handleSearch}
+                  style={{ backgroundColor: '#ff0000', borderColor: '#ff0000', color: '#ffffff', marginRight: 8, height: 32, padding: '0 16px', fontSize: '14px', fontWeight: '500' }}
+                >
+                  搜索
+                </Button>
+                <Button 
+                  onClick={() => {
+                    setSearchParams({ productName: '', productCode: '', shopName: '', salesMode: '', productType: '' });
+                    // 重置后重新加载所有商品
+                    setLoading(true);
+                    setTimeout(() => {
+                      const mockProducts = generateMockProducts();
+                      setProducts(mockProducts);
+                      setLoading(false);
+                      message.success('已重置搜索条件');
+                    }, 300);
+                  }}
+                  style={{ height: 32, padding: '0 16px', fontSize: '14px' }}
+                >
+                  重置
+                </Button>
+              </Col>
+            </Row>
           </Col>
         </Row>
       </div>
