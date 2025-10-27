@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Input, Button, Switch, Pagination, message } from 'antd';
+import { Table, Input, Button, Switch, Pagination, message, Row, Col } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
 const ReviewList = () => {
@@ -153,24 +153,35 @@ const ReviewList = () => {
 
   return (
     <div style={{ padding: '20px', background: '#fff' }}>
-      {/* 搜索区域 */}
-      <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'center' }}>
-        <span style={{ marginRight: '10px' }}>会员名称</span>
-        <Input
-          placeholder="请输入会员名称"
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-          style={{ width: 200, marginRight: '10px' }}
-          onPressEnter={handleSearch}
-        />
-        <Button
-          type="primary"
-          icon={<SearchOutlined />}
-          onClick={handleSearch}
-          style={{ backgroundColor: '#ff7875', borderColor: '#ff7875' }}
-        >
-          搜索
-        </Button>
+      {/* 搜索区域 - 按照统一样式优化 */}
+      <div style={{ backgroundColor: '#fff', borderBottom: '1px solid #f0f0f0', marginBottom: '16px' }}>
+        <Row gutter={16} align="middle">
+          <Col>
+            <span style={{ marginRight: '8px', color: '#666' }}>会员名称</span>
+            <Input
+              placeholder="请输入会员名称"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              style={{ width: 180, height: 32 }}
+              onPressEnter={handleSearch}
+            />
+          </Col>
+          <Col>
+            <Button
+              type="primary"
+              icon={<SearchOutlined />}
+              style={{ 
+                width: 80, 
+                height: 32, 
+                backgroundColor: '#ff4d4f', 
+                borderColor: '#ff4d4f' 
+              }}
+              onClick={handleSearch}
+            >
+              搜索
+            </Button>
+          </Col>
+        </Row>
       </div>
 
       {/* 数据表格 */}

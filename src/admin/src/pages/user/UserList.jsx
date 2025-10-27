@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Table, Button, Input, Space, Tag, Modal, Select, message, Upload, Form, DatePicker } from 'antd';
+import { Table, Button, Input, Space, Tag, Modal, Select, message, Upload, Form, DatePicker, Row, Col } from 'antd';
 import { SearchOutlined, EditOutlined, DeleteOutlined, EyeOutlined, ExclamationCircleOutlined, PlusOutlined, UploadOutlined, DownloadOutlined, UserOutlined, PhoneOutlined, MailOutlined } from '@ant-design/icons';
 import * as XLSX from 'xlsx';
 import './UserList.css';
@@ -626,84 +626,99 @@ const UserList = () => {
           </Button>
         </div>
         
-        {/* 搜索区域 */}
-        <div className="search-section">
-          <div className="search-row">
-            <div className="search-item">
-              <label className="search-label">会员ID</label>
+        {/* 搜索区域 - 按照订单页面样式 */}
+        <div className="search-area" style={{ backgroundColor: '#fff', borderBottom: '1px solid #f0f0f0', marginBottom: '16px' }}>
+          {/* 第一行搜索条件 */}
+          <Row gutter={16} align="middle" style={{ marginBottom: '16px' }}>
+            <Col>
+              <span style={{ marginRight: '8px', color: '#666' }}>会员ID</span>
               <Input 
                 placeholder="请输入会员ID" 
-                value={searchConditions.id || ''}
+                value={searchConditions.id || ''} 
                 onChange={(e) => updateSearchCondition('id', e.target.value)}
-                className="search-input-field"
+                style={{ width: 180, height: 32 }}
               />
-            </div>
-            <div className="search-item">
-              <label className="search-label">用户名</label>
+            </Col>
+            <Col>
+              <span style={{ marginRight: '8px', color: '#666' }}>用户名</span>
               <Input 
                 placeholder="请输入用户名" 
-                value={searchConditions.username || ''}
+                value={searchConditions.username || ''} 
                 onChange={(e) => updateSearchCondition('username', e.target.value)}
-                className="search-input-field"
+                style={{ width: 180, height: 32 }}
               />
-            </div>
-            <div className="search-item">
-              <label className="search-label">邮箱</label>
+            </Col>
+            <Col>
+              <span style={{ marginRight: '8px', color: '#666' }}>邮箱</span>
               <Input 
                 placeholder="请输入邮箱" 
-                value={searchConditions.email || ''}
+                value={searchConditions.email || ''} 
                 onChange={(e) => updateSearchCondition('email', e.target.value)}
-                className="search-input-field"
+                style={{ width: 180, height: 32 }}
               />
-            </div>
-            <div className="search-item">
-              <label className="search-label">手机号</label>
-              <Input 
-                placeholder="请输入手机号" 
-                value={searchConditions.phone || ''}
-                onChange={(e) => updateSearchCondition('phone', e.target.value)}
-                className="search-input-field"
-              />
-            </div>
-            <div className="search-item">
-              <label className="search-label">公众号OpenID</label>
-              <Input 
-                placeholder="请输入公众号OpenID" 
-                value={searchConditions.openid || ''}
-                onChange={(e) => updateSearchCondition('openid', e.target.value)}
-                className="search-input-field"
-              />
-            </div>
-            <div className="search-item">
-              <label className="search-label">状态筛选</label>
+            </Col>
+            <Col>
+              <span style={{ marginRight: '8px', color: '#666' }}>状态筛选</span>
               <Select
                 placeholder="全部状态"
-                className="search-select-field"
                 value={statusFilter}
                 onChange={handleFilter}
+                style={{ width: 120, height: 32 }}
               >
                 <Option value="all">全部状态</Option>
                 <Option value="active">已启用</Option>
                 <Option value="inactive">已禁用</Option>
               </Select>
-            </div>
-            <div className="search-actions">
+            </Col>
+          </Row>
+          
+          {/* 第二行搜索条件 */}
+          <Row gutter={16} align="middle">
+            <Col>
+              <span style={{ marginRight: '8px', color: '#666' }}>手机号</span>
+              <Input 
+                placeholder="请输入手机号" 
+                value={searchConditions.phone || ''} 
+                onChange={(e) => updateSearchCondition('phone', e.target.value)}
+                style={{ width: 180, height: 32 }}
+              />
+            </Col>
+            <Col>
+              <span style={{ marginRight: '8px', color: '#666' }}>公众号OpenID</span>
+              <Input 
+                placeholder="请输入公众号OpenID" 
+                value={searchConditions.openid || ''} 
+                onChange={(e) => updateSearchCondition('openid', e.target.value)}
+                style={{ width: 180, height: 32 }}
+              />
+            </Col>
+            
+            {/* 操作按钮区域 */}
+            <div className="search-actions-container" style={{ marginLeft: 'auto', display: 'flex', gap: '8px' }}>
               <Button 
                 type="primary" 
-                icon={<SearchOutlined />} 
-                onClick={handleAdvancedSearch}
-                className="search-button fixed-width-button"
+                icon={<SearchOutlined />}
+                onClick={handleAdvancedSearch} 
+                style={{ 
+                  width: 80, 
+                  height: 32, 
+                  backgroundColor: '#ff4d4f', 
+                  borderColor: '#ff4d4f' 
+                }}
               >
                 搜索
               </Button>
               <Button 
-                onClick={handleResetSearch}
-                className="reset-button fixed-width-button"
+                onClick={handleResetSearch} 
+                style={{ 
+                  width: 80, 
+                  height: 32 
+                }}
               >
                 重置
               </Button>
             </div>
-          </div>
+          </Row>
         </div>
       </div>
 

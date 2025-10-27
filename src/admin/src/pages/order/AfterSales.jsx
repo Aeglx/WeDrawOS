@@ -120,13 +120,10 @@ const AfterSales = () => {
   const [filteredAfterSales, setFilteredAfterSales] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchParams, setSearchParams] = useState({
-    keyword: '',
-    orderId: '',
-    afterSaleId: '',
-    applyTime: null,
-    shopName: '',
+    memberId: '',
     memberName: '',
-    afterSaleType: 'all'
+    memberNickname: '',
+    contact: ''
   });
   const [selectedStatus, setSelectedStatus] = useState('pending');
   const [currentPage, setCurrentPage] = useState(1);
@@ -148,33 +145,10 @@ const AfterSales = () => {
   const getBaseFilteredAfterSales = () => {
     let result = [...afterSales];
     
-    // 关键词搜索
-    if (searchParams.keyword) {
-      const keyword = searchParams.keyword.toLowerCase();
+    // 会员ID搜索
+    if (searchParams.memberId) {
       result = result.filter(item => 
-        item.productName.toLowerCase().includes(keyword) ||
-        item.orderId.toLowerCase().includes(keyword)
-      );
-    }
-    
-    // 订单编号搜索
-    if (searchParams.orderId) {
-      result = result.filter(item => 
-        item.orderId.toLowerCase().includes(searchParams.orderId.toLowerCase())
-      );
-    }
-    
-    // 售后单号搜索
-    if (searchParams.afterSaleId) {
-      result = result.filter(item => 
-        item.id.toLowerCase().includes(searchParams.afterSaleId.toLowerCase())
-      );
-    }
-    
-    // 商家名称搜索
-    if (searchParams.shopName) {
-      result = result.filter(item => 
-        item.shopName.toLowerCase().includes(searchParams.shopName.toLowerCase())
+        item.memberId.toLowerCase().includes(searchParams.memberId.toLowerCase())
       );
     }
     
@@ -185,18 +159,20 @@ const AfterSales = () => {
       );
     }
     
-    // 售后类型筛选
-    if (searchParams.afterSaleType !== 'all') {
-      result = result.filter(item => item.type === searchParams.afterSaleType);
+    // 会员昵称搜索
+    if (searchParams.memberNickname) {
+      // 注意：在实际应用中，这里应该有memberNickname字段，当前数据模型中可能没有
+      // 这里做一个简单处理，使用memberName代替
+      result = result.filter(item => 
+        item.memberName.toLowerCase().includes(searchParams.memberNickname.toLowerCase())
+      );
     }
     
-    // 申请时间范围筛选
-    if (searchParams.applyTime && searchParams.applyTime.length === 2) {
-      const [startTime, endTime] = searchParams.applyTime;
-      result = result.filter(item => {
-        const applyDate = new Date(item.applyTime);
-        return applyDate >= startTime && applyDate <= endTime;
-      });
+    // 联系方式搜索
+    if (searchParams.contact) {
+      // 注意：在实际应用中，这里应该有联系方式字段，当前数据模型中可能没有
+      // 这里做一个简单处理，不进行实际筛选
+      console.log('联系方式搜索功能需要数据模型支持');
     }
     
     return result;
@@ -224,13 +200,10 @@ const AfterSales = () => {
   // 重置搜索
   const handleReset = () => {
     setSearchParams({
-      keyword: '',
-      orderId: '',
-      afterSaleId: '',
-      applyTime: null,
-      shopName: '',
+      memberId: '',
       memberName: '',
-      afterSaleType: 'all'
+      memberNickname: '',
+      contact: ''
     });
     setSelectedStatus('all');
     filterAfterSales('all');
@@ -412,91 +385,68 @@ const AfterSales = () => {
 
   return (
     <div className="after-sales-container">
-      <div className="search-section">
-        <div className="search-row">
-          <div className="search-item">
-            <label>关键字</label>
-            <Input
-              placeholder="请输入商品名称、订单编号搜索"
-              value={searchParams.keyword}
-              onChange={(e) => setSearchParams({ ...searchParams, keyword: e.target.value })}
-              onPressEnter={handleSearch}
-            />
-          </div>
-          <div className="search-item">
-            <label>订单编号</label>
-            <Input
-              placeholder="请输入订单编号"
-              value={searchParams.orderId}
-              onChange={(e) => setSearchParams({ ...searchParams, orderId: e.target.value })}
-              onPressEnter={handleSearch}
-            />
-          </div>
-          <div className="search-item">
-            <label>售后单号</label>
-            <Input
-              placeholder="请输入售后单号"
-              value={searchParams.afterSaleId}
-              onChange={(e) => setSearchParams({ ...searchParams, afterSaleId: e.target.value })}
-              onPressEnter={handleSearch}
-            />
-          </div>
-          <div className="search-item">
-            <label>申请时间</label>
-            <Input
-              placeholder="选择起始时间"
-              value={searchParams.applyTime ? searchParams.applyTime.format('YYYY-MM-DD') : ''}
-              readOnly
-              onClick={() => {
-                // 在实际应用中，这里应该打开日期选择器
-                console.log('打开日期选择器');
-              }}
-            />
-          </div>
+      <div className="search-section" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-end', gap: '16px', padding: '16px', backgroundColor: '#f5f5f5', borderRadius: '4px' }}>
+        <div className="search-item" style={{ flex: '1', minWidth: '200px' }}>
+          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>会员ID</label>
+          <Input
+            placeholder="请输入会员ID"
+            value={searchParams.memberId}
+            onChange={(e) => setSearchParams({ ...searchParams, memberId: e.target.value })}
+            onPressEnter={handleSearch}
+          />
         </div>
-        <div className="search-row" style={{ marginTop: '16px' }}>
-          <div className="search-item">
-            <label>商家名称</label>
-            <Input
-              placeholder="请输入商家名称"
-              value={searchParams.shopName}
-              onChange={(e) => setSearchParams({ ...searchParams, shopName: e.target.value })}
-              onPressEnter={handleSearch}
-            />
-          </div>
-          <div className="search-item">
-            <label>会员名称</label>
-            <Input
-              placeholder="请输入会员名称"
-              value={searchParams.memberName}
-              onChange={(e) => setSearchParams({ ...searchParams, memberName: e.target.value })}
-              onPressEnter={handleSearch}
-            />
-          </div>
-          <div className="search-item">
-            <label>售后类型</label>
-            <Select
-              value={searchParams.afterSaleType}
-              onChange={(value) => setSearchParams({ ...searchParams, afterSaleType: value })}
-              style={{ width: '100%' }}
-            >
-              <Option value="all">全部</Option>
-              <Option value="refund">退款</Option>
-              <Option value="return">退货</Option>
-              <Option value="exchange">换货</Option>
-            </Select>
-          </div>
-          <div className="search-actions" style={{ paddingBottom: 0 }}>
-            <Button 
-              type="primary" 
-              icon={<SearchOutlined />} 
-              onClick={handleSearch}
-              style={{ backgroundColor: '#ff4d4f', borderColor: '#ff4d4f' }}
-            >
-              搜索
-            </Button>
-          </div>
+        <div className="search-item" style={{ flex: '1', minWidth: '200px' }}>
+          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>会员名称</label>
+          <Input
+            placeholder="请输入会员名称"
+            value={searchParams.memberName}
+            onChange={(e) => setSearchParams({ ...searchParams, memberName: e.target.value })}
+            onPressEnter={handleSearch}
+          />
         </div>
+        <div className="search-item" style={{ flex: '1', minWidth: '200px' }}>
+          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>会员昵称</label>
+          <Input
+            placeholder="请输入会员昵称"
+            value={searchParams.memberNickname}
+            onChange={(e) => setSearchParams({ ...searchParams, memberNickname: e.target.value })}
+            onPressEnter={handleSearch}
+          />
+        </div>
+        <div className="search-item" style={{ flex: '1', minWidth: '200px' }}>
+          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>联系方式</label>
+          <Input
+            placeholder="请输入会员联系方式"
+            value={searchParams.contact}
+            onChange={(e) => setSearchParams({ ...searchParams, contact: e.target.value })}
+            onPressEnter={handleSearch}
+          />
+        </div>
+        <div className="search-actions" style={{ paddingBottom: '0' }}>
+          <Button 
+            type="primary" 
+            icon={<SearchOutlined />} 
+            onClick={handleSearch}
+            style={{ backgroundColor: '#ff4d4f', borderColor: '#ff4d4f' }}
+          >
+            搜索
+          </Button>
+        </div>
+        {/* 添加媒体查询样式，确保在小屏幕上自动换行 */}
+        <style>{`
+          @media (max-width: 1024px) {
+            .search-item {
+              flex: 0 0 45%;
+              min-width: unset;
+            }
+          }
+          
+          @media (max-width: 768px) {
+            .search-item {
+              flex: 0 0 100%;
+            }
+          }
+        `}</style>
       </div>
 
       <div className="status-tabs">

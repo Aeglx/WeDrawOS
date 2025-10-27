@@ -94,31 +94,72 @@
   flex-shrink: 0;
 }
 
-/* 搜索区域 - 更紧凑设计 */
-.search-section {
+/* 搜索区域 - 美化设计 */
+.search-section,
+.search-area {
   background-color: #ffffff;
   border-radius: 6px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  padding: 12px;
+  padding: 16px;
 }
 
-/* 搜索行 - 强制一行显示 */
+/* 搜索行 - 自适应布局 */
 .search-row {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
   padding: 0;
+  margin-bottom: 12px; /* 增加行与行之间的间距 */
+}
+
+/* 最后一行不需要底部间距 */
+.search-row:last-child {
+  margin-bottom: 0;
 }
 
 /* 搜索项 - 自动适应空间 */
 .search-item {
   flex: 1 1 auto;
-  min-width: 80px;
+  min-width: 150px;
   display: flex;
   flex-direction: column;
   margin-right: 0;
+}
+
+/* 大屏幕 - 显示为1行 */
+@media (min-width: 1600px) {
+  .search-item {
+    flex: 1 1 auto;
+    min-width: 150px;
+  }
+}
+
+/* 中等屏幕 - 切换为2行 */
+@media (max-width: 1599px) and (min-width: 768px) {
+  .search-item {
+    flex: 0 0 calc(33.333% - 10px);
+    min-width: unset;
+  }
+  
+  /* 状态筛选和搜索操作始终放在第二行 */
+  .search-item:last-of-type, .search-actions {
+    flex: 0 0 calc(50% - 5px);
+  }
+}
+
+/* 小屏幕 - 显示为1列 */
+@media (max-width: 767px) {
+  .search-item {
+    flex: 0 0 100%;
+  }
+  
+  .search-actions {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* 标签样式 - 缩小字号 */

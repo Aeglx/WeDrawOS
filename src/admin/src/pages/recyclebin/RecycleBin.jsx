@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Input, Space, Modal, Popconfirm, message } from 'antd';
+import { Table, Button, Input, Space, Modal, Popconfirm, message, Row, Col } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import './RecycleBin.css';
 
@@ -291,35 +291,43 @@ const RecycleBin = () => {
 
   return (
     <div className="recycle-bin-container">
-      {/* 搜索栏 - 严格按照设计图的双搜索框样式 */}
-      <div className="search-bar">
-        <div className="search-item">
-          <span className="search-label">会员名称</span>
-          <Input
-            placeholder="请输入会员名称"
-            value={searchName}
-            onChange={(e) => setSearchName(e.target.value)}
-            style={{ width: 200 }}
-          />
-        </div>
-        
-        <div className="search-item">
-          <span className="search-label">联系方式</span>
-          <Input
-            placeholder="请输入会员联系方式"
-            value={searchContact}
-            onChange={(e) => setSearchContact(e.target.value)}
-            style={{ width: 200 }}
-          />
-        </div>
-        
-        <Button
-          type="primary"
-          style={{ backgroundColor: '#ff4d4f', borderColor: '#ff4d4f' }}
-          onClick={handleSearch}
-        >
-          搜索
-        </Button>
+      {/* 搜索栏 - 按照统一样式优化 */}
+      <div className="search-area" style={{ backgroundColor: '#fff', borderBottom: '1px solid #f0f0f0', marginBottom: '16px' }}>
+        <Row gutter={16} align="middle">
+          <Col>
+            <span style={{ marginRight: '8px', color: '#666' }}>会员名称</span>
+            <Input
+              placeholder="请输入会员名称"
+              value={searchName}
+              onChange={(e) => setSearchName(e.target.value)}
+              style={{ width: 180, height: 32 }}
+            />
+          </Col>
+          <Col>
+            <span style={{ marginRight: '8px', color: '#666' }}>联系方式</span>
+            <Input
+              placeholder="请输入会员联系方式"
+              value={searchContact}
+              onChange={(e) => setSearchContact(e.target.value)}
+              style={{ width: 180, height: 32 }}
+            />
+          </Col>
+          <Col>
+            <Button
+              type="primary"
+              icon={<SearchOutlined />}
+              style={{ 
+                width: 80, 
+                height: 32, 
+                backgroundColor: '#ff4d4f', 
+                borderColor: '#ff4d4f' 
+              }}
+              onClick={handleSearch}
+            >
+              搜索
+            </Button>
+          </Col>
+        </Row>
       </div>
 
       {/* 工具栏按钮 - 严格按照设计图 */}

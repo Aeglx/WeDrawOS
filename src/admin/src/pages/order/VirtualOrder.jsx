@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Input, DatePicker, Button, Select, Tag, Space, message } from 'antd';
+import { Table, Input, DatePicker, Button, Select, Tag, Space, message, Row, Col } from 'antd';
 import { SearchOutlined, EyeOutlined, DollarOutlined } from '@ant-design/icons';
 import './VirtualOrder.css';
 
@@ -259,48 +259,59 @@ const VirtualOrder = () => {
 
   return (
     <div className="virtual-order-container">
-      <div className="search-section">
-        <div className="search-row">
-          <div className="search-item">
-            <label>订单号</label>
+      {/* 搜索区域 - 按照统一样式优化 */}
+      <div className="search-area" style={{ backgroundColor: '#fff', borderBottom: '1px solid #f0f0f0', marginBottom: '16px' }}>
+        <Row gutter={16} align="middle">
+          <Col>
+            <span style={{ marginRight: '8px', color: '#666' }}>订单号</span>
             <Input
               placeholder="请输入订单号"
               value={searchParams.orderId}
               onChange={(e) => setSearchParams({ ...searchParams, orderId: e.target.value })}
               onPressEnter={handleSearch}
+              style={{ width: 180, height: 32 }}
             />
-          </div>
-          <div className="search-item">
-            <label>会员名称</label>
+          </Col>
+          <Col>
+            <span style={{ marginRight: '8px', color: '#666' }}>会员名称</span>
             <Input
               placeholder="请输入会员名称"
               value={searchParams.buyerName}
               onChange={(e) => setSearchParams({ ...searchParams, buyerName: e.target.value })}
               onPressEnter={handleSearch}
+              style={{ width: 180, height: 32 }}
             />
-          </div>
-          <div className="search-item">
-            <label>下单时间</label>
+          </Col>
+          <Col>
+            <span style={{ marginRight: '8px', color: '#666' }}>下单时间</span>
             <RangePicker
               value={searchParams.orderTime}
               onChange={(dates) => setSearchParams({ ...searchParams, orderTime: dates })}
               placeholder={['开始日期', '结束日期']}
+              style={{ height: 32 }}
             />
-          </div>
-          <div className="search-actions">
+          </Col>
+          <Col>
             <Button 
               type="primary" 
               icon={<SearchOutlined />} 
               onClick={handleSearch}
-              style={{ backgroundColor: '#ff4d4f', borderColor: '#ff4d4f' }}
+              style={{ 
+                width: 80, 
+                height: 32, 
+                backgroundColor: '#ff4d4f', 
+                borderColor: '#ff4d4f' 
+              }}
             >
               搜索
             </Button>
-            <Button onClick={handleReset} style={{ marginLeft: '8px' }}>
+          </Col>
+          <Col>
+            <Button onClick={handleReset} style={{ height: 32 }}>
               重置
             </Button>
-          </div>
-        </div>
+          </Col>
+        </Row>
       </div>
 
       <div className="status-tabs">
