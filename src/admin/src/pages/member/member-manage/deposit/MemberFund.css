@@ -120,6 +120,7 @@
   background-color: #ff4d4f !important;
   border-color: #ff4d4f !important;
   height: 32px;
+  color: #fff !important;
 }
 
 .ant-btn-primary:hover {

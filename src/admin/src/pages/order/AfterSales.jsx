@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Input, DatePicker, Button, Select, Tag, Space, message, Image } from 'antd';
+import { Table, Input, DatePicker, Button, Select, Tag, Space, message, Image, Row, Col } from 'antd';
 import { 
   SearchOutlined, 
   EyeOutlined,
@@ -385,68 +385,70 @@ const AfterSales = () => {
 
   return (
     <div className="after-sales-container">
-      <div className="search-section" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-end', gap: '16px', padding: '16px', backgroundColor: '#f5f5f5', borderRadius: '4px' }}>
-        <div className="search-item" style={{ flex: '1', minWidth: '200px' }}>
-          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>会员ID</label>
-          <Input
-            placeholder="请输入会员ID"
-            value={searchParams.memberId}
-            onChange={(e) => setSearchParams({ ...searchParams, memberId: e.target.value })}
-            onPressEnter={handleSearch}
-          />
-        </div>
-        <div className="search-item" style={{ flex: '1', minWidth: '200px' }}>
-          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>会员名称</label>
-          <Input
-            placeholder="请输入会员名称"
-            value={searchParams.memberName}
-            onChange={(e) => setSearchParams({ ...searchParams, memberName: e.target.value })}
-            onPressEnter={handleSearch}
-          />
-        </div>
-        <div className="search-item" style={{ flex: '1', minWidth: '200px' }}>
-          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>会员昵称</label>
-          <Input
-            placeholder="请输入会员昵称"
-            value={searchParams.memberNickname}
-            onChange={(e) => setSearchParams({ ...searchParams, memberNickname: e.target.value })}
-            onPressEnter={handleSearch}
-          />
-        </div>
-        <div className="search-item" style={{ flex: '1', minWidth: '200px' }}>
-          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>联系方式</label>
-          <Input
-            placeholder="请输入会员联系方式"
-            value={searchParams.contact}
-            onChange={(e) => setSearchParams({ ...searchParams, contact: e.target.value })}
-            onPressEnter={handleSearch}
-          />
-        </div>
-        <div className="search-actions" style={{ paddingBottom: '0' }}>
-          <Button 
-            type="primary" 
-            icon={<SearchOutlined />} 
-            onClick={handleSearch}
-            style={{ backgroundColor: '#ff4d4f', borderColor: '#ff4d4f' }}
-          >
-            搜索
-          </Button>
-        </div>
-        {/* 添加媒体查询样式，确保在小屏幕上自动换行 */}
-        <style>{`
-          @media (max-width: 1024px) {
-            .search-item {
-              flex: 0 0 45%;
-              min-width: unset;
-            }
-          }
-          
-          @media (max-width: 768px) {
-            .search-item {
-              flex: 0 0 100%;
-            }
-          }
-        `}</style>
+      {/* 搜索区域 - 按照统一样式优化 */}
+      <div className="search-area" style={{ backgroundColor: '#fff', borderBottom: '1px solid #f0f0f0', marginBottom: '16px' }}>
+        {/* 第一行搜索条件 */}
+        <Row gutter={16} align="middle" style={{ marginBottom: '16px' }}>
+          <Col>
+            <span style={{ marginRight: '8px', color: '#666' }}>会员ID</span>
+            <Input
+              placeholder="请输入会员ID"
+              value={searchParams.memberId}
+              onChange={(e) => setSearchParams({ ...searchParams, memberId: e.target.value })}
+              onPressEnter={handleSearch}
+              style={{ width: 180, height: 32 }}
+            />
+          </Col>
+          <Col>
+            <span style={{ marginRight: '8px', color: '#666' }}>会员名称</span>
+            <Input
+              placeholder="请输入会员名称"
+              value={searchParams.memberName}
+              onChange={(e) => setSearchParams({ ...searchParams, memberName: e.target.value })}
+              onPressEnter={handleSearch}
+              style={{ width: 180, height: 32 }}
+            />
+          </Col>
+          <Col>
+            <span style={{ marginRight: '8px', color: '#666' }}>会员昵称</span>
+            <Input
+              placeholder="请输入会员昵称"
+              value={searchParams.memberNickname}
+              onChange={(e) => setSearchParams({ ...searchParams, memberNickname: e.target.value })}
+              onPressEnter={handleSearch}
+              style={{ width: 180, height: 32 }}
+            />
+          </Col>
+          <Col>
+            <span style={{ marginRight: '8px', color: '#666' }}>联系方式</span>
+            <Input
+              placeholder="请输入会员联系方式"
+              value={searchParams.contact}
+              onChange={(e) => setSearchParams({ ...searchParams, contact: e.target.value })}
+              onPressEnter={handleSearch}
+              style={{ width: 180, height: 32 }}
+            />
+          </Col>
+        </Row>
+        {/* 第二行搜索条件和操作按钮 */}
+        <Row gutter={16} align="middle">
+          <Col>
+            <Button 
+              type="primary" 
+              icon={<SearchOutlined />} 
+              onClick={handleSearch}
+              style={{ 
+                width: 80, 
+                height: 32, 
+                backgroundColor: '#ff4d4f', 
+                borderColor: '#ff4d4f',
+                color: '#fff'
+              }}
+            >
+              搜索
+            </Button>
+          </Col>
+        </Row>
       </div>
 
       <div className="status-tabs">

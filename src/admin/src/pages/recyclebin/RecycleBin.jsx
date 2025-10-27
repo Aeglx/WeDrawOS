@@ -320,7 +320,8 @@ const RecycleBin = () => {
                 width: 80, 
                 height: 32, 
                 backgroundColor: '#ff4d4f', 
-                borderColor: '#ff4d4f' 
+                borderColor: '#ff4d4f',
+                color: '#fff'
               }}
               onClick={handleSearch}
             >

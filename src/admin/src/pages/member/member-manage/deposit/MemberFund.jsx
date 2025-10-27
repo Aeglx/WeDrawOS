@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Button, Table, Pagination, Spin, DatePicker, Space } from 'antd';
+import { Input, Button, Table, Pagination, Spin, DatePicker, Space, Row, Col } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import './MemberFund.css';
 
@@ -182,40 +182,40 @@ const MemberFund = () => {
 
   return (
     <div className="container">
-      {/* 搜索区域 */}
-      <div className="searchContainer">
-        <Space size={16}>
-          <div className="searchItem">
-            <span className="searchLabel">会员名称</span>
-            <Search
+      {/* 搜索区域 - 按照统一样式优化 */}
+      <div className="search-area" style={{ backgroundColor: '#fff', borderBottom: '1px solid #f0f0f0', marginBottom: '16px' }}>
+        <Row gutter={16} align="middle">
+          <Col>
+            <span style={{ marginRight: '8px', color: '#666' }}>会员名称</span>
+            <Input
               placeholder="请输入会员名称"
               allowClear
-              size="middle"
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
-              onSearch={handleSearch}
-              style={{ width: 200 }}
+              onPressEnter={handleSearch}
+              style={{ width: 180, height: 32 }}
             />
-          </div>
-          <div className="searchItem">
-            <span className="searchLabel">支付时间</span>
+          </Col>
+          <Col>
+            <span style={{ marginRight: '8px', color: '#666' }}>支付时间</span>
             <RangePicker
               placeholder={['选择起始时间', '选择结束时间']}
               value={dateRange}
               onChange={(dates) => setDateRange(dates)}
-              style={{ width: 320 }}
+              style={{ width: 320, height: 32 }}
             />
-          </div>
-          <Button
-            type="primary"
-            icon={<SearchOutlined />}
-            onClick={handleSearch}
-            size="middle"
-            style={{ backgroundColor: '#ff4d4f', borderColor: '#ff4d4f' }}
-          >
-            搜索
-          </Button>
-        </Space>
+          </Col>
+          <Col>
+            <Button
+              type="primary"
+              icon={<SearchOutlined />}
+              onClick={handleSearch}
+              style={{ width: 80, height: 32, backgroundColor: '#ff4d4f', borderColor: '#ff4d4f' }}
+            >
+              搜索
+            </Button>
+          </Col>
+        </Row>
       </div>
 
       {/* 表格区域 */}

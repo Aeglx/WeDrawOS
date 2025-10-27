@@ -150,7 +150,9 @@
 }
 
 /* 删除按钮 - 红色 */
-.ant-table .ant-btn[style*="background-color: #ff4d4f"] {
+.ant-table .ant-btn[style*="background-color: #ff4d4f"],
+.ant-btn[style*="background-color: #ff4d4f"],
+.search-bar .ant-btn {
   background-color: #ff4d4f !important;
   border-color: #ff4d4f !important;
   color: #fff !important;

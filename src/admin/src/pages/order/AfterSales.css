@@ -145,6 +145,7 @@
   align-items: center !important;
   justify-content: center !important;
   border-radius: 4px !important;
+  color: #fff !important;
 }
 
 /* 全局重置，确保没有其他样式干扰 */

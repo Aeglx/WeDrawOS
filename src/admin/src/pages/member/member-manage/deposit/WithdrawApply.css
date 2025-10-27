@@ -134,6 +134,7 @@
 .searchButton {
   background-color: #ff4d4f;
   border-color: #ff4d4f;
+  color: #fff !important;
 }
 
 .searchButton:hover {

@@ -246,10 +246,9 @@
 }
 
 /* 搜索按钮 */
-.search-button,
-.search-action .ant-btn-primary {
+.search-button, .search-action .ant-btn-primary {
   background-color: #1890ff;
-  color: white;
+  color: white !important;
 }
 
 .search-button:hover,

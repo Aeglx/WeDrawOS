@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Button, Table, Pagination, Spin, message } from 'antd';
+import { Input, Button, Table, Pagination, Spin, message, Row, Col } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import './PointsHistory.css';
 
@@ -172,17 +172,31 @@ const PointsHistory = () => {
 
   return (
     <div className="container">
-      {/* 搜索区域 */}
-      <div className="searchContainer">
-        <Search
-          placeholder="输入会员名称"
-          allowClear
-          enterButton={<Button type="primary" icon={<SearchOutlined />}>搜索</Button>}
-          size="middle"
-          onSearch={handleSearch}
-          onChange={(e) => setSearchText(e.target.value)}
-          style={{ width: 300 }}
-        />
+      {/* 搜索区域 - 按照统一样式优化 */}
+      <div className="search-area" style={{ backgroundColor: '#fff', borderBottom: '1px solid #f0f0f0', marginBottom: '16px' }}>
+        <Row gutter={16} align="middle">
+          <Col>
+            <span style={{ marginRight: '8px', color: '#666' }}>会员名称</span>
+            <Input
+              placeholder="请输入会员名称"
+              allowClear
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              onPressEnter={() => handleSearch(searchText)}
+              style={{ width: 180, height: 32 }}
+            />
+          </Col>
+          <Col>
+            <Button
+              type="primary"
+              icon={<SearchOutlined />}
+              onClick={() => handleSearch(searchText)}
+              style={{ width: 80, height: 32, backgroundColor: '#ff4d4f', borderColor: '#ff4d4f' }}
+            >
+              搜索
+            </Button>
+          </Col>
+        </Row>
       </div>
 
       {/* 表格区域 */}
