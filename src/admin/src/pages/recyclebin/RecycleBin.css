@@ -161,10 +161,21 @@
 /* 删除按钮 - 红色 */
 .ant-table .ant-btn[style*="background-color: #ff0000"],
 .ant-btn[style*="background-color: #ff0000"],
-.search-bar .ant-btn {
+.search-bar .ant-btn,
+.search-bar button[type="primary"].ant-btn,
+.search-area .ant-btn,
+.search-area button[type="primary"].ant-btn {
   background-color: #ff0000 !important;
   border-color: #ff0000 !important;
   color: #ffffff !important;
+  color: white !important;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0 16px;
+  /* 确保文本颜色不被覆盖 */
+  -webkit-text-fill-color: white !important;
+  text-fill-color: white !important;
+  text-shadow: none !important;
 }
 
 .ant-table .ant-btn[style*="background-color: #ff0000"]:hover {

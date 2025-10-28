@@ -211,25 +211,27 @@ const MainLayout = () => {
             {
               key: '/product/product-manage/product-audit',
               label: '商品审核'
-            },
+            }
+          ]
+        },
+        {
+          key: '/product/relation-manage',
+          label: '关联管理',
+          children: [
             {
-              key: '/product/product-manage/relation-manage',
-              label: '关联管理'
-            },
-            {
-              key: '/product/product-manage/product-category',
+              key: '/product/relation-manage/product-category',
               label: '商品分类'
             },
             {
-              key: '/product/product-manage/brand-list',
+              key: '/product/relation-manage/brand-list',
               label: '品牌列表'
             },
             {
-              key: '/product/product-manage/spec-list',
+              key: '/product/relation-manage/spec-list',
               label: '规格列表'
             },
             {
-              key: '/product/product-manage/unit',
+              key: '/product/relation-manage/unit',
               label: '计量单位'
             }
           ]

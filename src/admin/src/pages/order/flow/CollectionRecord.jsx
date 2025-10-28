@@ -266,7 +266,7 @@ const CollectionRecord = () => {
             type="primary"
             icon={<SearchOutlined />}
             onClick={handleSearch}
-            style={{ backgroundColor: '#ff0000', borderColor: '#ff0000', color: '#ffffff !important', height: 32, fontWeight: '500', fontSize: '14px', padding: '0 16px', width: 80 }}
+            style={{ backgroundColor: '#ff0000', borderColor: '#ff0000', color: 'white', height: 32, fontWeight: '500', fontSize: '14px', padding: '0 16px', width: 80, textShadow: 'none' }}
           >
             搜索
           </Button>

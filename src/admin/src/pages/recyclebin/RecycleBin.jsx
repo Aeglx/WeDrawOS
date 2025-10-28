@@ -321,10 +321,11 @@ const RecycleBin = () => {
                 height: 32, 
                 backgroundColor: '#ff0000', 
                 borderColor: '#ff0000',
-                color: '#ffffff !important',
+                color: 'white',
                 fontWeight: '500',
                 fontSize: '14px',
-                padding: '0 16px'
+                padding: '0 16px',
+                textShadow: 'none'
               }}
               onClick={handleSearch}
             >

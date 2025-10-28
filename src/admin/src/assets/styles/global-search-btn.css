@@ -1,0 +1,88 @@
+/* 全局红色搜索按钮样式 - 强制白色字体 */
+/* 最具体的选择器，确保高优先级 */
+.ant-btn-primary,
+.search-button,
+.search-action .ant-btn-primary,
+.search-area .ant-btn-primary,
+.search-bar .ant-btn,
+.search-actions .ant-btn-primary,
+.searchButton,
+.search-actions-container .ant-btn-primary,
+.ant-btn[type="primary"],
+button[type="primary"].ant-btn,
+button.ant-btn-primary,
+span.ant-btn-primary,
+div.ant-btn-primary,
+input.ant-btn-primary,
+:global(.ant-btn-primary),
+:global(.search-button),
+:global(.search-action .ant-btn-primary),
+:global(.search-area .ant-btn-primary),
+:global(.search-bar .ant-btn),
+:global(.search-actions .ant-btn-primary),
+:global(.search-actions-container .ant-btn-primary),
+:global(.searchButton) {
+  /* 基础样式 */
+  background-color: #ff0000 !important;
+  border-color: #ff0000 !important;
+  
+  /* 多重优先级设置确保字体颜色为白色 */
+  --antd-primary-color: #ff0000;
+  --antd-primary-color-text: #ffffff;
+  --antd-text-color: #ffffff;
+  
+  color: #ffffff !important;
+  color: white !important;
+  color: #ffffff !important !important;
+  color: white !important !important;
+  
+  /* 确保文本颜色不被覆盖 */
+  -webkit-text-fill-color: white !important;
+  text-fill-color: white !important;
+  text-shadow: none !important;
+  
+  /* 尺寸和字体 */
+  height: 32px;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0 16px;
+}
+
+/* 悬停状态样式 */
+.ant-btn-primary:hover,
+.search-button:hover,
+.search-action .ant-btn-primary:hover,
+.search-area .ant-btn-primary:hover,
+.search-bar .ant-btn:hover,
+.search-actions .ant-btn-primary:hover,
+.searchButton:hover {
+  background-color: #ff7875 !important;
+  border-color: #ff7875 !important;
+  color: #ffffff !important;
+  color: white !important;
+}
+
+/* 聚焦状态样式 */
+.ant-btn-primary:focus,
+.search-button:focus,
+.search-action .ant-btn-primary:focus,
+.search-area .ant-btn-primary:focus,
+.search-bar .ant-btn:focus,
+.search-actions .ant-btn-primary:focus,
+.searchButton:focus {
+  color: #ffffff !important;
+  color: white !important;
+}
+
+/* 确保所有内联样式的红色按钮字体颜色也为白色 */
+.ant-btn[style*="background-color: #ff0000"],
+.ant-btn[style*="background-color:#ff0000"] {
+  color: #ffffff !important;
+  color: white !important;
+}
+
+.ant-btn[style*="background-color: #ff0000"]:hover,
+.ant-btn[style*="background-color:#ff0000"]:hover {
+  color: #ffffff !important;
+  color: white !important;
+}

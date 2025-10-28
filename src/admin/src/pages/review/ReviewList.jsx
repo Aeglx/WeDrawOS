@@ -175,7 +175,8 @@ const ReviewList = () => {
                 height: 32, 
                 backgroundColor: '#ff0000', 
                 borderColor: '#ff0000',
-                color: '#ffffff'
+                color: 'white',
+                textShadow: 'none'
               }}
               onClick={handleSearch}
             >

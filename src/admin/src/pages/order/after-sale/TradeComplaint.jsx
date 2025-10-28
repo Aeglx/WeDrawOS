@@ -240,8 +240,9 @@ const TradeComplaint = () => {
                 backgroundColor: '#ff0000', 
                 borderColor: '#ff0000',
                 height: '32px',
-                color: '#ffffff',
-                fontSize: '12px'
+                color: 'white',
+                fontSize: '12px',
+                textShadow: 'none'
               }}
             >
             搜索

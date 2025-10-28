@@ -122,6 +122,16 @@
   color: #ffffff !important;
 }
 
+.search-actions .ant-btn-primary {
+  background-color: #ff0000 !important;
+  border-color: #ff0000 !important;
+  color: #ffffff !important;
+  height: 32px;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0 16px;
+}
+
 .ant-btn-primary:hover {
   background-color: #ff7875 !important;
   border-color: #ff7875 !important;

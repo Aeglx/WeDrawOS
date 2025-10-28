@@ -1,0 +1,204 @@
+/* 商品分类页面样式 */
+.product-category {
+  padding: 16px;
+  font-size: 12px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 顶部按钮区域 */
+.category-header {
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+/* 按钮样式 */
+.category-header .ant-btn {
+  height: 32px;
+  font-size: 12px;
+  padding: 0 16px;
+}
+
+.category-header .ant-btn-primary,
+.add-subcategory-btn,
+.ant-modal-footer .ant-btn-primary {
+  background-color: #ff0000 !important;
+  border-color: #ff0000 !important;
+  color: #ffffff !important;
+}
+
+.category-header .ant-btn-primary:hover,
+.add-subcategory-btn:hover,
+.ant-modal-footer .ant-btn-primary:hover {
+  background-color: #d9363e !important;
+  border-color: #d9363e !important;
+}
+
+/* 表格样式 */
+.product-category .ant-table {
+  font-size: 12px;
+}
+
+.product-category .ant-table-thead > tr > th {
+  font-size: 12px;
+  padding: 12px 16px;
+  background-color: #fafafa;
+  font-weight: normal;
+  color: #666666;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.product-category .ant-table-tbody > tr > td {
+  font-size: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* 标签样式 */
+.product-category .ant-tag {
+  font-size: 12px;
+  padding: 2px 8px;
+}
+
+.product-category .ant-tag-green {
+  background-color: #f6ffed;
+  border-color: #b7eb8f;
+  color: #52c41a;
+}
+
+/* 操作按钮样式 */
+.product-category .ant-btn-text {
+  font-size: 12px;
+  height: 24px;
+  padding: 0 8px;
+  color: #666666;
+}
+
+.product-category .ant-btn-text:hover {
+  color: #1890ff;
+  border-color: #1890ff;
+}
+
+/* 下拉菜单样式 */
+.product-category .ant-dropdown-menu {
+  font-size: 12px;
+}
+
+.product-category .ant-dropdown-menu-item {
+  font-size: 12px;
+  padding: 8px 16px;
+}
+
+/* 添加子分类按钮样式 */
+.product-category .add-subcategory-btn {
+  font-size: 12px;
+  height: 24px;
+  padding: 0 8px;
+}
+
+/* 佣金颜色 */
+.commission-text {
+  color: #ff0000;
+  font-size: 12px;
+}
+
+/* 展开/折叠图标 */
+.expand-icon {
+  margin-right: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: transform 0.3s;
+}
+
+.expand-icon.expanded {
+  transform: rotate(45deg);
+}
+
+/* 子表格样式 */
+.sub-category-table {
+  padding: 16px;
+}
+
+.sub-category-table .ant-table {
+  border: 1px solid #f0f0f0;
+  border-radius: 4px;
+  background-color: #fafafa;
+}
+
+.sub-category-table .ant-table-thead > tr > th {
+  background-color: #f0f0f0;
+  font-weight: normal;
+  color: #666666;
+  font-size: 12px;
+}
+
+.sub-category-table .ant-table-tbody > tr > td {
+  font-size: 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* 模态框样式 */
+.ant-modal {
+  font-size: 12px;
+}
+
+.ant-modal-title {
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.ant-modal-body {
+  padding: 20px;
+}
+
+.ant-form-item {
+  margin-bottom: 16px;
+}
+
+.ant-form-item-label > label {
+  font-size: 12px;
+  color: #666666;
+}
+
+.ant-form-item-control-input-content {
+  font-size: 12px;
+}
+
+/* 确认对话框样式 */
+.ant-confirm {
+  font-size: 12px;
+}
+
+.ant-confirm-title {
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.ant-confirm-content {
+  font-size: 12px;
+  color: #666666;
+}
+
+/* 消息提示样式 */
+.ant-message-notice-content {
+  font-size: 12px;
+}
+
+/* 响应式调整 */
+@media screen and (max-width: 768px) {
+  .product-category {
+    padding: 12px;
+  }
+  
+  .category-header {
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+  }
+  
+  .product-category .ant-table-thead > tr > th,
+  .product-category .ant-table-tbody > tr > td {
+    padding: 8px 12px;
+  }
+}

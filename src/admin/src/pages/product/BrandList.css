@@ -1,0 +1,219 @@
+.brand-list-container {
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+.search-section {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.search-section .ant-input {
+  width: 300px;
+  height: 40px;
+}
+
+.search-section .ant-btn-primary {
+  height: 40px;
+  background-color: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+.search-section .ant-btn-primary:hover {
+  background-color: #ff7875;
+  border-color: #ff7875;
+}
+
+.action-section {
+  margin-bottom: 20px;
+}
+
+.add-button {
+  background-color: #ff4d4f;
+  border-color: #ff4d4f;
+  color: white;
+}
+
+.add-button:hover {
+  background-color: #ff7875;
+  border-color: #ff7875;
+  color: white;
+}
+
+.brand-table {
+  background-color: white;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.brand-table .ant-table-thead > tr > th {
+  background-color: #fafafa;
+  font-weight: 600;
+  color: #262626;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.brand-table .ant-table-tbody > tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.brand-table .ant-table-tbody > tr:hover {
+  background-color: #f5f5f5;
+}
+
+.logo-text {
+  display: inline-block;
+  padding: 4px 8px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 12px;
+  background-color: #f5f5f5;
+}
+
+.status-enabled {
+  display: inline-block;
+  padding: 2px 8px;
+  background-color: #f6ffed;
+  color: #52c41a;
+  border: 1px solid #b7eb8f;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.status-disabled {
+  display: inline-block;
+  padding: 2px 8px;
+  background-color: #fff2e8;
+  color: #fa8c16;
+  border: 1px solid #ffd591;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.edit-button {
+  background-color: #ff4d4f;
+  border-color: #ff4d4f;
+  color: white;
+}
+
+.edit-button:hover {
+  background-color: #ff7875;
+  border-color: #ff7875;
+  color: white;
+}
+
+.disable-button {
+  background-color: #fff;
+  border-color: #d9d9d9;
+  color: #262626;
+}
+
+.disable-button:hover {
+  color: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+.enable-button {
+  background-color: #fff;
+  border-color: #d9d9d9;
+  color: #262626;
+}
+
+.enable-button:hover {
+  color: #52c41a;
+  border-color: #52c41a;
+}
+
+.delete-button {
+  background-color: #fff;
+  border-color: #d9d9d9;
+  color: #ff4d4f;
+}
+
+.delete-button:hover {
+  background-color: #fff1f0;
+  border-color: #ffccc7;
+  color: #ff4d4f;
+}
+
+.logo-upload .ant-upload {
+  width: 100%;
+}
+
+.logo-upload .ant-btn {
+  width: 100%;
+  background-color: #fff;
+  border-color: #d9d9d9;
+  color: #262626;
+}
+
+.logo-upload .ant-btn:hover {
+  color: #40a9ff;
+  border-color: #40a9ff;
+}
+
+/* 分页样式 */
+.ant-pagination {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.ant-pagination-item-active {
+  border-color: #ff4d4f;
+}
+
+.ant-pagination-item-active a {
+  color: #ff4d4f;
+}
+
+.ant-pagination-next:hover .ant-pagination-item-link,
+.ant-pagination-prev:hover .ant-pagination-item-link {
+  color: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+/* 模态框样式 */
+.ant-modal-header {
+  background-color: #fafafa;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.ant-modal-title {
+  color: #262626;
+  font-weight: 600;
+}
+
+.ant-modal-footer .ant-btn-primary {
+  background-color: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+.ant-modal-footer .ant-btn-primary:hover {
+  background-color: #ff7875;
+  border-color: #ff7875;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .brand-list-container {
+    padding: 10px;
+  }
+
+  .search-section .ant-input {
+    width: 100%;
+  }
+
+  .ant-table {
+    font-size: 12px;
+  }
+
+  .ant-table-tbody > tr > td {
+    padding: 8px;
+  }
+
+  .ant-btn {
+    font-size: 12px;
+    padding: 4px 11px;
+  }
+}

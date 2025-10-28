@@ -191,7 +191,7 @@ const PointsHistory = () => {
               type="primary"
               icon={<SearchOutlined />}
               onClick={() => handleSearch(searchText)}
-              style={{ width: 80, height: 32, backgroundColor: '#ff0000', borderColor: '#ff0000', color: '#ffffff !important', fontWeight: '500', fontSize: '14px', padding: '0 16px' }}
+              style={{ width: 80, height: 32, backgroundColor: '#ff0000', borderColor: '#ff0000', color: 'white', fontWeight: '500', fontSize: '14px', padding: '0 16px', textShadow: 'none' }}
             >
               搜索
             </Button>

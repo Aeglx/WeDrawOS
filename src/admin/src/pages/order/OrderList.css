@@ -61,12 +61,15 @@
   align-items: center;
   justify-content: center;
   color: #ffffff !important;
+  /* 确保字体颜色统一设置为白色 */
+  color: white !important;
 }
 
 .search-area .ant-btn-primary:hover {
   background-color: #ff7875 !important;
   border-color: #ff7875 !important;
-  color: #ffffff !important;
+  /* 确保悬停时字体颜色仍为白色 */
+  color: white !important;
 }
 
 /* 订单列表容器 */

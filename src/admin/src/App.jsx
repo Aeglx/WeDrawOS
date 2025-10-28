@@ -11,6 +11,11 @@ import Dashboard from './pages/Dashboard';
 import AdminList from './pages/admin/AdminList';
 import UserList from './pages/user/UserList';
 import ProductList from './pages/product/ProductList';
+import ProductAudit from './pages/product/ProductAudit';
+import ProductCategory from './pages/product/ProductCategory';
+import BrandList from './pages/product/BrandList';
+import SpecList from './pages/product/SpecList';
+import UnitList from './pages/product/UnitList';
 import OrderList from './pages/order/OrderList';
 import Statistics from './pages/statistics/Statistics';
 import NotFound from './pages/NotFound';
@@ -74,12 +79,12 @@ const App = () => {
                 
                 {/* 商品相关路由 */}
                 <Route path="/product/product-manage/platform-product" element={<ProductList />} />
-                <Route path="/product/product-manage/product-audit" element={<PlaceholderPage title="商品审核" />} />
-                <Route path="/product/product-manage/relation-manage" element={<PlaceholderPage title="关联管理" />} />
-                <Route path="/product/product-manage/product-category" element={<PlaceholderPage title="商品分类" />} />
-                <Route path="/product/product-manage/brand-list" element={<PlaceholderPage title="品牌列表" />} />
-                <Route path="/product/product-manage/spec-list" element={<PlaceholderPage title="规格列表" />} />
-                <Route path="/product/product-manage/unit" element={<PlaceholderPage title="计量单位" />} />
+                <Route path="/product/product-manage/product-audit" element={<ProductAudit />} />
+                <Route path="/product/relation-manage/product-category" element={<ProductCategory />} />
+                <Route path="/product/relation-manage/brand-list" element={<BrandList />} />
+                <Route path="/product/relation-manage/spec-list" element={<SpecList />} />
+                <Route path="/product/relation-manage/unit" element={<UnitList />} />
+                <Route path="/product/relation-manage" element={<PlaceholderPage title="关联管理" />} />
                 
                 {/* 促销相关路由 */}
                 <Route path="/promotion/promotion-manage/coupon" element={<PlaceholderPage title="优惠券" />} />

@@ -1,0 +1,172 @@
+/* 计量单位页面样式 */
+.unit-list {
+  padding: 20px;
+  background-color: #fff;
+  min-height: calc(100vh - 200px);
+}
+
+/* 顶部操作栏样式 */
+.top-actions {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+/* 表格样式覆盖 */
+.ant-table {
+  font-size: 12px;
+}
+
+.ant-table-thead > tr > th {
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+  background-color: #fafafa;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.ant-table-tbody > tr > td {
+  font-size: 12px;
+  color: #666;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background-color: #f5f5f5;
+}
+
+/* 按钮样式覆盖 */
+.ant-btn {
+  font-size: 12px;
+}
+
+.ant-btn-primary {
+  background-color: #ff0000;
+  border-color: #ff0000;
+}
+
+.ant-btn-primary:hover {
+  background-color: #e60000;
+  border-color: #e60000;
+}
+
+.ant-btn-danger {
+  background-color: #fff;
+  color: #ff0000;
+  border-color: #ff0000;
+}
+
+.ant-btn-danger:hover {
+  background-color: #fff1f0;
+  border-color: #ff7875;
+}
+
+/* 模态框样式 */
+.ant-modal-title {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.ant-form-item-label > label {
+  font-size: 12px;
+  color: #333;
+}
+
+.ant-modal-footer {
+  border-top: 1px solid #f0f0f0;
+  padding: 12px 16px;
+}
+
+/* 分页器样式 */
+.ant-pagination {
+  font-size: 12px;
+}
+
+.ant-pagination-item {
+  font-size: 12px;
+  min-width: 28px;
+  height: 28px;
+  line-height: 28px;
+}
+
+.ant-pagination-item-active {
+  background-color: #ff0000;
+  border-color: #ff0000;
+}
+
+.ant-pagination-item-active a {
+  color: #fff;
+}
+
+.ant-pagination-prev, .ant-pagination-next {
+  min-width: 28px;
+  height: 28px;
+  line-height: 28px;
+}
+
+/* 复选框样式 */
+.ant-checkbox-inner {
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+}
+
+.ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #ff0000;
+  border-color: #ff0000;
+}
+
+/* 链接按钮样式 */
+.ant-btn-link {
+  font-size: 12px;
+  padding: 4px 0;
+  height: auto;
+  line-height: 1.5;
+}
+
+.ant-btn-link:hover {
+  color: #ff0000;
+}
+
+/* 编辑按钮样式 */
+.edit-button {
+  background-color: #ff4d4f;
+  border-color: #ff4d4f;
+  color: white;
+}
+
+.edit-button:hover {
+  background-color: #ff7875;
+  border-color: #ff7875;
+  color: white;
+}
+
+/* 删除按钮样式 */
+.delete-button {
+  background-color: #fff2f0;
+  border-color: #ffccc7;
+  color: #ff4d4f;
+}
+
+.delete-button:hover {
+  background-color: #fff1f0;
+  border-color: #ff7875;
+  color: #ff4d4f;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .unit-list {
+    padding: 10px;
+  }
+  
+  .top-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .top-actions .ant-btn {
+    margin-bottom: 8px;
+  }
+}

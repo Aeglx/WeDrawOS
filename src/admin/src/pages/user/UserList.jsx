@@ -704,10 +704,13 @@ const UserList = () => {
                 height: 32, 
                 backgroundColor: '#ff0000', 
                 borderColor: '#ff0000',
-                color: '#fff !important',
+                color: 'white',
+                color: '#ffffff',
                 fontWeight: '500',
                 fontSize: '14px',
-                padding: '0 16px'
+                padding: '0 16px',
+                // 确保文本颜色不会被覆盖
+                textShadow: 'none'
               }}
               >
                 搜索

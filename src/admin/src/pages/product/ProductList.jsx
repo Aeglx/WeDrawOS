@@ -1,410 +1,478 @@
-import React, { useState, useEffect } from 'react';
-import { Table, Button, Input, Space, Select, message, Checkbox, Row, Col } from 'antd';
+import React, { useState } from 'react';
+import { Table, Button, Input, Space, Select, Tag } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import './ProductList.css';
 
 const { Option } = Select;
-const { Search } = Input;
 
+// 商品列表页面组件
 const ProductList = () => {
-  const [loading, setLoading] = useState(false);
-  const [products, setProducts] = useState([]);
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  // 状态管理
+  const [searchName, setSearchName] = useState('');
+  const [searchId, setSearchId] = useState('');
+  const [searchPrice, setSearchPrice] = useState('');
+  const [saleMode, setSaleMode] = useState('');
+  const [productStatus, setProductStatus] = useState('');
   const [activeTab, setActiveTab] = useState('all');
-  // 搜索参数状态
-  const [searchParams, setSearchParams] = useState({
-    productName: '',
-    productCode: '',
-    shopName: '',
-    salesMode: '',
-    productType: ''
-  });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(10);
 
-  // 生成模拟数据
-  const generateMockProducts = () => {
-    const productStatuses = ['待审核', '审核未通过', '上架', '下架'];
-    const salesModes = ['零售'];
-    const productTypes = ['实物商品'];
-    const auditStatuses = ['待审核', '审核通过', '审核未通过'];
-    
-    const mockProducts = [];
-    for (let i = 0; i < 4; i++) {
-      const id = 190000000000000000 + Math.floor(Math.random() * 10000000000000000);
-      mockProducts.push({
-        id: id.toString(),
-        productId: id.toString(),
-        name: ['测试商品', '11', 'test', '王只松鼠-手撕面包1kg整箱 休闲零食蛋糕'][i],
-        price: [1.00, 22.00, 11.00, 299.00][i],
-        stock: [4, 6, 1, 6][i],
-        sales: [0, 0, 0, 39][i],
-        salesMode: salesModes[0],
-        productType: productTypes[0],
-        status: '上架',
-        auditStatus: '待审核',
-        image: i === 0 ? 'https://picsum.photos/seed/product1/40/40' : 
-               i === 1 ? 'https://picsum.photos/seed/product2/40/40' :
-               i === 2 ? 'https://picsum.photos/seed/product3/40/40' :
-               'https://picsum.photos/seed/product4/40/40'
-      });
+  // 模拟商品数据
+  const [products] = useState([
+    {
+      id: '1',
+      productId: '1067624538407650560',
+      name: '测试模板',
+      price: '100.00',
+      sales: 0,
+      stock: 4,
+      saleMode: '套餐',
+      productType: '实物商品',
+      status: '上架',
+      auditStatus: '通过',
+      softCopyright: '空编辑',
+      image: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0iI2UxZTFmMiI+CiAgPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMTgiIGZpbGw9Im5vbmUiLz4KICA8dGV4dCB4PSIyMCIgeT0iMjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5p2O5o+QPC90ZXh0Pgo8L3N2Zz4='
+    },
+    {
+      id: '2',
+      productId: '1187242602596427789',
+      name: '11',
+      price: '22.00',
+      sales: 0,
+      stock: 5,
+      saleMode: '零售',
+      productType: '实物商品',
+      status: '上架',
+      auditStatus: '通过',
+      softCopyright: '空编辑',
+      image: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0iI2UxZTFmMiI+CiAgPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMTgiIGZpbGw9Im5vbmUiLz4KICA8dGV4dCB4PSIyMCIgeT0iMjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5p2O5o+QPC90ZXh0Pgo8L3N2Zz4='
+    },
+    {
+      id: '3',
+      productId: '1186712581066297345',
+      name: '4模板',
+      price: '100.00',
+      sales: 0,
+      stock: 500,
+      saleMode: '套餐',
+      productType: '实物商品',
+      status: '上架',
+      auditStatus: '通过',
+      softCopyright: '空编辑',
+      image: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0iI2UxZTFmMiI+CiAgPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMTgiIGZpbGw9Im5vbmUiLz4KICA8dGV4dCB4PSIyMCIgeT0iMjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5p2O5o+QPC90ZXh0Pgo8L3N2Zz4='
+    },
+    {
+      id: '4',
+      productId: '1186608629341247490',
+      name: 'test',
+      price: '11.00',
+      sales: 0,
+      stock: 1,
+      saleMode: '零售',
+      productType: '实物商品',
+      status: '上架',
+      auditStatus: '通过',
+      softCopyright: '空编辑',
+      image: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0iI2UxZTFmMiI+CiAgPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMTgiIGZpbGw9Im5vbmUiLz4KICA8dGV4dCB4PSIyMCIgeT0iMjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5p2O5o+QPC90ZXh0Pgo8L3N2Zz4='
+    },
+    {
+      id: '5',
+      productId: '1081732964981130246',
+      name: 'aaa',
+      price: '22.00',
+      sales: 0,
+      stock: 1,
+      saleMode: '套餐',
+      productType: '实物商品',
+      status: '上架',
+      auditStatus: '通过',
+      softCopyright: '空编辑',
+      image: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0iI2UxZTFmMiI+CiAgPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMTgiIGZpbGw9Im5vbmUiLz4KICA8dGV4dCB4PSIyMCIgeT0iMjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5p2O5o+QPC90ZXh0Pgo8L3N2Zz4='
+    },
+    {
+      id: '6',
+      productId: '1186124850711131904',
+      name: 'ver',
+      price: '23.00',
+      sales: 0,
+      stock: 230,
+      saleMode: '零售',
+      productType: '虚拟商品',
+      status: '上架',
+      auditStatus: '通过',
+      softCopyright: '空编辑',
+      image: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0iI2UxZTFmMiI+CiAgPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMTgiIGZpbGw9Im5vbmUiLz4KICA8dGV4dCB4PSIyMCIgeT0iMjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5p2O5o+QPC90ZXh0Pgo8L3N2Zz4='
+    },
+    {
+      id: '7',
+      productId: '1186120530330160128',
+      name: 'aaaas999',
+      price: '1.00',
+      sales: 0,
+      stock: 2,
+      saleMode: '套餐',
+      productType: '实物商品',
+      status: '下架',
+      auditStatus: '通过',
+      softCopyright: '空编辑',
+      image: 'https://via.placeholder.com/40'
+    },
+    {
+      id: '8',
+      productId: '1185119435905832123',
+      name: '小小礼包',
+      price: '100.00',
+      sales: 0,
+      stock: 29,
+      saleMode: '套餐',
+      productType: '实物商品',
+      status: '上架',
+      auditStatus: '通过',
+      softCopyright: '空编辑',
+      image: 'https://via.placeholder.com/40'
     }
-    return mockProducts;
-  };
-
-  // 加载商品列表
-  const loadProducts = async () => {
-    setLoading(true);
-    try {
-      // 模拟API请求延迟
-      await new Promise(resolve => setTimeout(resolve, 500));
-      const mockProducts = generateMockProducts();
-      setProducts(mockProducts);
-    } catch (error) {
-      console.error('Load products error:', error);
-      message.error('加载商品列表失败');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    loadProducts();
-  }, []);
+  ]);
 
   // 处理搜索
   const handleSearch = () => {
-    setLoading(true);
-    try {
-      // 模拟API请求延迟
-      setTimeout(() => {
-        // 根据搜索参数过滤商品
-        let filteredProducts = generateMockProducts();
-        
-        // 商品名称搜索
-        if (searchParams.productName) {
-          const keyword = searchParams.productName.toLowerCase();
-          filteredProducts = filteredProducts.filter(product => 
-            product.name.toLowerCase().includes(keyword)
-          );
-        }
-        
-        // 商品编号搜索
-        if (searchParams.productCode) {
-          filteredProducts = filteredProducts.filter(product => 
-            product.productId.includes(searchParams.productCode)
-          );
-        }
-        
-        // 店铺名称搜索（在实际应用中会有店铺字段）
-        if (searchParams.shopName) {
-          // 这里仅作为示例，实际应根据数据结构调整
-          message.info(`按店铺名称搜索: ${searchParams.shopName}`);
-        }
-        
-        // 销售模式筛选
-        if (searchParams.salesMode) {
-          filteredProducts = filteredProducts.filter(product => 
-            product.salesMode.toLowerCase() === searchParams.salesMode.toLowerCase()
-          );
-        }
-        
-        // 商品类型筛选
-        if (searchParams.productType) {
-          filteredProducts = filteredProducts.filter(product => 
-            product.productType.toLowerCase() === searchParams.productType.toLowerCase()
-          );
-        }
-        
-        // 更新商品列表
-        setProducts(filteredProducts);
-        message.success(`搜索完成，找到 ${filteredProducts.length} 个商品`);
-        setLoading(false);
-      }, 500);
-    } catch (error) {
-      console.error('Search error:', error);
-      message.error('搜索失败，请重试');
-      setLoading(false);
-    }
+    // 实际项目中这里应该调用API进行搜索
+    console.log('搜索条件:', {
+      name: searchName,
+      id: searchId,
+      price: searchPrice,
+      saleMode,
+      productStatus
+    });
   };
 
-  // 处理批量操作
-  const handleBatchOperation = (type) => {
-    if (selectedRowKeys.length === 0) {
-      message.warning('请先选择商品');
-      return;
-    }
-    
-    switch (type) {
-      case 'shelf':
-        message.success(`已将选中的${selectedRowKeys.length}个商品上架`);
-        break;
-      case 'unshelf':
-        message.success(`已将选中的${selectedRowKeys.length}个商品下架`);
-        break;
-      case 'audit':
-        message.success(`已将选中的${selectedRowKeys.length}个商品提交审核`);
-        break;
-      default:
-        break;
-    }
-    setSelectedRowKeys([]);
+  // 处理重置
+  const handleReset = () => {
+    setSearchName('');
+    setSearchId('');
+    setSearchPrice('');
+    setSaleMode('');
+    setProductStatus('');
+    setCurrentPage(1);
   };
 
-  // 处理审核操作
-  const handleAudit = (record) => {
-    message.info(`审核商品 ${record.name}`);
+  // 处理下架操作
+  const handleOffline = (record) => {
+    // 实际项目中这里应该调用下架API
+    console.log('下架商品:', record);
   };
 
   // 处理查看操作
   const handleView = (record) => {
-    message.info(`查看商品 ${record.name}`);
+    // 实际项目中这里应该跳转到商品详情页
+    console.log('查看商品:', record);
   };
 
-  // 处理标签切换
+  // 处理标签页切换
   const handleTabChange = (tab) => {
     setActiveTab(tab);
-    // 这里可以根据标签筛选商品
+    setCurrentPage(1);
+  };
+
+  // 根据标签页筛选商品
+  const getFilteredProducts = () => {
+    switch (activeTab) {
+      case 'online':
+        return products.filter(product => product.status === '上架');
+      case 'offline':
+        return products.filter(product => product.status === '下架');
+      case 'unaudited':
+        return products.filter(product => product.auditStatus !== '通过');
+      case 'all':
+      default:
+        return products;
+    }
+  };
+
+  // 渲染状态标签
+  const renderStatusTag = (text, type) => {
+    let color = '';
+    switch (type) {
+      case 'saleMode':
+        color = text === '套餐' ? 'blue' : 'orange';
+        break;
+      case 'status':
+        color = text === '上架' ? 'green' : 'red';
+        break;
+      case 'auditStatus':
+        color = 'green';
+        break;
+      default:
+        color = 'blue';
+    }
+    return <Tag color={color} style={{ fontSize: '12px', padding: '2px 8px' }}>{text}</Tag>;
   };
 
   // 表格列配置
   const columns = [
     {
-      title: '',
-      dataIndex: 'checkbox',
-      key: 'checkbox',
-      width: 40,
-      render: (_, record) => (
-        <Checkbox 
-          onChange={(e) => {
-            if (e.target.checked) {
-              setSelectedRowKeys([...selectedRowKeys, record.productId]);
-            } else {
-              setSelectedRowKeys(selectedRowKeys.filter(id => id !== record.productId));
-            }
-          }}
-        />
-      )
-    },
-    {
       title: '商品ID',
       dataIndex: 'productId',
       key: 'productId',
-      width: 150
+      width: 180,
     },
     {
       title: '商品图片',
       dataIndex: 'image',
       key: 'image',
       width: 60,
-      render: (image) => (
-        <img src={image} alt="商品图片" style={{ width: 40, height: 40, objectFit: 'cover' }} />
-      )
+      render: (image) => <img src={image} alt="商品图片" style={{ width: 40, height: 40 }} />
     },
     {
       title: '商品名称',
       dataIndex: 'name',
       key: 'name',
-      ellipsis: true
+      width: 120,
+      ellipsis: true,
     },
     {
       title: '价格',
       dataIndex: 'price',
       key: 'price',
-      width: 100,
-      render: (price) => <span style={{ color: '#ff4d4f' }}>¥{price.toFixed(2)}</span>
+      width: 80,
+      render: (price) => <span style={{ color: '#ff0000', fontSize: '12px' }}>¥{price}</span>
     },
     {
       title: '销量',
       dataIndex: 'sales',
       key: 'sales',
-      width: 80
+      width: 60,
     },
     {
       title: '库存',
       dataIndex: 'stock',
       key: 'stock',
-      width: 80
+      width: 60,
     },
-    {      title: '销售模式',      dataIndex: 'salesMode',      key: 'salesMode',      width: 80,      render: (mode) => <span style={{ padding: '2px 8px', backgroundColor: '#fff2e8', color: '#fa8c16', borderRadius: '2px', fontSize: '12px', display: 'inline-block' }}>{mode}</span>    },    {      title: '商品类型',      dataIndex: 'productType',      key: 'productType',      width: 100,      render: (type) => <span style={{ padding: '2px 8px', backgroundColor: '#f6ffed', color: '#52c41a', borderRadius: '2px', fontSize: '12px', display: 'inline-block' }}>{type}</span>    },    {      title: '状态',      dataIndex: 'status',      key: 'status',      width: 80,      render: (status) => <span style={{ padding: '2px 8px', backgroundColor: '#f6ffed', color: '#52c41a', borderRadius: '2px', fontSize: '12px', display: 'inline-block' }}>{status}</span>    },    {      title: '审核状态',      dataIndex: 'auditStatus',      key: 'auditStatus',      width: 100,      render: (status) => <span style={{ padding: '2px 8px', backgroundColor: '#fff2e8', color: '#fa8c16', borderRadius: '2px', fontSize: '12px', display: 'inline-block' }}>{status}</span>    },
+    {
+      title: '销售模式',
+      dataIndex: 'saleMode',
+      key: 'saleMode',
+      width: 80,
+      render: (mode) => renderStatusTag(mode, 'saleMode')
+    },
+    {
+      title: '商品类型',
+      dataIndex: 'productType',
+      key: 'productType',
+      width: 100,
+      render: (type) => renderStatusTag(type, 'productType')
+    },
+    {
+      title: '软著',
+      dataIndex: 'softCopyright',
+      key: 'softCopyright',
+      width: 80,
+    },
+    {
+      title: '审核状态',
+      dataIndex: 'auditStatus',
+      key: 'auditStatus',
+      width: 80,
+      render: (status) => renderStatusTag(status, 'auditStatus')
+    },
+    {
+      title: '状态',
+      dataIndex: 'status',
+      key: 'status',
+      width: 60,
+      render: (status) => renderStatusTag(status, 'status')
+    },
     {
       title: '操作',
       key: 'action',
       width: 120,
       render: (_, record) => (
-        <Space size="middle">
-          <Button type="link" onClick={() => handleAudit(record)}>审核</Button>
-          <Button type="link" onClick={() => handleView(record)}>查看</Button>
+        <Space size={[0, 12]} style={{ fontSize: '12px' }}>
+          <a href="#" style={{ color: '#ff0000', fontSize: '12px' }} onClick={() => handleOffline(record)}>下架</a>
+          <a href="#" style={{ color: '#1890ff', fontSize: '12px' }} onClick={() => handleView(record)}>查看</a>
         </Space>
-      )
-    }
+      ),
+    },
   ];
 
   return (
     <div className="product-list">
-      {/* 搜索区域 - 严格按照参考截图样式，使用Row和Col实现响应式布局 */}
-      <div className="search-area" style={{ padding: '20px', backgroundColor: '#fff', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '24px' }}>
-        <Row gutter={[24, 16]} align="middle" wrap>
-          <Col span={24}>
-            <Row gutter={24} align="middle" wrap>
-              <Col>
-                <span style={{ marginRight: '8px', color: '#666' }}>商品名称</span>
-                <Input 
-                  placeholder="请输入商品名称" 
-                  value={searchParams.productName}
-                  onChange={(e) => setSearchParams({...searchParams, productName: e.target.value})}
-                  style={{ width: 180, height: 32, fontSize: '14px' }}
-                />
-              </Col>
-              <Col>
-                <span style={{ marginRight: '8px', color: '#666' }}>商品编号</span>
-                <Input 
-                  placeholder="请输入商品编号" 
-                  value={searchParams.productCode}
-                  onChange={(e) => setSearchParams({...searchParams, productCode: e.target.value})}
-                  style={{ width: 150, height: 32, fontSize: '14px' }}
-                />
-              </Col>
-              <Col>
-                <span style={{ marginRight: '8px', color: '#666' }}>店铺名称</span>
-                <Input 
-                  placeholder="请输入店铺名称" 
-                  value={searchParams.shopName}
-                  onChange={(e) => setSearchParams({...searchParams, shopName: e.target.value})}
-                  style={{ width: 150, height: 32, fontSize: '14px' }}
-                />
-              </Col>
-            </Row>
-          </Col>
-          <Col span={24}>
-            <Row gutter={24} align="middle" wrap>
-              <Col>
-                <span style={{ marginRight: '8px', color: '#666' }}>销售模式</span>
-                <Select 
-                  placeholder="全部" 
-                  style={{ width: 120, height: 32, fontSize: '14px' }}
-                  value={searchParams.salesMode}
-                  onChange={(value) => setSearchParams({...searchParams, salesMode: value})}
-                >
-                  <Option value="">全部</Option>
-                  <Option value="retail">零售</Option>
-                  <Option value="wholesale">批发</Option>
-                </Select>
-              </Col>
-              <Col>
-                <span style={{ marginRight: '8px', color: '#666' }}>商品类型</span>
-                <Select 
-                  placeholder="全部" 
-                  style={{ width: 120, height: 32, fontSize: '14px' }}
-                  value={searchParams.productType}
-                  onChange={(value) => setSearchParams({...searchParams, productType: value})}
-                >
-                  <Option value="">全部</Option>
-                  <Option value="physical">实物商品</Option>
-                  <Option value="digital">虚拟商品</Option>
-                </Select>
-              </Col>
-              <Col>
-                <Button 
-                  type="primary" 
-                  icon={<SearchOutlined />} 
-                  onClick={handleSearch}
-                  style={{ backgroundColor: '#ff0000', borderColor: '#ff0000', color: '#ffffff', marginRight: 8, height: 32, padding: '0 16px', fontSize: '14px', fontWeight: '500' }}
-                >
-                  搜索
-                </Button>
-                <Button 
-                  onClick={() => {
-                    setSearchParams({ productName: '', productCode: '', shopName: '', salesMode: '', productType: '' });
-                    // 重置后重新加载所有商品
-                    setLoading(true);
-                    setTimeout(() => {
-                      const mockProducts = generateMockProducts();
-                      setProducts(mockProducts);
-                      setLoading(false);
-                      message.success('已重置搜索条件');
-                    }, 300);
-                  }}
-                  style={{ height: 32, padding: '0 16px', fontSize: '14px' }}
-                >
-                  重置
-                </Button>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </div>
-
-      {/* 状态标签区域 */}
-      <div className="status-tabs">
-        <div 
-          className={`status-tab ${activeTab === 'all' ? 'active' : ''}`}
-          onClick={() => handleTabChange('all')}
-        >
-          全部
-        </div>
-        <div 
-          className={`status-tab ${activeTab === 'selling' ? 'active' : ''}`}
-          onClick={() => handleTabChange('selling')}
-        >
-          出售中(17580)
-        </div>
-        <div 
-          className={`status-tab ${activeTab === 'warehouse' ? 'active' : ''}`}
-          onClick={() => handleTabChange('warehouse')}
-        >
-          仓库中
-        </div>
-        <div 
-          className={`status-tab ${activeTab === 'pending' ? 'active' : ''}`}
-          onClick={() => handleTabChange('pending')}
-        >
-          待审核(4)
-        </div>
-        <div 
-          className={`status-tab ${activeTab === 'rejected' ? 'active' : ''}`}
-          onClick={() => handleTabChange('rejected')}
-        >
-          审核未通过(809)
+      {/* 搜索区域 */}
+      <div className="search-area">
+        <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '24px' }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <span style={{ fontSize: '12px', color: '#666666', marginRight: '8px', width: '80px', display: 'inline-block', whiteSpace: 'nowrap' }}>商品名称</span>
+            <Input
+              placeholder="请输入商品名称"
+              value={searchName}
+              onChange={(e) => setSearchName(e.target.value)}
+              style={{ width: 180, fontSize: '12px', height: 32 }}
+              allowClear
+            />
+          </div>
+          
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <span style={{ fontSize: '12px', color: '#666666', marginRight: '8px', width: '80px', display: 'inline-block', whiteSpace: 'nowrap' }}>商品编号</span>
+            <Input
+              placeholder="请输入商品编号"
+              value={searchId}
+              onChange={(e) => setSearchId(e.target.value)}
+              style={{ width: 180, fontSize: '12px', height: 32 }}
+              allowClear
+            />
+          </div>
+          
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <span style={{ fontSize: '12px', color: '#666666', marginRight: '8px', width: '80px', display: 'inline-block', whiteSpace: 'nowrap' }}>测试价格</span>
+            <Input
+              placeholder="请输入测试价格"
+              value={searchPrice}
+              onChange={(e) => setSearchPrice(e.target.value)}
+              style={{ width: 180, fontSize: '12px', height: 32 }}
+              allowClear
+            />
+          </div>
+          
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <span style={{ fontSize: '12px', color: '#666666', marginRight: '8px', width: '80px', display: 'inline-block', whiteSpace: 'nowrap' }}>销售模式</span>
+            <Select
+              placeholder="请选择销售模式"
+              value={saleMode}
+              onChange={setSaleMode}
+              allowClear
+              style={{ width: 180, fontSize: '12px', height: 32 }}
+            >
+              <Option value="零售">零售</Option>
+              <Option value="套餐">套餐</Option>
+            </Select>
+          </div>
+          
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <span style={{ fontSize: '12px', color: '#666666', marginRight: '8px', width: '80px', display: 'inline-block', whiteSpace: 'nowrap' }}>商品状态</span>
+            <Select
+              placeholder="请选择商品状态"
+              value={productStatus}
+              onChange={setProductStatus}
+              allowClear
+              style={{ width: 180, fontSize: '12px', height: 32 }}
+            >
+              <Option value="上架">上架</Option>
+              <Option value="下架">下架</Option>
+            </Select>
+          </div>
+          
+          <Button 
+            type="primary" 
+            icon={<SearchOutlined />}
+            onClick={handleSearch}
+            style={{ height: 32, fontSize: '12px', backgroundColor: '#ff0000', borderColor: '#ff0000' }}
+          >
+            搜索
+          </Button>
         </div>
       </div>
 
-      {/* 批量操作区域 */}
-      <div className="batch-operations">
-        <Button 
-          onClick={() => handleBatchOperation('shelf')}
-          disabled={selectedRowKeys.length === 0}
-          style={{ marginRight: 8 }}
-        >
-          批量上架
-        </Button>
-        <Button 
-          onClick={() => handleBatchOperation('unshelf')}
-          disabled={selectedRowKeys.length === 0}
-          style={{ marginRight: 8 }}
-        >
-          批量下架
-        </Button>
-        <Button 
-          onClick={() => handleBatchOperation('audit')}
-          disabled={selectedRowKeys.length === 0}
-        >
-          批量审核
-        </Button>
+      {/* 标签页 - 动态显示商品数量 */}
+      <div style={{ marginBottom: '16px', borderBottom: '1px solid #e8e8e8' }}>
+        <Space size={0} style={{ fontSize: '12px' }}>
+          <a 
+            href="#" 
+            onClick={() => handleTabChange('all')}
+            style={{
+              padding: '8px 16px',
+              borderBottom: activeTab === 'all' ? '2px solid #ff0000' : '2px solid transparent',
+              color: activeTab === 'all' ? '#ff0000' : '#666666',
+              marginRight: '0',
+              display: 'inline-block',
+              fontSize: '12px'
+            }}
+          >
+            全部({products.length})
+          </a>
+          <a 
+            href="#" 
+            onClick={() => handleTabChange('online')}
+            style={{
+              padding: '8px 16px',
+              borderBottom: activeTab === 'online' ? '2px solid #ff0000' : '2px solid transparent',
+              color: activeTab === 'online' ? '#ff0000' : '#666666',
+              marginRight: '0',
+              display: 'inline-block',
+              fontSize: '12px'
+            }}
+          >
+            出售中({products.filter(product => product.status === '上架').length})
+          </a>
+          <a 
+            href="#" 
+            onClick={() => handleTabChange('offline')}
+            style={{
+              padding: '8px 16px',
+              borderBottom: activeTab === 'offline' ? '2px solid #ff0000' : '2px solid transparent',
+              color: activeTab === 'offline' ? '#ff0000' : '#666666',
+              marginRight: '0',
+              display: 'inline-block',
+              fontSize: '12px'
+            }}
+          >
+            仓库中({products.filter(product => product.status === '下架').length})
+          </a>
+          <a 
+            href="#" 
+            onClick={() => handleTabChange('unaudited')}
+            style={{
+              padding: '8px 16px',
+              borderBottom: activeTab === 'unaudited' ? '2px solid #ff0000' : '2px solid transparent',
+              color: activeTab === 'unaudited' ? '#ff0000' : '#666666',
+              marginRight: '0',
+              display: 'inline-block',
+              fontSize: '12px'
+            }}
+          >
+            审核未通过({products.filter(product => product.auditStatus !== '通过').length})
+          </a>
+        </Space>
+      </div>
+
+      {/* 排序按钮 */}
+      <div style={{ marginBottom: '16px', fontSize: '12px' }}>
+        <Space size={[8, 0]}>
+          <a href="#" style={{ color: '#666666', fontSize: '12px' }}>按销量</a>
+          <span style={{ color: '#ccc' }}>|</span>
+          <a href="#" style={{ color: '#666666', fontSize: '12px' }}>按库存</a>
+        </Space>
       </div>
 
       {/* 商品表格 */}
-      <Table
-        columns={columns}
-        dataSource={products}
-        rowKey="productId"
-        loading={loading}
-        pagination={{
-          pageSize: 20,
-          showSizeChanger: true,
-          showQuickJumper: true,
-          showTotal: (total) => `共 ${total} 条`
-        }}
-        className="product-table"
-      />
+      <div className="product-table">
+        <Table
+          columns={columns}
+          dataSource={getFilteredProducts()}
+          rowKey="id"
+          pagination={false}
+          locale={{ emptyText: '暂无数据' }}
+          style={{ fontSize: '12px' }}
+          className="ant-table"
+        />
+        
+        {/* 分页组件 */}
+        <div style={{ margin: '16px 0', textAlign: 'right', fontSize: '12px' }}>
+          <span style={{ marginRight: '16px', color: '#666666', fontSize: '12px' }}>共 {getFilteredProducts().length} 条</span>
+          <span style={{ marginRight: '8px', fontSize: '12px' }}>上一页</span>
+          <span style={{ marginRight: '8px', fontSize: '12px' }}>1</span>
+          <span style={{ marginRight: '8px', fontSize: '12px' }}>下一页</span>
+          <span style={{ marginRight: '8px', fontSize: '12px' }}>10条/页</span>
+          <span style={{ marginRight: '8px', fontSize: '12px' }}>跳至</span>
+          <Input 
+            type="number" 
+            min={1} 
+            value={1} 
+            onChange={() => {}} 
+            style={{ width: 60, height: 28, display: 'inline-block', marginRight: '8px', fontSize: '12px' }}
+          />
+          <span style={{ fontSize: '12px' }}>页</span>
+        </div>
+      </div>
     </div>
   );
 };
