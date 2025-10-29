@@ -164,6 +164,12 @@ src/api/ai-service/models/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf
 - **API文档JSON**：http://localhost:3000/api/wedraw-docs/json
 - **健康检查**：http://localhost:3000/api/health
 
+## 项目操作文档
+
+详细的系统操作指南请参考项目操作文档：
+
+- [WeDrawOS操作文档](./OPERATION_GUIDE.md) - 包含完整的使用说明、开发流程和故障排查指南
+
 ## 安全与最佳实践
 
 - 使用JWT进行身份认证和授权
