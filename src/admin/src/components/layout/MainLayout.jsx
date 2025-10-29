@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import { Layout, Menu, Avatar, Dropdown, Button, Input, Divider } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
 import {
@@ -80,21 +81,31 @@ const MainLayout = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // 模拟AI回复
-  const getAIResponse = (question) => {
-    const responses = {
-      '系统主要功能有什么？': 'WeDrawOS系统是一个电商管理平台，主要功能包括：商品管理、订单处理、会员管理、店铺管理、促销活动、运营管理、数据分析统计、系统设置等模块。系统支持PC端和移动端，为电商运营提供全方位的管理工具。',
-      '如何管理商品？': '商品管理模块允许您添加、编辑、删除商品，设置商品分类、品牌、规格等属性。您可以通过【商品】→【商品管理】→【平台商品】进入商品列表，点击【添加商品】创建新商品，或对现有商品进行编辑操作。',
-      '如何处理订单？': '订单管理在【订单】模块中，您可以查看所有订单状态、处理支付、发货、退款等操作。通过【订单】→【商品订单】进入订单列表，使用筛选功能查找特定订单，点击订单详情进行处理。',
-      '会员管理功能介绍': '会员管理模块位于【会员】→【会员管理】下，您可以查看会员信息、积分记录、预存款、会员评价等。系统支持会员等级设置、积分管理、充值提现审核等功能，帮助您维护客户关系。',
-      '如何设置促销活动？': '促销活动在【促销】模块中管理，支持优惠券、满额活动、秒杀、拼团、砍价等多种促销方式。选择您需要的促销类型，点击【添加活动】设置活动规则、时间、参与商品等信息。'
-    };
-    
-    return responses[question] || '抱歉，我暂时无法回答这个问题。请尝试换一种方式提问或者联系技术支持。';
+  // 调用AI API获取真实回复
+  const getAIResponse = async (question) => {
+    try {
+      const response = await axios.post('http://localhost:3000/api/ai/chat', {
+        prompt: question,
+        options: {
+          max_tokens: 512,
+          temperature: 0.7
+        }
+      });
+      
+      if (response.data.success) {
+        return response.data.response;
+      } else {
+        return 'AI服务返回错误: ' + (response.data.message || '未知错误');
+      }
+    } catch (error) {
+      console.error('AI API调用失败:', error);
+      // 降级处理：如果API调用失败，返回一个友好的错误消息
+      return '抱歉，AI服务暂时不可用。请稍后再试，或联系技术支持。';
+    }
   };
 
   // 发送消息
-  const sendMessage = (text) => {
+  const sendMessage = async (text) => {
     if (!text.trim() || isLoading) return;
 
     // 添加用户消息
@@ -107,16 +118,29 @@ const MainLayout = () => {
     setInputValue('');
     setIsLoading(true);
 
-    // 模拟AI思考延迟
-    setTimeout(() => {
+    try {
+      // 调用AI API获取真实回复
+      const aiResponseText = await getAIResponse(text);
+      
       const aiResponse = {
         id: Date.now() + 1,
         role: 'ai',
-        content: getAIResponse(text)
+        content: aiResponseText
       };
       setMessages(prev => [...prev, aiResponse]);
+    } catch (error) {
+      console.error('发送消息失败:', error);
+      
+      // 错误处理消息
+      const errorMessage = {
+        id: Date.now() + 1,
+        role: 'ai',
+        content: '处理您的请求时出现错误，请稍后再试。'
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   // 处理预设问题点击

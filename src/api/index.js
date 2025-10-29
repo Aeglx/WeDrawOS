@@ -25,9 +25,20 @@ require('dotenv').config();
 // 使用Express框架
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 3001; // 严格遵循README要求，使用3000端口
+const port = process.env.PORT || 3000; // 严格遵循README要求，使用3000端口
 const fs = require('fs');
 const path = require('path');
+
+// CORS中间件配置，允许跨域请求
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+  next();
+});
 
 // 中间件配置
 app.use(express.json());
