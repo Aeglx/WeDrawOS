@@ -41,6 +41,7 @@ import {
   CommentOutlined as BotOutlined,
   CloseOutlined
 } from '@ant-design/icons';
+import './MainLayout.css';
 
 const { Header, Sider, Content } = Layout;
 
@@ -80,7 +81,7 @@ const MainLayout = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // 调用AI API获取真实回复，带有备用回复逻辑
+  // 调用AI API获取真实回复
   const getAIResponse = async (question) => {
     try {
       const response = await axios.post('http://localhost:3000/api/ai/chat', {
@@ -91,32 +92,15 @@ const MainLayout = () => {
         }
       });
       
-      if (response.data.success && response.data.response) {
+      if (response.data.success) {
         return response.data.response;
       } else {
-        // API返回成功但内容为空或错误
-        console.warn('AI API返回非预期响应:', response.data);
-        return getFallbackResponse(question);
+        return 'AI服务返回错误: ' + (response.data.message || '未知错误');
       }
     } catch (error) {
       console.error('AI API调用失败:', error);
-      // 降级处理：使用本地备用回复逻辑
-      return getFallbackResponse(question);
-    }
-  };
-  
-  // 本地备用回复逻辑，确保AI能够正常回复
-  const getFallbackResponse = (question) => {
-    const lowerQuestion = question.toLowerCase();
-    
-    if (lowerQuestion.includes('你是谁') || lowerQuestion.includes('介绍')) {
-      return '我是WeDrawOS智能助手，很高兴为您提供帮助。我可以回答您关于系统功能、使用方法等问题。';
-    } else if (lowerQuestion.includes('如何') || lowerQuestion.includes('怎么')) {
-      return '根据您的问题，我建议您查看系统的使用文档或联系技术支持获取更详细的指导。您也可以尝试重新描述您的问题，我会尽力为您解答。';
-    } else if (lowerQuestion.includes('错误') || lowerQuestion.includes('问题')) {
-      return '遇到问题了？请尝试刷新页面或检查您的网络连接。如果问题持续，请联系我们的技术支持团队获取帮助。';
-    } else {
-      return `感谢您的提问。关于"${question}"，我目前无法提供完整答案，但我会持续学习以更好地为您服务。您可以尝试更具体地描述您的需求。`;
+      // 降级处理：如果API调用失败，返回一个友好的错误消息
+      return '抱歉，AI服务暂时不可用。请稍后再试，或联系技术支持。';
     }
   };
 
@@ -815,65 +799,6 @@ const MainLayout = () => {
           </Content>
         </Layout>
       </Layout>
-      <style>
-        .message-item {
-          display: flex;
-          margin-bottom: 16px;
-          align-items: flex-start;
-        }
-        .message-icon {
-          margin-right: 8px;
-          font-size: 16px;
-        }
-        .ai-icon {
-          color: #1890ff;
-        }
-        .user-icon {
-          color: #52c41a;
-        }
-        .ai-message {
-          justify-content: flex-start;
-        }
-        .user-message {
-          justify-content: flex-end;
-        }
-        .user-message .message-content {
-          background-color: #1890ff;
-          color: white;
-          border-radius: 8px 8px 0 8px;
-        }
-        .ai-message .message-content {
-          background-color: #f5f5f5;
-          color: #333;
-          border-radius: 8px 8px 8px 0;
-          max-width: 75%;
-        }
-        .message-content {
-          padding: 8px 12px;
-          word-wrap: break-word;
-          word-break: break-all;
-        }
-        .preset-item {
-          display: flex;
-          align-items: center;
-          padding: 8px;
-          margin-bottom: 8px;
-          border: 1px solid #d9d9d9;
-          border-radius: 4px;
-          cursor: pointer;
-          transition: all 0.3s;
-        }
-        .preset-item:hover {
-          border-color: #1890ff;
-          color: #1890ff;
-        }
-        .preset-icon {
-          margin-right: 8px;
-        }
-        .typing {
-          color: #999;
-        }
-      </style>
       {aiAssistantVisible && (
         <div className="ai-assistant-overlay" onClick={() => setAiAssistantVisible(false)}>
           <div className="ai-assistant-container" onClick={(e) => e.stopPropagation()}>
@@ -896,11 +821,7 @@ const MainLayout = () => {
                     key={message.id} 
                     className={`message-item ${message.role === 'ai' ? 'ai-message' : 'user-message'}`}
                   >
-                    {message.role === 'ai' ? (
-                      <MessageOutlined className="message-icon ai-icon" />
-                    ) : (
-                      <UserOutlined className="message-icon user-icon" />
-                    )}
+                    {message.role === 'ai' && <MessageOutlined className="message-icon" />}
                     <div className="message-content">{message.content}</div>
                   </div>
                 ))}
