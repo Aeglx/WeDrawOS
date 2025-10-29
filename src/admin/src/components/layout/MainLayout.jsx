@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Layout, Menu, Avatar, Dropdown, Button } from 'antd';
+import React, { useState, useEffect, useRef } from 'react';
+import { Layout, Menu, Avatar, Dropdown, Button, Input, Divider } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { 
   HomeOutlined, 
@@ -36,9 +36,9 @@ import {
   CompassOutlined,
   MonitorOutlined,
   CheckCircleOutlined,
-  CloseOutlined,
   SendOutlined,
-  BotOutlined
+  BotOutlined,
+  CloseOutlined
 } from '@ant-design/icons';
 import './MainLayout.css';
 
@@ -47,7 +47,95 @@ const { Header, Sider, Content } = Layout;
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [aiAssistantVisible, setAiAssistantVisible] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [inputValue, setInputValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef(null);
   const navigate = useNavigate();
+
+  // 预设问题列表
+  const presetQuestions = [
+    { id: 1, text: '系统主要功能有什么？' },
+    { id: 2, text: '如何管理商品？' },
+    { id: 3, text: '如何处理订单？' },
+    { id: 4, text: '会员管理功能介绍' },
+    { id: 5, text: '如何设置促销活动？' }
+  ];
+
+  // 初始化欢迎消息
+  useEffect(() => {
+    if (aiAssistantVisible && messages.length === 0) {
+      setMessages([
+        {
+          id: Date.now(),
+          role: 'ai',
+          content: '您好，我是WeDrawOS智能助手。我可以帮您解答系统使用相关问题，请输入您的问题或选择下方的常见问题。'
+        }
+      ]);
+    }
+  }, [aiAssistantVisible, messages.length]);
+
+  // 自动滚动到底部
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  // 模拟AI回复
+  const getAIResponse = (question) => {
+    const responses = {
+      '系统主要功能有什么？': 'WeDrawOS系统是一个电商管理平台，主要功能包括：商品管理、订单处理、会员管理、店铺管理、促销活动、运营管理、数据分析统计、系统设置等模块。系统支持PC端和移动端，为电商运营提供全方位的管理工具。',
+      '如何管理商品？': '商品管理模块允许您添加、编辑、删除商品，设置商品分类、品牌、规格等属性。您可以通过【商品】→【商品管理】→【平台商品】进入商品列表，点击【添加商品】创建新商品，或对现有商品进行编辑操作。',
+      '如何处理订单？': '订单管理在【订单】模块中，您可以查看所有订单状态、处理支付、发货、退款等操作。通过【订单】→【商品订单】进入订单列表，使用筛选功能查找特定订单，点击订单详情进行处理。',
+      '会员管理功能介绍': '会员管理模块位于【会员】→【会员管理】下，您可以查看会员信息、积分记录、预存款、会员评价等。系统支持会员等级设置、积分管理、充值提现审核等功能，帮助您维护客户关系。',
+      '如何设置促销活动？': '促销活动在【促销】模块中管理，支持优惠券、满额活动、秒杀、拼团、砍价等多种促销方式。选择您需要的促销类型，点击【添加活动】设置活动规则、时间、参与商品等信息。'
+    };
+    
+    return responses[question] || '抱歉，我暂时无法回答这个问题。请尝试换一种方式提问或者联系技术支持。';
+  };
+
+  // 发送消息
+  const sendMessage = (text) => {
+    if (!text.trim() || isLoading) return;
+
+    // 添加用户消息
+    const userMessage = {
+      id: Date.now(),
+      role: 'user',
+      content: text
+    };
+    setMessages(prev => [...prev, userMessage]);
+    setInputValue('');
+    setIsLoading(true);
+
+    // 模拟AI思考延迟
+    setTimeout(() => {
+      const aiResponse = {
+        id: Date.now() + 1,
+        role: 'ai',
+        content: getAIResponse(text)
+      };
+      setMessages(prev => [...prev, aiResponse]);
+      setIsLoading(false);
+    }, 1000);
+  };
+
+  // 处理预设问题点击
+  const handlePresetQuestionClick = (question) => {
+    sendMessage(question);
+  };
+
+  // 处理输入框变化
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  // 处理回车键发送
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage(inputValue);
+    }
+  };
 
   // 处理菜单点击
   const handleMenuClick = (e) => {
@@ -659,7 +747,7 @@ const MainLayout = () => {
           <div className="header-right">
             <Button 
               type="text" 
-              icon={<CommentOutlined />} 
+              icon={<BotOutlined />}
               className="header-btn"
               title="AI机器人"
               onClick={() => setAiAssistantVisible(true)}
@@ -686,34 +774,75 @@ const MainLayout = () => {
         </Content>
       </Layout>
     </Layout>
-    
     {aiAssistantVisible && (
-      <div className="ai-assistant-overlay">
-        <div className="ai-assistant-container">
-          {/* 头部 */}
+      <div className="ai-assistant-overlay" onClick={() => setAiAssistantVisible(false)}>
+        <div className="ai-assistant-container" onClick={(e) => e.stopPropagation()}>
           <div className="ai-assistant-header">
-            <div className="ai-assistant-title">
+            <div className="header-info">
               <BotOutlined className="ai-icon" />
-              <span>LILISHOP 小助手</span>
+              <span className="ai-title">WeDrawOS智能助手</span>
             </div>
             <Button 
               type="text" 
-              icon={<CloseOutlined />} 
+              icon={<CloseOutlined />}
               onClick={() => setAiAssistantVisible(false)}
               className="close-btn"
             />
           </div>
-
-          {/* 内容区域 */}
           <div className="ai-assistant-content">
             <div className="messages-container">
-              <div className="message-item bot">
-                <BotOutlined className="message-icon" />
-                <div className="message-content bot">
-                  您好，我是 LILISHOP 小助手，您可以向我提出 LILISHOP 使用问题。
+              {messages.map(message => (
+                <div 
+                  key={message.id} 
+                  className={`message-item ${message.role === 'ai' ? 'ai-message' : 'user-message'}`}
+                >
+                  {message.role === 'ai' && <BotOutlined className="message-icon" />}
+                  <div className="message-content">{message.content}</div>
+                </div>
+              ))}
+              {isLoading && (
+                <div className="message-item ai-message">
+                  <BotOutlined className="message-icon" />
+                  <div className="message-content typing">正在回复...</div>
+                </div>
+              )}
+              <div ref={messagesEndRef} />
+            </div>
+            {messages.length <= 1 && (
+              <div className="preset-questions">
+                <div className="preset-title">常见问题：</div>
+                <div className="preset-list">
+                  {presetQuestions.map(question => (
+                    <div 
+                      key={question.id} 
+                      className="preset-item"
+                      onClick={() => handlePresetQuestionClick(question.text)}
+                    >
+                      <MessageOutlined className="preset-icon" />
+                      {question.text}
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
+            )}
+          </div>
+          <div className="ai-assistant-footer">
+            <Input
+              value={inputValue}
+              onChange={handleInputChange}
+              onPressEnter={handleKeyPress}
+              placeholder="请输入您的问题..."
+              disabled={isLoading}
+              className="ai-input"
+              suffix={
+                <Button
+                  type="text"
+                  icon={<SendOutlined />}
+                  onClick={() => sendMessage(inputValue)}
+                  disabled={!inputValue.trim() || isLoading}
+                />
+              }
+            />
           </div>
         </div>
       </div>
