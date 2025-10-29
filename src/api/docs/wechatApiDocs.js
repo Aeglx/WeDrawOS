@@ -1,6 +1,6 @@
 /**
- * WeDrawOS API文档中心 - 微信开发文档样式
- * 提供完整的API接口文档，采用微信开放平台文档风格设计
+ * WeDrawOS API文档中心
+ * 提供完整的API接口文档，采用现代化文档风格设计
  */
 
 const express = require('express');
@@ -253,7 +253,7 @@ const options = {
     },
     servers: [
       {
-        url: `http://localhost:${process.env.PORT || 3001}`,
+        url: `http://localhost:${process.env.PORT || 3000}`,
         description: '开发环境'
       }
     ]
@@ -276,18 +276,18 @@ const swaggerSpec = swaggerJsdoc(options);
  */
 function setupWechatApiDocs(app) {
   try {
-    logger.info('初始化微信API文档系统');
+    logger.info('初始化WeDraw API文档系统');
     
     // 提供JSON格式的API文档
-    app.get('/api/wechat-docs/json', (req, res) => {
+    app.get('/api/wedraw-docs/json', (req, res) => {
       logger.info('请求API文档JSON数据');
       res.setHeader('Content-Type', 'application/json');
       res.json(swaggerSpec);
     });
 
-    // 提供完整的微信文档风格HTML页面
-    app.get('/api/wechat-docs', (req, res) => {
-      logger.info('访问微信文档风格API页面');
+    // 提供完整的API文档HTML页面
+    app.get('/api/wedraw-docs', (req, res) => {
+      logger.info('访问API文档页面');
       
       // 构建HTML页面
       const html = `
@@ -347,9 +347,9 @@ function setupWechatApiDocs(app) {
           console.log('页面加载完成，开始初始化Swagger UI');
           
           // 初始化 Swagger UI
-          console.log('Initializing Swagger UI with URL:', window.location.origin + '/api/wechat-docs/json');
+          console.log('Initializing Swagger UI with URL:', window.location.origin + '/api/wedraw-docs/json');
           window.swaggerUi = SwaggerUIBundle({
-            url: window.location.origin + '/api/wechat-docs/json',
+            url: window.location.origin + '/api/wedraw-docs/json',
             dom_id: '#swagger-ui',
             presets: [
               SwaggerUIBundle.presets.apis,
@@ -383,11 +383,11 @@ function setupWechatApiDocs(app) {
       res.send(html);
     });
     
-    logger.info('微信API文档系统初始化完成');
+    logger.info('WeDraw API文档系统初始化完成');
   } catch (error) {
-    logger.error('微信API文档系统初始化失败:', error);
+    logger.error('WeDraw API文档系统初始化失败:', error);
     // 如果初始化失败，提供一个简单的回退页面
-    app.get('/api/wechat-docs', (req, res) => {
+    app.get('/api/wedraw-docs', (req, res) => {
       res.status(500).json({
         code: 500,
         message: 'API文档系统初始化失败',
@@ -407,4 +407,4 @@ try {
   exports.swaggerSpec = swaggerSpec;
 }
 
-console.log('微信API文档模块已加载并准备就绪');
+console.log('WeDraw API文档模块已加载并准备就绪');

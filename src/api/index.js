@@ -51,56 +51,25 @@ app.use('/api/ai', aiRoutes);
 console.log('✅ AI服务路由已注册到 /api/ai 路径')
 
 // 基本的Swagger配置
-function setupBasicSwagger(app) {
-  console.log('📚 设置基础API文档路由');
-  
-  // API文档页面
-  app.get('/api-docs', (req, res) => {
-    res.sendFile(path.join(__dirname, 'docs', 'index.html'));
-  });
-  
-  // API文档数据
-  app.get('/api-docs/data', async (req, res) => {
-    try {
-      const apiData = await scanApiRoutes();
-      res.json({
-        success: true,
-        data: apiData,
-        timestamp: Date.now()
-      });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        message: '获取API文档数据失败',
-        error: error.message
-      });
-    }
-  });
-}
+// setupBasicSwagger函数已移除，只使用Wedraw文档风格作为唯一的API文档入口
 
-// 引入微信开发文档风格的API文档系统
+// 引入Wedraw文档风格的API文档系统
 let setupSwagger;
 try {
-  // 优先尝试导入微信开发文档风格的API文档系统
-  const wechatApiDocs = require('./docs/wechatApiDocs');
-  if (wechatApiDocs.setupWechatApiDocs) {
-    setupSwagger = wechatApiDocs.setupWechatApiDocs;
-    console.log('✅ 成功加载微信开发文档风格API文档系统');
+  // 只使用Wedraw文档风格作为唯一的API文档
+  const wedrawApiDocs = require('./docs/wechatApiDocs');
+  if (wedrawApiDocs.setupWechatApiDocs) {
+    setupSwagger = wedrawApiDocs.setupWechatApiDocs;
+    console.log('✅ 成功加载Wedraw文档风格API文档系统');
   } else {
-    // 如果微信文档风格加载失败，尝试加载普通Swagger配置
-    const swaggerModule = require('./common-api/swagger');
-    if (swaggerModule.setupSwagger) {
-      setupSwagger = swaggerModule.setupSwagger;
-      console.log('✅ 成功加载Swagger配置');
-    } else {
-      console.log('⚠️  Swagger配置模块不完整，使用备用配置');
-      setupSwagger = setupBasicSwagger;
-    }
+    throw new Error('Wedraw文档模块未找到或不完整');
   }
 } catch (error) {
-  console.error('❌ 加载API文档系统失败:', error.message);
-  console.log('⚠️  使用内置的Swagger配置');
-  setupSwagger = setupBasicSwagger;
+  console.error('❌ 加载Wedraw文档系统失败:', error.message);
+  // 创建一个基本的setupSwagger函数
+  setupSwagger = function(app) {
+    console.log('⚠️  使用简化版API文档配置');
+  };
 }
 
 // 扫描API路由函数
@@ -674,10 +643,9 @@ app.use((req, res) => {
 app.listen(port, () => {
   console.log('✅ WeDraw API服务器已启动');
   console.log('📡 服务地址: http://localhost:' + port);
-  console.log('📚 API文档(标准): http://localhost:' + port + '/api-docs');
-  console.log('📱 微信文档风格API: http://localhost:' + port + '/api/wechat-docs');
+  console.log('📚 WeDraw文档风格API: http://localhost:' + port + '/api/wedraw-docs');
   console.log('💚 健康检查: http://localhost:' + port + '/api/health');
-  console.log('🔍 文档调试: http://localhost:' + port + '/api/wechat-docs/debug');
+  console.log('🔍 文档JSON: http://localhost:' + port + '/api/wedraw-docs/json');
   console.log('========================================');
 });
 
