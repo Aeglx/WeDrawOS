@@ -161,7 +161,7 @@ src/api/ai-service/models/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf
 项目提供完整的API文档，支持在线调试：
 
 - **Swagger文档**：http://localhost:3000/api-docs
-- **微信文档风格API**：http://localhost:3000/api/wechat-docs
+- **文档API**：http://localhost:3000/api/wechat-docs
 - **健康检查**：http://localhost:3000/api/health
 
 ## 安全与最佳实践
