@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Layout, Menu, Avatar, Dropdown, Button, Input, Divider } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { 
+import {
   HomeOutlined, 
   UserOutlined, 
   ShopOutlined, 
@@ -37,7 +37,7 @@ import {
   MonitorOutlined,
   CheckCircleOutlined,
   SendOutlined,
-  BotOutlined,
+  CommentOutlined as BotOutlined,
   CloseOutlined
 } from '@ant-design/icons';
 import './MainLayout.css';
@@ -748,7 +748,7 @@ const MainLayout = () => {
             <div className="header-right">
               <Button 
                 type="text" 
-                icon={<BotOutlined />}
+                icon={<MessageOutlined />}
                 className="header-btn"
                 title="AI机器人"
                 onClick={() => setAiAssistantVisible(true)}
@@ -780,9 +780,9 @@ const MainLayout = () => {
           <div className="ai-assistant-container" onClick={(e) => e.stopPropagation()}>
             <div className="ai-assistant-header">
               <div className="header-info">
-                <BotOutlined className="ai-icon" />
-                <span className="ai-title">WeDrawOS智能助手</span>
-              </div>
+              <MessageOutlined className="ai-icon" />
+              <span className="ai-title">WeDrawOS智能助手</span>
+            </div>
               <Button 
                 type="text" 
                 icon={<CloseOutlined />}
@@ -797,15 +797,15 @@ const MainLayout = () => {
                     key={message.id} 
                     className={`message-item ${message.role === 'ai' ? 'ai-message' : 'user-message'}`}
                   >
-                    {message.role === 'ai' && <BotOutlined className="message-icon" />}
+                    {message.role === 'ai' && <MessageOutlined className="message-icon" />}
                     <div className="message-content">{message.content}</div>
                   </div>
                 ))}
                 {isLoading && (
                   <div className="message-item ai-message">
-                    <BotOutlined className="message-icon" />
-                    <div className="message-content typing">正在回复...</div>
-                  </div>
+                  <MessageOutlined className="message-icon" />
+                  <div className="message-content typing">正在回复...</div>
+                </div>
                 )}
                 <div ref={messagesEndRef} />
               </div>
