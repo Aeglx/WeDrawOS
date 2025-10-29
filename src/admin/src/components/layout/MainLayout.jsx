@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Layout, Menu, Avatar, Dropdown, Button } from 'antd';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { 
   HomeOutlined, 
   UserOutlined, 
@@ -35,15 +35,18 @@ import {
   WechatOutlined,
   CompassOutlined,
   MonitorOutlined,
-  CheckCircleOutlined
+  CheckCircleOutlined,
+  CloseOutlined,
+  SendOutlined,
+  BotOutlined
 } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
 import './MainLayout.css';
 
 const { Header, Sider, Content } = Layout;
 
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [aiAssistantVisible, setAiAssistantVisible] = useState(false);
   const navigate = useNavigate();
 
   // 处理菜单点击
@@ -654,6 +657,20 @@ const MainLayout = () => {
             className="trigger"
           />
           <div className="header-right">
+            <Button 
+              type="text" 
+              icon={<CommentOutlined />} 
+              className="header-btn"
+              title="AI机器人"
+              onClick={() => setAiAssistantVisible(true)}
+            />
+            <Button 
+              type="text" 
+              icon={<MessageOutlined />} 
+              className="header-btn"
+              title="站内信"
+              onClick={() => navigate('/messages')}
+            />
             <Dropdown menu={{ items: userMenuItems }}>
               <div className="user-info">
                 <Avatar className="user-avatar">{adminInfo.username.charAt(0).toUpperCase()}</Avatar>
@@ -669,6 +686,38 @@ const MainLayout = () => {
         </Content>
       </Layout>
     </Layout>
+    
+    {aiAssistantVisible && (
+      <div className="ai-assistant-overlay">
+        <div className="ai-assistant-container">
+          {/* 头部 */}
+          <div className="ai-assistant-header">
+            <div className="ai-assistant-title">
+              <BotOutlined className="ai-icon" />
+              <span>LILISHOP 小助手</span>
+            </div>
+            <Button 
+              type="text" 
+              icon={<CloseOutlined />} 
+              onClick={() => setAiAssistantVisible(false)}
+              className="close-btn"
+            />
+          </div>
+
+          {/* 内容区域 */}
+          <div className="ai-assistant-content">
+            <div className="messages-container">
+              <div className="message-item bot">
+                <BotOutlined className="message-icon" />
+                <div className="message-content bot">
+                  您好，我是 LILISHOP 小助手，您可以向我提出 LILISHOP 使用问题。
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
   );
 };
 

@@ -18,14 +18,26 @@ import SpecList from './pages/product/SpecList';
 import UnitList from './pages/product/UnitList';
 import OrderList from './pages/order/OrderList';
 import Statistics from './pages/statistics/Statistics';
+import FlashSale from './pages/promotion/flash-sale/FlashSale';
+import GroupBuy from './pages/promotion/group-buy/GroupBuy';
+import Bargain from './pages/promotion/bargain/Bargain';
+import LiveManage from './pages/promotion/live-stream/LiveManage';
+import PointProduct from './pages/promotion/point-activity/PointProduct';
+import AddPointProduct from './pages/promotion/point-activity/AddPointProduct';
+import DesignatedPointProduct from './pages/promotion/point-activity/DesignatedPointProduct';
 import NotFound from './pages/NotFound';
 // 占位页面组件 - 实际项目中应替换为真实组件
 import PlaceholderPage from './pages/PlaceholderPage';
+// 导入优惠券页面组件
+import CouponList from './pages/promotion/coupon/CouponList';
+import CouponActivity from './pages/promotion/coupon-activity/CouponActivity';
+import FullDiscount from './pages/promotion/full-discount/FullDiscount';
 import VirtualOrder from './pages/order/VirtualOrder';
 import AfterSales from './pages/order/AfterSales';
 import RechargeRecord from './pages/member/member-manage/deposit/RechargeRecord';
 import WithdrawApply from './pages/member/member-manage/deposit/WithdrawApply';
 import PointsHistory from './pages/member/member-manage/points/PointsHistory';
+import PointCategory from './pages/member/member-manage/points/PointCategory';
 import MemberFund from './pages/member/member-manage/deposit/MemberFund';
 import RecycleBin from './pages/recyclebin/RecycleBin';
 import ReviewList from './pages/review/ReviewList';
@@ -87,15 +99,17 @@ const App = () => {
                 <Route path="/product/relation-manage" element={<PlaceholderPage title="关联管理" />} />
                 
                 {/* 促销相关路由 */}
-                <Route path="/promotion/promotion-manage/coupon" element={<PlaceholderPage title="优惠券" />} />
-                <Route path="/promotion/promotion-manage/coupon-activity" element={<PlaceholderPage title="券活动" />} />
-                <Route path="/promotion/promotion-manage/full-discount" element={<PlaceholderPage title="满额活动" />} />
-                <Route path="/promotion/promotion-manage/flash-sale" element={<PlaceholderPage title="秒杀活动" />} />
-                <Route path="/promotion/promotion-manage/group-buy" element={<PlaceholderPage title="拼团活动" />} />
-                <Route path="/promotion/promotion-manage/bargain" element={<PlaceholderPage title="砍价活动" />} />
-                <Route path="/promotion/promotion-manage/live-stream/live-manage" element={<PlaceholderPage title="直播管理" />} />
-                <Route path="/promotion/promotion-manage/point-activity/point-product" element={<PlaceholderPage title="积分商品" />} />
-                <Route path="/promotion/promotion-manage/point-activity/point-category" element={<PlaceholderPage title="积分分类" />} />
+                <Route path="/promotion/promotion-manage/coupon" element={<CouponList />} />
+                <Route path="/promotion/promotion-manage/coupon-activity" element={<CouponActivity />} />
+                <Route path="/promotion/promotion-manage/full-discount" element={<FullDiscount />} />
+                <Route path="/promotion/promotion-manage/flash-sale" element={<FlashSale />} />
+                <Route path="/promotion/promotion-manage/group-buy" element={<GroupBuy />} />
+                <Route path="/promotion/promotion-manage/bargain" element={<Bargain />} />
+                <Route path="/promotion/promotion-manage/live-stream/live-manage" element={<LiveManage />} />
+                <Route path="/promotion/promotion-manage/point-activity/point-product" element={<PointProduct />} />
+                <Route path="/promotion/promotion-manage/point-activity/add-point-product" element={<AddPointProduct />} />
+                <Route path="/promotion/promotion-manage/point-activity/designated-point-product" element={<DesignatedPointProduct />} />
+                <Route path="/promotion/promotion-manage/point-activity/point-category" element={<PointCategory />} />
                 
                 {/* 店铺相关路由 */}
                 <Route path="/shop/shop-manage/shop-list" element={<PlaceholderPage title="店铺列表" />} />

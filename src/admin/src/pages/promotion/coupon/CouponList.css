@@ -1,0 +1,133 @@
+.coupon-list-container {
+  padding: 16px;
+}
+
+.search-card {
+  margin-bottom: 16px;
+}
+
+.search-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.search-label {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.search-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.search-actions button:first-child {
+  background-color: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+.operation-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 16px;
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+.operation-bar button:first-child {
+  background-color: #1890ff;
+  border-color: #1890ff;
+}
+
+.operation-bar button:nth-child(2) {
+  background-color: #fa8c16;
+  border-color: #fa8c16;
+  color: white;
+}
+
+.operation-bar button:nth-child(3) {
+  background-color: #52c41a;
+  border-color: #52c41a;
+  color: white;
+}
+
+.operation-bar button:disabled {
+  background-color: #d9d9d9;
+  border-color: #d9d9d9;
+  color: rgba(0, 0, 0, 0.25);
+}
+
+.ant-table {
+  background: white;
+}
+
+.ant-table-thead > tr > th {
+  background-color: #fafafa;
+  font-weight: 600;
+  text-align: center;
+}
+
+.ant-table-tbody > tr > td {
+  text-align: center;
+}
+
+.ant-tag {
+  padding: 0 10px;
+  font-size: 12px;
+  height: 24px;
+  line-height: 22px;
+}
+
+.ant-select {
+  width: 100%;
+}
+
+.ant-pagination {
+  text-align: right;
+  margin-top: 16px;
+}
+
+.ant-pagination-total-text {
+  color: #333;
+}
+
+/* 确保表格行高统一 */
+.ant-table-tbody > tr > td {
+  padding: 12px 16px;
+}
+
+/* 操作按钮样式 */
+.ant-btn-link {
+  color: #1890ff;
+}
+
+.ant-btn-link:hover {
+  color: #40a9ff;
+  text-decoration: underline;
+}
+
+/* 确保搜索输入框宽度统一 */
+.ant-input {
+  width: 100%;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .search-item {
+    margin-bottom: 12px;
+  }
+  
+  .operation-bar {
+    flex-wrap: wrap;
+  }
+  
+  .ant-table {
+    font-size: 12px;
+  }
+}`}}}

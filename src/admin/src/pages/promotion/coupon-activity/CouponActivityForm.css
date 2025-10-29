@@ -1,0 +1,92 @@
+.coupon-activity-form {
+  padding: 20px;
+}
+
+/* 表单行样式 */
+.form-row {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+/* 表单项样式 */
+.form-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* 表单标签样式 */
+.form-label {
+  font-size: 14px;
+  color: #333;
+  white-space: nowrap;
+  min-width: 80px;
+}
+
+/* 表单输入控件样式 */
+.form-item .ant-input,
+.form-item .ant-select,
+.form-item .ant-picker,
+.form-item .ant-radio-group,
+.form-item .ant-checkbox-group {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* 确保Ant Design表单组件的标签和输入框在同一行 */
+.ant-form-item {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.ant-form-item-label {
+  margin-right: 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ant-form-item-label > label {
+  margin-bottom: 0;
+  white-space: nowrap;
+}
+
+.ant-form-item-control {
+  flex: 1;
+}
+
+.ant-form-item-control-input {
+  display: flex;
+  align-items: center;
+}
+
+.ant-form-item-control-input-content {
+  width: 100%;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .form-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .ant-form-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .ant-form-item-label {
+    margin-bottom: 8px;
+    margin-right: 0;
+  }
+}

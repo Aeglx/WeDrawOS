@@ -1,0 +1,180 @@
+.full-discount-container {
+  padding: 20px;
+  background: #fff;
+  min-height: calc(100vh - 200px);
+}
+
+/* 搜索筛选区样式 */
+.search-filter-section {
+  margin-bottom: 20px;
+  padding: 16px;
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+.search-filter-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.search-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0; /* 防止项目缩小 */
+}
+
+.search-item .ant-input,
+.search-item .ant-select,
+.search-item .ant-picker {
+  display: inline-block; /* 确保输入控件作为行内块元素 */
+  vertical-align: middle;
+}
+
+.search-label {
+  font-size: 14px;
+  color: #333;
+  white-space: nowrap;
+}
+
+/* 操作按钮区样式 */
+.action-section {
+  margin-bottom: 20px;
+  padding: 0;
+}
+
+.action-section .ant-btn-primary {
+  background-color: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+.action-section .ant-btn-primary:hover {
+  background-color: #ff7875;
+  border-color: #ff7875;
+}
+
+/* 表格展示区样式 */
+.table-section {
+  overflow-x: auto;
+}
+
+.table-section .ant-table {
+  background: #fff;
+}
+
+.table-section .ant-table-thead > tr > th {
+  background: #fafafa;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.table-section .ant-table-tbody > tr > td {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.table-section .ant-table-tbody > tr:hover > td {
+  background: #fafafa;
+}
+
+/* 状态标签样式 */
+.status-tag {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-green {
+  background-color: #f6ffed;
+  color: #52c41a;
+  border: 1px solid #b7eb8f;
+}
+
+.status-red {
+  background-color: #fff2f0;
+  color: #ff4d4f;
+  border: 1px solid #ffccc7;
+}
+
+.status-blue {
+  background-color: #e6f7ff;
+  color: #1890ff;
+  border: 1px solid #91d5ff;
+}
+
+/* 操作按钮样式 */
+.action-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.action-buttons a {
+  color: #1890ff;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.action-buttons a:hover {
+  color: #40a9ff;
+  text-decoration: underline;
+}
+
+.edit-btn {
+  color: #1890ff;
+}
+
+.view-btn {
+  color: #52c41a;
+}
+
+.delete-btn {
+  color: #ff4d4f;
+}
+
+.edit-btn:hover {
+  color: #40a9ff;
+}
+
+.view-btn:hover {
+  color: #73d13d;
+}
+
+.delete-btn:hover {
+  color: #ff7875;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .full-discount-container {
+    padding: 10px;
+  }
+  
+  .search-filter-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .search-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .search-item .ant-input,
+  .search-item .ant-select,
+  .search-item .ant-picker {
+    width: 100%;
+  }
+  
+  .action-section {
+    text-align: center;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
