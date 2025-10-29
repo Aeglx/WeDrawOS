@@ -718,135 +718,137 @@ const MainLayout = () => {
   ];
 
   return (
-    <Layout className="main-layout">
-      <Sider trigger={null} collapsible collapsed={collapsed} width={128}>
-        <div className="logo-container">
-          <h1 className={`logo-title ${collapsed ? 'collapsed' : ''}`}>
-            WeDrawOS
-          </h1>
-        </div>
-        <Menu
-            mode="inline"
-            theme="dark"
-            selectedKeys={[window.location.pathname]}
-            onClick={handleMenuClick}
-            inlineCollapsed={collapsed}
-            inlineIndent={20}
-            items={menuItems}
-          >
-        </Menu>
-      </Sider>
-      <Layout className={collapsed ? 'sider-collapsed' : ''}>
-        <Header className="header">
-          <Button
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
-            className="trigger"
-          />
-          <div className="header-right">
-            <Button 
-              type="text" 
-              icon={<BotOutlined />}
-              className="header-btn"
-              title="AI机器人"
-              onClick={() => setAiAssistantVisible(true)}
-            />
-            <Button 
-              type="text" 
-              icon={<MessageOutlined />} 
-              className="header-btn"
-              title="站内信"
-              onClick={() => navigate('/messages')}
-            />
-            <Dropdown menu={{ items: userMenuItems }}>
-              <div className="user-info">
-                <Avatar className="user-avatar">{adminInfo.username.charAt(0).toUpperCase()}</Avatar>
-                <span>{adminInfo.username}</span>
-              </div>
-            </Dropdown>
+    <>
+      <Layout className="main-layout">
+        <Sider trigger={null} collapsible collapsed={collapsed} width={128}>
+          <div className="logo-container">
+            <h1 className={`logo-title ${collapsed ? 'collapsed' : ''}`}>
+              WeDrawOS
+            </h1>
           </div>
-        </Header>
-        <Content>
-          <div className="content-wrapper">
-            <Outlet />
-          </div>
-        </Content>
-      </Layout>
-    </Layout>
-    {aiAssistantVisible && (
-      <div className="ai-assistant-overlay" onClick={() => setAiAssistantVisible(false)}>
-        <div className="ai-assistant-container" onClick={(e) => e.stopPropagation()}>
-          <div className="ai-assistant-header">
-            <div className="header-info">
-              <BotOutlined className="ai-icon" />
-              <span className="ai-title">WeDrawOS智能助手</span>
-            </div>
-            <Button 
-              type="text" 
-              icon={<CloseOutlined />}
-              onClick={() => setAiAssistantVisible(false)}
-              className="close-btn"
+          <Menu
+              mode="inline"
+              theme="dark"
+              selectedKeys={[window.location.pathname]}
+              onClick={handleMenuClick}
+              inlineCollapsed={collapsed}
+              inlineIndent={20}
+              items={menuItems}
+            >
+          </Menu>
+        </Sider>
+        <Layout className={collapsed ? 'sider-collapsed' : ''}>
+          <Header className="header">
+            <Button
+              type="text"
+              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+              onClick={() => setCollapsed(!collapsed)}
+              className="trigger"
             />
-          </div>
-          <div className="ai-assistant-content">
-            <div className="messages-container">
-              {messages.map(message => (
-                <div 
-                  key={message.id} 
-                  className={`message-item ${message.role === 'ai' ? 'ai-message' : 'user-message'}`}
-                >
-                  {message.role === 'ai' && <BotOutlined className="message-icon" />}
-                  <div className="message-content">{message.content}</div>
+            <div className="header-right">
+              <Button 
+                type="text" 
+                icon={<BotOutlined />}
+                className="header-btn"
+                title="AI机器人"
+                onClick={() => setAiAssistantVisible(true)}
+              />
+              <Button 
+                type="text" 
+                icon={<MessageOutlined />} 
+                className="header-btn"
+                title="站内信"
+                onClick={() => navigate('/messages')}
+              />
+              <Dropdown menu={{ items: userMenuItems }}>
+                <div className="user-info">
+                  <Avatar className="user-avatar">{adminInfo.username.charAt(0).toUpperCase()}</Avatar>
+                  <span>{adminInfo.username}</span>
                 </div>
-              ))}
-              {isLoading && (
-                <div className="message-item ai-message">
-                  <BotOutlined className="message-icon" />
-                  <div className="message-content typing">正在回复...</div>
+              </Dropdown>
+            </div>
+          </Header>
+          <Content>
+            <div className="content-wrapper">
+              <Outlet />
+            </div>
+          </Content>
+        </Layout>
+      </Layout>
+      {aiAssistantVisible && (
+        <div className="ai-assistant-overlay" onClick={() => setAiAssistantVisible(false)}>
+          <div className="ai-assistant-container" onClick={(e) => e.stopPropagation()}>
+            <div className="ai-assistant-header">
+              <div className="header-info">
+                <BotOutlined className="ai-icon" />
+                <span className="ai-title">WeDrawOS智能助手</span>
+              </div>
+              <Button 
+                type="text" 
+                icon={<CloseOutlined />}
+                onClick={() => setAiAssistantVisible(false)}
+                className="close-btn"
+              />
+            </div>
+            <div className="ai-assistant-content">
+              <div className="messages-container">
+                {messages.map(message => (
+                  <div 
+                    key={message.id} 
+                    className={`message-item ${message.role === 'ai' ? 'ai-message' : 'user-message'}`}
+                  >
+                    {message.role === 'ai' && <BotOutlined className="message-icon" />}
+                    <div className="message-content">{message.content}</div>
+                  </div>
+                ))}
+                {isLoading && (
+                  <div className="message-item ai-message">
+                    <BotOutlined className="message-icon" />
+                    <div className="message-content typing">正在回复...</div>
+                  </div>
+                )}
+                <div ref={messagesEndRef} />
+              </div>
+              {messages.length <= 1 && (
+                <div className="preset-questions">
+                  <div className="preset-title">常见问题：</div>
+                  <div className="preset-list">
+                    {presetQuestions.map(question => (
+                      <div 
+                        key={question.id} 
+                        className="preset-item"
+                        onClick={() => handlePresetQuestionClick(question.text)}
+                      >
+                        <MessageOutlined className="preset-icon" />
+                        {question.text}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
-              <div ref={messagesEndRef} />
             </div>
-            {messages.length <= 1 && (
-              <div className="preset-questions">
-                <div className="preset-title">常见问题：</div>
-                <div className="preset-list">
-                  {presetQuestions.map(question => (
-                    <div 
-                      key={question.id} 
-                      className="preset-item"
-                      onClick={() => handlePresetQuestionClick(question.text)}
-                    >
-                      <MessageOutlined className="preset-icon" />
-                      {question.text}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-          <div className="ai-assistant-footer">
-            <Input
-              value={inputValue}
-              onChange={handleInputChange}
-              onPressEnter={handleKeyPress}
-              placeholder="请输入您的问题..."
-              disabled={isLoading}
-              className="ai-input"
-              suffix={
-                <Button
-                  type="text"
-                  icon={<SendOutlined />}
-                  onClick={() => sendMessage(inputValue)}
-                  disabled={!inputValue.trim() || isLoading}
-                />
-              }
-            />
+            <div className="ai-assistant-footer">
+              <Input
+                value={inputValue}
+                onChange={handleInputChange}
+                onPressEnter={handleKeyPress}
+                placeholder="请输入您的问题..."
+                disabled={isLoading}
+                className="ai-input"
+                suffix={
+                  <Button
+                    type="text"
+                    icon={<SendOutlined />}
+                    onClick={() => sendMessage(inputValue)}
+                    disabled={!inputValue.trim() || isLoading}
+                  />
+                }
+              />
+            </div>
           </div>
         </div>
-      </div>
-    )}
+      )}
+    </>
   );
 };
 
