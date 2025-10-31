@@ -28,6 +28,8 @@ import DesignatedPointProduct from './pages/promotion/point-activity/DesignatedP
 import NotFound from './pages/NotFound';
 // 占位页面组件 - 实际项目中应替换为真实组件
 import PlaceholderPage from './pages/PlaceholderPage';
+// 导入店铺列表组件
+import ShopList from './pages/shop/ShopList';
 // 导入优惠券页面组件
 import CouponList from './pages/promotion/coupon/CouponList';
 import CouponActivity from './pages/promotion/coupon-activity/CouponActivity';
@@ -112,7 +114,7 @@ const App = () => {
                 <Route path="/promotion/promotion-manage/point-activity/point-category" element={<PointCategory />} />
                 
                 {/* 店铺相关路由 */}
-                <Route path="/shop/shop-manage/shop-list" element={<PlaceholderPage title="店铺列表" />} />
+                <Route path="/shop/shop-manage/shop-list" element={<ShopList />} />
                 <Route path="/shop/shop-manage/shop-audit" element={<PlaceholderPage title="店铺审核" />} />
                 <Route path="/shop/shop-manage/shop-settlement/shop-settlement" element={<PlaceholderPage title="店铺结算" />} />
                 <Route path="/shop/shop-manage/shop-settlement/merchant-reconciliation" element={<PlaceholderPage title="商家对账" />} />
