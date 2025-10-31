@@ -600,6 +600,7 @@ function registerApiRoutes(app) {
   
   apiDirs.forEach(dir => {
     try {
+      // 直接加载路由模块，不尝试从dist目录加载
       const apiRoutes = require(`./${dir}/routes`);
       if (apiRoutes && typeof apiRoutes === 'function') {
         app.use('/api', apiRoutes);

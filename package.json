@@ -7,6 +7,7 @@
     "start": "node src/api/index.js",
     "dev": "nodemon src/api/index.js",
     "build": "node build.js",
+    "build:start": "node dist/api/index.js",
     "test": "jest",
     "lint": "eslint .",
     "db:migrate": "node src/api/migrations/init-database.js",

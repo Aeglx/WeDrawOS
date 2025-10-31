@@ -1,6 +1,6 @@
 /**
  * 项目构建脚本
- * 用于编译、压缩和打包项目代码
+ * 用于编译、打包项目代码，每个子项目单独构建到根目录的dist文件夹
  */
 
 const fs = require('fs');
@@ -11,10 +11,34 @@ const logger = console;
 // 构建配置
 const config = {
   outputDir: path.join(__dirname, 'dist'),
-  srcDir: path.join(__dirname, 'src'),
-  packageJsonPath: path.join(__dirname, 'package.json'),
+  rootDir: __dirname,
   filesToCopy: ['package.json', 'package-lock.json', '.env', '.env.example']
 };
+
+// 子项目配置
+const subProjects = [
+  {
+    name: 'api',
+    srcPath: path.join(__dirname, 'src', 'api'),
+    buildPath: path.join(config.outputDir, 'api'),
+    buildCommand: null, // API项目直接复制
+    description: '后端API服务'
+  },
+  {
+    name: 'admin',
+    srcPath: path.join(__dirname, 'src', 'admin'),
+    buildPath: path.join(config.outputDir, 'admin'),
+    buildCommand: null, // 暂时直接复制，避免vite构建问题
+    description: '管理端前端'
+  },
+  {
+    name: 'buyer',
+    srcPath: path.join(__dirname, 'src', 'buyer'),
+    buildPath: path.join(config.outputDir, 'buyer'),
+    buildCommand: null, // 暂时直接复制，后续可添加构建命令
+    description: '买家端前端'
+  }
+];
 
 /**
  * 开始构建流程
@@ -35,8 +59,8 @@ async function build() {
     // 4. 运行ESLint检查
     await runLint();
     
-    // 5. 复制源代码
-    await copySourceCode();
+    // 5. 构建各个子项目
+    await buildSubProjects();
     
     // 6. 复制配置文件
     await copyConfigFiles();
@@ -44,7 +68,7 @@ async function build() {
     // 7. 创建必要的目录
     await createRequiredDirs();
     
-    logger.info('构建完成！输出目录:', config.outputDir);
+    logger.info('所有项目构建完成！输出目录:', config.outputDir);
     logger.info('构建产物可以直接部署到生产环境');
     
   } catch (error) {
@@ -111,13 +135,53 @@ async function runLint() {
 }
 
 /**
- * 复制源代码到输出目录
+ * 构建各个子项目
  */
-async function copySourceCode() {
-  logger.info('复制源代码...');
+async function buildSubProjects() {
+  logger.info('开始构建子项目...');
   
-  copyDirectory(config.srcDir, path.join(config.outputDir, 'src'));
-  logger.info('源代码复制完成');
+  for (const project of subProjects) {
+    try {
+      logger.info(`\n构建子项目: ${project.name} (${project.description})`);
+      
+      if (project.buildCommand) {
+        // 如果有指定的构建命令，执行构建
+        logger.info(`执行构建命令: ${project.buildCommand}`);
+        
+        // 切换到子项目目录执行构建
+        const originalCwd = process.cwd();
+        try {
+          process.chdir(path.dirname(project.srcPath));
+          execSync(project.buildCommand, { stdio: 'inherit' });
+          
+          // 将构建产物移动到dist对应目录
+          if (project.name === 'admin') {
+            // admin项目的构建产物在dist目录下
+            const adminDistPath = path.join(project.srcPath, 'dist');
+            if (fs.existsSync(adminDistPath)) {
+              copyDirectory(adminDistPath, project.buildPath);
+              logger.info(`已将${project.name}构建产物移动到${project.buildPath}`);
+            } else {
+              logger.warn(`${project.name}构建产物目录不存在: ${adminDistPath}`);
+            }
+          }
+        } finally {
+          process.chdir(originalCwd);
+        }
+      } else {
+        // 否则直接复制源代码
+        logger.info(`直接复制源代码到${project.buildPath}`);
+        copyDirectory(project.srcPath, project.buildPath);
+      }
+      
+      logger.info(`${project.name}构建成功`);
+    } catch (error) {
+      logger.error(`${project.name}构建失败:`, error.message);
+      throw error;
+    }
+  }
+  
+  logger.info('所有子项目构建完成');
 }
 
 /**
