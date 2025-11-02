@@ -299,71 +299,55 @@ const ProductList = () => {
     <div className="product-list">
       {/* 搜索区域 */}
       <div className="search-area">
-        <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '24px' }}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span style={{ fontSize: '12px', color: '#666666', marginRight: '8px', width: '80px', display: 'inline-block', whiteSpace: 'nowrap' }}>商品名称</span>
-            <Input
-              placeholder="请输入商品名称"
-              value={searchName}
-              onChange={(e) => setSearchName(e.target.value)}
-              style={{ width: 180, fontSize: '12px', height: 32 }}
-              allowClear
-            />
-          </div>
+        <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '15px' }}>
+          <Input
+            placeholder="请输入商品名称"
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)}
+            style={{ width: 180, fontSize: '12px', height: 32 }}
+            allowClear
+          />
           
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span style={{ fontSize: '12px', color: '#666666', marginRight: '8px', width: '80px', display: 'inline-block', whiteSpace: 'nowrap' }}>商品编号</span>
-            <Input
-              placeholder="请输入商品编号"
-              value={searchId}
-              onChange={(e) => setSearchId(e.target.value)}
-              style={{ width: 180, fontSize: '12px', height: 32 }}
-              allowClear
-            />
-          </div>
+          <Input
+            placeholder="请输入商品编号"
+            value={searchId}
+            onChange={(e) => setSearchId(e.target.value)}
+            style={{ width: 180, fontSize: '12px', height: 32 }}
+            allowClear
+          />
           
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span style={{ fontSize: '12px', color: '#666666', marginRight: '8px', width: '80px', display: 'inline-block', whiteSpace: 'nowrap' }}>测试价格</span>
-            <Input
-              placeholder="请输入测试价格"
-              value={searchPrice}
-              onChange={(e) => setSearchPrice(e.target.value)}
-              style={{ width: 180, fontSize: '12px', height: 32 }}
-              allowClear
-            />
-          </div>
+          <Input
+            placeholder="请输入测试价格"
+            value={searchPrice}
+            onChange={(e) => setSearchPrice(e.target.value)}
+            style={{ width: 180, fontSize: '12px', height: 32 }}
+            allowClear
+          />
           
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span style={{ fontSize: '12px', color: '#666666', marginRight: '8px', width: '80px', display: 'inline-block', whiteSpace: 'nowrap' }}>销售模式</span>
-            <Select
-              placeholder="请选择销售模式"
-              value={saleMode}
-              onChange={setSaleMode}
-              allowClear
-              style={{ width: 180, fontSize: '12px', height: 32 }}
-            >
-              <Option value="零售">零售</Option>
-              <Option value="套餐">套餐</Option>
-            </Select>
-          </div>
+          <Select
+            placeholder="销售模式"
+            value={saleMode}
+            onChange={setSaleMode}
+            allowClear
+            style={{ width: 180, fontSize: '12px', height: 32 }}
+          >
+            <Option value="零售">零售</Option>
+            <Option value="套餐">套餐</Option>
+          </Select>
           
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span style={{ fontSize: '12px', color: '#666666', marginRight: '8px', width: '80px', display: 'inline-block', whiteSpace: 'nowrap' }}>商品状态</span>
-            <Select
-              placeholder="请选择商品状态"
-              value={productStatus}
-              onChange={setProductStatus}
-              allowClear
-              style={{ width: 180, fontSize: '12px', height: 32 }}
-            >
-              <Option value="上架">上架</Option>
-              <Option value="下架">下架</Option>
-            </Select>
-          </div>
+          <Select
+            placeholder="商品状态"
+            value={productStatus}
+            onChange={setProductStatus}
+            allowClear
+            style={{ width: 180, fontSize: '12px', height: 32 }}
+          >
+            <Option value="上架">上架</Option>
+            <Option value="下架">下架</Option>
+          </Select>
           
           <Button 
             type="primary" 
-            icon={<SearchOutlined />}
             onClick={handleSearch}
             style={{ height: 32, fontSize: '12px', backgroundColor: '#ff0000', borderColor: '#ff0000' }}
           >

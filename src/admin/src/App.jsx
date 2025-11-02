@@ -28,8 +28,14 @@ import DesignatedPointProduct from './pages/promotion/point-activity/DesignatedP
 import NotFound from './pages/NotFound';
 // 占位页面组件 - 实际项目中应替换为真实组件
 import PlaceholderPage from './pages/PlaceholderPage';
-// 导入店铺列表组件
+// 导入店铺相关组件
 import ShopList from './pages/shop/ShopList';
+import ShopReview from './pages/shop/ShopReview';
+import ShopSettlement from './pages/shop/ShopSettlement';
+import MerchantReconciliation from './pages/shop/MerchantReconciliation';
+// 导入楼层装修组件
+import FloorDecoration from './pages/floor/FloorDecoration';
+import FloorDesigner from './pages/floor/FloorDesigner';
 // 导入优惠券页面组件
 import CouponList from './pages/promotion/coupon/CouponList';
 import CouponActivity from './pages/promotion/coupon-activity/CouponActivity';
@@ -115,12 +121,13 @@ const App = () => {
                 
                 {/* 店铺相关路由 */}
                 <Route path="/shop/shop-manage/shop-list" element={<ShopList />} />
-                <Route path="/shop/shop-manage/shop-audit" element={<PlaceholderPage title="店铺审核" />} />
-                <Route path="/shop/shop-manage/shop-settlement/shop-settlement" element={<PlaceholderPage title="店铺结算" />} />
-                <Route path="/shop/shop-manage/shop-settlement/merchant-reconciliation" element={<PlaceholderPage title="商家对账" />} />
+                <Route path="/shop/shop-manage/shop-audit" element={<ShopReview />} />
+                <Route path="/shop/shop-manage/shop-settlement/shop-settlement" element={<ShopSettlement />} />
+                <Route path="/shop/shop-manage/shop-settlement/merchant-reconciliation" element={<MerchantReconciliation />} />
                 
                 {/* 运营相关路由 */}
-                <Route path="/operation/floor-decoration/pc" element={<PlaceholderPage title="PC端装修" />} />
+                <Route path="/operation/floor-decoration/pc" element={<FloorDecoration />} />
+            <Route path="/operation/floor-decoration/pc/designer" element={<FloorDesigner />} />
                 <Route path="/operation/floor-decoration/mobile" element={<PlaceholderPage title="移动端装修" />} />
                 <Route path="/operation/privacy-policy/privacy-policy" element={<PlaceholderPage title="隐私协议" />} />
                 <Route path="/operation/distribution/distribution-setting" element={<PlaceholderPage title="分销设置" />} />
