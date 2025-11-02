@@ -198,8 +198,7 @@ const FloorDesigner = () => {
             )
           }
         ]
-      },
-      // 其他模块的样式配置可以在这里添加
+      }
     };
     
     return styleConfigs[selectedMenuItem] || {
@@ -253,6 +252,7 @@ const FloorDesigner = () => {
         );
     }
   };
+
   const menuItems = [
     { key: '1', label: '基础设置', className: 'menu-item' },
     { key: '2', label: '面包屑设置', className: 'menu-item' },
@@ -373,34 +373,33 @@ const FloorDesigner = () => {
 
             {/* 主要内容区域 - 这里是装修预览的主要部分 */}
             <div className="main-content">
-                {(() => {
-                  const moduleConfig = getCurrentModuleConfig();
+              {(() => {
+                const moduleConfig = getCurrentModuleConfig();
+                
+                if (moduleConfig.hasStyleSelector) {
+                  const moduleStyleConfig = getCurrentModuleStyles();
+                  const currentStyle = moduleStyles[selectedMenuItem] || (moduleStyleConfig.options[0]?.value || '');
                   
-                  if (moduleConfig.hasStyleSelector) {
-                    const moduleStyleConfig = getCurrentModuleStyles();
-                    const currentStyle = moduleStyles[selectedMenuItem] || (moduleStyleConfig.options[0]?.value || '');
-                    
-                    return (
-                      <InlineStyleSelector
-                        moduleName={moduleStyleConfig.moduleName}
-                        styleOptions={moduleStyleConfig.options}
-                        selectedStyle={currentStyle}
-                        onStyleChange={(style) => handleStyleChange(selectedMenuItem, style)}
+                  return (
+                    <InlineStyleSelector
+                      moduleName={moduleStyleConfig.moduleName}
+                      styleOptions={moduleStyleConfig.options}
+                      selectedStyle={currentStyle}
+                      onStyleChange={(style) => handleStyleChange(selectedMenuItem, style)}
+                    />
+                  );
+                } else {
+                  // 对于没有样式选择器的模块，显示空状态或其他配置界面
+                  return (
+                    <div className="content-placeholder">
+                      <Empty 
+                        description={`${moduleConfig.name}模块配置区域`} 
+                        image={Empty.PRESENTED_IMAGE_SIMPLE}
                       />
-                    );
-                  } else {
-                    // 对于没有样式选择器的模块，显示空状态或其他配置界面
-                    return (
-                      <div className="content-placeholder">
-                        <Empty 
-                          description={`${moduleConfig.name}模块配置区域`} 
-                          image={Empty.PRESENTED_IMAGE_SIMPLE}
-                        />
-                      </div>
-                    );
-                  }
-                })()}
-              </div>
+                    </div>
+                  );
+                }
+              })()}
             </div>
           </div>
         </Content>
