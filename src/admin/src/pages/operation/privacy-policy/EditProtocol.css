@@ -1,0 +1,142 @@
+/* EditProtocol.css */
+/* 编辑协议弹窗样式 */
+.edit-protocol-modal {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: auto;
+}
+
+.content-section {
+  margin-top: 16px;
+}
+
+/* 响应式布局容器 */
+.editor-preview-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  width: 100%;
+  gap: 20px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+}
+
+/* 编辑器和预览区域 */
+.editor-section, .preview-section {
+  flex: 1;
+  min-width: 300px;
+  max-width: calc(50% - 10px);
+}
+
+.editor-section {
+  border-right: 1px solid #d9d9d9;
+  background-color: #fff;
+}
+
+.preview-section {
+  padding: 16px;
+  background-color: #fafafa;
+  overflow-y: auto;
+}
+
+.preview-section h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* 预览区域样式 */
+.preview-content {
+  background-color: #fff;
+  padding: 16px;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  min-height: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.preview-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 表单提交区域 */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+  gap: 12px;
+}
+
+.submit-btn {
+  background-color: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+.submit-btn:hover {
+  background-color: #ff7875;
+  border-color: #ff7875;
+}
+
+/* 编辑器样式覆盖 */
+.braft-editor .braft-editor-content {
+  min-height: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .editor-preview-container {
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .editor-section, .preview-section {
+    max-width: 100%;
+  }
+  
+  .editor-section {
+    border-right: none;
+    border-bottom: 1px solid #d9d9d9;
+    height: auto;
+  }
+  
+  .preview-section {
+    height: auto;
+  }
+  
+  .braft-editor .braft-editor-content {
+    min-height: 250px;
+    max-height: 300px;
+  }
+  
+  .preview-content {
+    min-height: 250px;
+    max-height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .editor-preview-container {
+    gap: 10px;
+  }
+  
+  .modal-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .modal-footer button {
+    width: 100%;
+  }
+}

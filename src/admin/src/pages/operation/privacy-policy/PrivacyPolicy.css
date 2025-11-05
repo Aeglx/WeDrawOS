@@ -1,0 +1,41 @@
+/* PrivacyPolicy.css */
+.privacy-policy-container {
+  padding: 24px;
+  background-color: #fafafa;
+  min-height: 100vh;
+}
+
+.policy-table {
+  background-color: #fff;
+}
+
+/* 自定义编辑按钮样式，使其颜色为橙色 */
+.policy-table .ant-btn-text {  
+  color: #ff4d4f !important;
+}
+
+.policy-table .ant-btn-text:hover {
+  color: #ff7875 !important;
+  background-color: #fff1f0;
+}
+
+/* 确保表格头部样式 */
+.policy-table thead th {
+  background-color: #fafafa;
+  font-weight: 500;
+}
+
+/* 模态框样式调整 */
+.ant-modal-footer {
+  text-align: center;
+}
+
+.ant-modal-footer .ant-btn-primary {
+  background-color: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+.ant-modal-footer .ant-btn-primary:hover {
+  background-color: #ff7875;
+  border-color: #ff7875;
+}

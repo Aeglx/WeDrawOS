@@ -1,0 +1,158 @@
+/* 分销申请页面样式 */
+.distribution-apply-container {
+  padding: 20px;
+  background-color: #f0f2f5;
+  min-height: 100vh;
+}
+
+.distribution-apply-card {
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+}
+
+/* 搜索区域样式 - 平台商品页面风格 */
+.search-area {
+  background-color: white;
+  padding: 10px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  border: 1px solid #e8e8e8;
+}
+
+.search-area .ant-input, 
+.search-area .ant-select-selector {
+  width: 180px !important;
+  margin-right: 15px;
+  height: 32px !important;
+  font-size: 12px !important;
+  line-height: 32px !important;
+}
+
+/* 按钮样式 */
+.search-area .ant-btn {
+  height: 32px;
+  font-size: 12px;
+  padding: 0 16px;
+}
+
+.search-area .ant-btn-primary {
+  background-color: #ff0000 !important;
+  border-color: #ff0000 !important;
+  color: #ffffff !important;
+  font-weight: normal;
+  text-shadow: none;
+}
+
+.search-area .ant-btn-default {
+  background-color: #ffffff !important;
+  color: #666666 !important;
+  border-color: #d9d9d9 !important;
+}
+
+/* 表格区域样式 */
+.table-container {
+  margin-top: 16px;
+}
+
+.apply-table {
+  font-size: 14px;
+}
+
+.apply-table thead th {
+  background-color: #fafafa;
+  font-weight: 500;
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 12px 16px;
+  text-align: left;
+}
+
+.apply-table tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.apply-table tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* 操作按钮样式 */
+.apply-table .ant-table-cell a {
+  color: #1890ff;
+  text-decoration: none;
+}
+
+.apply-table .ant-table-cell a:hover {
+  color: #40a9ff;
+  text-decoration: underline;
+}
+
+/* 分页样式 */
+.apply-table .ant-pagination {
+  margin-top: 20px;
+  text-align: right;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .distribution-apply-container {
+    padding: 10px;
+  }
+  
+  .distribution-apply-card {
+    padding: 16px;
+  }
+  
+  .search-container {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px;
+  }
+  
+  .search-item {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 12px;
+  }
+  
+  .search-item .ant-input {
+    width: 100%;
+  }
+  
+  .search-actions {
+    width: 100%;
+    margin-left: 0;
+    justify-content: flex-start;
+  }
+  
+  .search-actions .ant-btn {
+    margin-bottom: 8px;
+  }
+  
+  .page-title {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .apply-table {
+    font-size: 12px;
+  }
+  
+  .apply-table thead th,
+  .apply-table tbody td {
+    padding: 8px;
+  }
+}
+
+/* 适配中等屏幕 */
+@media (min-width: 769px) and (max-width: 1200px) {
+  .search-item {
+    margin-right: 16px;
+  }
+  
+  .distribution-apply-card {
+    padding: 20px;
+  }
+}`,"rewrite":false}}}

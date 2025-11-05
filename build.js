@@ -28,14 +28,14 @@ const subProjects = [
     name: 'admin',
     srcPath: path.join(__dirname, 'src', 'admin'),
     buildPath: path.join(config.outputDir, 'admin'),
-    buildCommand: null, // 暂时直接复制，避免vite构建问题
+    buildCommand: 'npm run build', // 使用vite构建
     description: '管理端前端'
   },
   {
     name: 'buyer',
     srcPath: path.join(__dirname, 'src', 'buyer'),
     buildPath: path.join(config.outputDir, 'buyer'),
-    buildCommand: null, // 暂时直接复制，后续可添加构建命令
+    buildCommand: 'npm run build', // 使用vite构建
     description: '买家端前端'
   }
 ];

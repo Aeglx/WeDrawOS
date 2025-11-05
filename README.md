@@ -49,6 +49,7 @@ WeDrawOS是一个功能完备的模块化电商系统，提供买家、卖家和
 - **状态管理**：Context API
 - **HTTP客户端**：Axios
 - **构建工具**：Vite
+- **开发工具**：concurrently (多服务并行启动)
 
 ## 项目结构
 
@@ -58,10 +59,12 @@ WeDrawOS/
 ├── .env.example            # 环境变量示例
 ├── .gitignore              # Git忽略配置
 ├── README.md               # 项目文档
+├── START.md                # 启动说明文档
 ├── build.js                # 构建脚本
 ├── package.json            # 项目配置和依赖
 ├── src/                    # 源代码目录
 │   ├── admin/              # 管理端前端代码
+│   │   ├── index.html      # HTML入口
 │   │   ├── src/            # 管理端源码
 │   │   └── vite.config.js  # Vite配置
 │   ├── api/                # 后端API代码
@@ -75,6 +78,18 @@ WeDrawOS/
 │   │   ├── seller-api/     # 卖家API
 │   │   └── index.js        # API入口
 │   ├── buyer/              # 买家端代码
+│   │   ├── App.jsx         # 应用主组件
+│   │   ├── index.html      # HTML入口
+│   │   ├── main.jsx        # React应用入口
+│   │   ├── common/         # 通用组件
+│   │   ├── components/     # UI组件
+│   │   ├── pages/          # 页面组件
+│   │   ├── services/       # 服务层
+│   │   ├── static/         # 静态资源
+│   │   ├── store/          # 状态管理
+│   │   ├── utils/          # 工具函数
+│   │   └── vite.config.js  # Vite配置
+│   ├── config/             # 配置文件
 │   └── utils/              # 通用工具
 └── uploads/                # 上传文件目录
 ```
@@ -117,33 +132,59 @@ WeDrawOS/
 
 - **后端API服务**：3000
 - **管理端应用**：3001 (开发环境)
-- **买家端应用**：4000
-- **卖家端应用**：5000
+- **买家端应用**：3002 (开发环境)
 - **数据库服务**：3306
 - **Redis服务**：6379
 
 ## 开发与运行
 
-### 启动后端API服务
+### 一键启动所有服务
 ```bash
-# 开发模式（使用nodemon自动重启）
+# 开发模式（同时启动API、管理端和买家端）
+npm run dev:all
+```
+
+### 单独启动各服务
+```bash
+# 启动后端API服务（开发模式）
 npm run dev
 
-# 生产模式
-npm start
-```
-
-### 启动管理端前端
-```bash
-# 开发模式
+# 启动管理端前端（开发模式）
 npm run admin:dev
 
-# 构建生产版本
+# 启动买家端前端（开发模式）
+npm run buyer:dev
+```
+
+### 生产环境部署
+```bash
+# 构建并启动生产环境API服务
+npm run start:prod
+
+# 仅构建生产版本
+npm run build
+```
+
+### 构建与预览各前端项目
+```bash
+# 构建管理端生产版本
 npm run admin:build
 
-# 预览生产版本
+# 预览管理端生产版本
 npm run admin:preview
+
+# 构建买家端生产版本
+npm run buyer:build
+
+# 预览买家端生产版本
+npm run buyer:preview
 ```
+
+## 启动说明
+
+详细的启动命令说明和部署流程请参考：
+
+- [WeDrawOS启动说明](./START.md) - 包含完整的启动命令、环境配置和部署指南
 
 ## AI服务配置
 

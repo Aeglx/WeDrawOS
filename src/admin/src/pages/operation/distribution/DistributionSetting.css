@@ -1,0 +1,95 @@
+/* 分销设置页面样式 */
+.distribution-setting-container {
+  padding: 20px;
+  background-color: #f0f2f5;
+  min-height: 100vh;
+}
+
+.distribution-setting-card {
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+}
+
+
+
+.setting-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.setting-item:last-child {
+  border-bottom: none;
+}
+
+.setting-label {
+  font-size: 14px;
+  color: #666;
+  flex: 0 0 150px;
+}
+
+.setting-control {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.display-controls {
+  display: flex;
+  align-items: center;
+}
+
+.ratio-value {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  margin-right: 16px;
+  min-width: 50px;
+}
+
+.edit-controls {
+  display: flex;
+  align-items: center;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .distribution-setting-container {
+    padding: 10px;
+  }
+  
+  .distribution-setting-card {
+    padding: 16px;
+  }
+  
+  .setting-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .setting-label {
+    flex: none;
+    margin-bottom: 12px;
+  }
+  
+  .edit-controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .edit-controls .ant-input {
+    margin-right: 0;
+    margin-bottom: 12px;
+    width: 200px;
+  }
+  
+  .edit-controls .ant-btn {
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+}

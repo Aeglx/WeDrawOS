@@ -28,6 +28,11 @@ import DesignatedPointProduct from './pages/promotion/point-activity/DesignatedP
 import NotFound from './pages/NotFound';
 // 占位页面组件 - 实际项目中应替换为真实组件
 import PlaceholderPage from './pages/PlaceholderPage';
+import PrivacyPolicy from './pages/operation/privacy-policy/PrivacyPolicy';
+import DistributionSetting from './pages/operation/distribution/DistributionSetting';
+import DistributionApply from './pages/operation/distribution/DistributionApply';
+import Distributor from './pages/operation/distribution/Distributor';
+
 // 导入店铺相关组件
 import ShopList from './pages/shop/ShopList';
 import ShopReview from './pages/shop/ShopReview';
@@ -129,10 +134,10 @@ const App = () => {
                 <Route path="/operation/floor-decoration/pc" element={<FloorDecoration />} />
             <Route path="/operation/floor-decoration/pc/designer" element={<FloorDesigner />} />
                 <Route path="/operation/floor-decoration/mobile" element={<PlaceholderPage title="移动端装修" />} />
-                <Route path="/operation/privacy-policy/privacy-policy" element={<PlaceholderPage title="隐私协议" />} />
-                <Route path="/operation/distribution/distribution-setting" element={<PlaceholderPage title="分销设置" />} />
-                <Route path="/operation/distribution/distribution-apply" element={<PlaceholderPage title="分销申请" />} />
-                <Route path="/operation/distribution/distributor" element={<PlaceholderPage title="分销员" />} />
+                <Route path="/operation/privacy-policy/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/operation/distribution/distribution-setting" element={<DistributionSetting />} />
+                <Route path="/operation/distribution/distribution-apply" element={<DistributionApply />} />
+                <Route path="/operation/distribution/distributor" element={<Distributor />} />
                 <Route path="/operation/distribution/distribution-product" element={<PlaceholderPage title="分销商品" />} />
                 <Route path="/operation/distribution/distribution-order" element={<PlaceholderPage title="分销订单" />} />
                 <Route path="/operation/distribution/distribution-withdraw" element={<PlaceholderPage title="分销提现" />} />

@@ -4,7 +4,7 @@
   "description": "WeDraw应用后端API服务",
   "main": "src/api/index.js",
   "scripts": {
-    "start": "node src/api/index.js",
+    "start": "node dist/api/index.js",
     "dev": "nodemon src/api/index.js",
     "build": "node build.js",
     "build:start": "node dist/api/index.js",
@@ -15,7 +15,13 @@
     "db:reset": "npm run db:migrate && npm run db:seed",
     "admin:dev": "cd src/admin && vite",
     "admin:build": "cd src/admin && vite build",
-    "admin:preview": "cd src/admin && vite preview"
+    "admin:preview": "cd src/admin && vite preview",
+    "buyer:dev": "cd src/buyer && vite",
+    "buyer:build": "cd src/buyer && vite build",
+    "buyer:preview": "cd src/buyer && vite preview",
+    "dev:all": "concurrently \"npm run dev\" \"npm run admin:dev\" \"npm run buyer:dev\"",
+    "start:prod": "npm run build && node dist/api/index.js",
+    "deploy:prod": "npm run build && echo '部署完成，请配置静态服务器指向dist目录'"
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
@@ -47,6 +53,7 @@
     "pg": "^8.16.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-quill": "^2.0.0",
     "react-router-dom": "^6.21.3",
     "recharts": "^3.3.0",
     "redis": "^4.6.13",
@@ -63,6 +70,7 @@
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
     "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^9.2.1",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
