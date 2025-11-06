@@ -1,0 +1,72 @@
+.article-category {
+  padding: 20px;
+  background-color: #ffffff;
+}
+
+.category-header {
+  margin-bottom: 20px;
+}
+
+.add-top-button {
+  background-color: #ff4d4f;
+  border-color: #ff4d4f;
+  color: #ffffff;
+}
+
+.add-top-button:hover {
+  background-color: #ff7875;
+  border-color: #ff7875;
+}
+
+.ant-table {
+  background-color: #ffffff;
+  border: 1px solid #f0f0f0;
+}
+
+.ant-table-thead > tr > th {
+  background-color: #fafafa;
+  font-weight: 500;
+  text-align: left;
+}
+
+.ant-table-tbody > tr > td {
+  text-align: left;
+}
+
+.edit-button {
+  color: #fa8c16;
+}
+
+.edit-button:hover {
+  color: #ffc53d;
+}
+
+.delete-button {
+  color: #ff4d4f;
+}
+
+.delete-button:hover {
+  color: #ff7875;
+}
+
+.add-sub-button {
+  background-color: #52c41a;
+  border-color: #52c41a;
+  color: #ffffff;
+}
+
+.add-sub-button:hover {
+  background-color: #73d13d;
+  border-color: #73d13d;
+}
+
+.submit-button {
+  background-color: #1890ff;
+  border-color: #1890ff;
+  color: #ffffff;
+}
+
+.submit-button:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
+}

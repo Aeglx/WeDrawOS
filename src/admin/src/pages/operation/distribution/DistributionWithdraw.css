@@ -1,0 +1,230 @@
+/* 分销提现页面样式 */
+.distribution-withdraw-container {
+  padding: 20px;
+  background-color: #f0f2f5;
+  min-height: 100vh;
+}
+
+.distribution-withdraw-card {
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+}
+
+/* 搜索区域样式 - 平台商品页面风格 */
+.search-area {
+  background-color: white;
+  padding: 10px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  border: 1px solid #e8e8e8;
+}
+
+.search-area .ant-input,
+.search-area .ant-select-selector {
+  width: 180px !important;
+  margin-right: 15px;
+  height: 32px !important;
+  font-size: 12px !important;
+  line-height: 32px !important;
+}
+
+/* 按钮样式 */
+.search-area .ant-btn {
+  height: 32px;
+  font-size: 12px;
+  padding: 0 16px;
+}
+
+.search-area .ant-btn-primary {
+  background-color: #ff0000 !important;
+  border-color: #ff0000 !important;
+  color: #ffffff !important;
+  font-weight: normal;
+  text-shadow: none;
+}
+
+.search-area .ant-btn-default {
+  background-color: #ffffff !important;
+  color: #666666 !important;
+  border-color: #d9d9d9 !important;
+}
+
+/* 表格区域样式 */
+.table-container {
+  margin-top: 16px;
+}
+
+.distribution-withdraw-table {
+  font-size: 14px;
+}
+
+.distribution-withdraw-table thead th {
+  background-color: #fafafa;
+  font-weight: 500;
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 12px 16px;
+  text-align: left;
+}
+
+.distribution-withdraw-table tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.distribution-withdraw-table tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* 状态标签样式 */
+.status-approved {
+  color: #52c41a;
+  font-weight: 500;
+}
+
+.status-rejected {
+  color: #ff4d4f;
+  font-weight: 500;
+}
+
+/* 金额样式 */
+.amount {
+  color: #ff0000;
+  font-weight: 500;
+}
+
+/* 提现详情模态框样式 */
+.withdraw-detail {
+  padding: 10px 0;
+}
+
+.detail-section {
+  margin-bottom: 24px;
+}
+
+.detail-section h3 {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 8px;
+}
+
+.detail-item {
+  margin-bottom: 12px;
+  line-height: 24px;
+}
+
+.detail-label {
+  display: inline-block;
+  width: 100px;
+  color: #666;
+  font-size: 14px;
+}
+
+.detail-item span:not(.detail-label) {
+  font-size: 14px;
+  color: #333;
+}
+
+/* 分页器样式 */
+.ant-pagination {
+  margin-top: 16px;
+  text-align: right;
+}
+
+.ant-pagination-prev a,
+.ant-pagination-next a {
+  color: #333;
+}
+
+.ant-pagination-prev:hover a,
+.ant-pagination-next:hover a {
+  color: #ff0000;
+  border-color: #ff0000;
+}
+
+.ant-pagination-disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+  .search-area .ant-input,
+  .search-area .ant-select-selector {
+    width: 150px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .distribution-withdraw-container {
+    padding: 10px;
+  }
+  
+  .distribution-withdraw-card {
+    padding: 16px;
+  }
+  
+  .search-area {
+    padding: 8px;
+  }
+  
+  .search-area .ant-input,
+  .search-area .ant-select-selector {
+    width: 120px !important;
+  }
+  
+  .detail-item {
+    margin-bottom: 8px;
+  }
+  
+  .detail-label {
+    width: 90px;
+    font-size: 13px;
+  }
+  
+  .detail-item span:not(.detail-label) {
+    font-size: 13px;
+  }
+}
+
+/* 表格内容溢出处理 */
+.ant-table-wrapper .ant-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.ant-table-wrapper .ant-table-thead > tr > th,
+.ant-table-wrapper .ant-table-tbody > tr > td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 悬停效果 */
+.ant-table-wrapper .ant-table-tbody > tr:hover > td {
+  background-color: #f5f5f5;
+}
+
+/* 空状态样式 */
+.ant-empty {
+  margin: 40px 0;
+}
+
+.ant-empty-description {
+  color: #999;
+}
+
+/* 查看按钮样式 */
+.ant-table-wrapper .ant-table-tbody .ant-btn-link {
+  color: #ff0000;
+}
+
+.ant-table-wrapper .ant-table-tbody .ant-btn-link:hover {
+  color: #ff4d4f;
+  border-color: #ff4d4f;
+}

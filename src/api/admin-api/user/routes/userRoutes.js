@@ -166,7 +166,7 @@ router.post('/add', userController.addUser);
  *               status:
  *                 type: number
  *                 enum: [0, 1]
- *                 description: 状态（0: 禁用, 1: 启用）
+ *                 description: 状态(0-禁用, 1-启用)
  *     responses:
  *       200:
  *         description: 成功更新状态

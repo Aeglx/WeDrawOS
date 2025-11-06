@@ -32,6 +32,12 @@ import PrivacyPolicy from './pages/operation/privacy-policy/PrivacyPolicy';
 import DistributionSetting from './pages/operation/distribution/DistributionSetting';
 import DistributionApply from './pages/operation/distribution/DistributionApply';
 import Distributor from './pages/operation/distribution/Distributor';
+import DistributionProduct from './pages/operation/distribution/DistributionProduct';
+import DistributionOrder from './pages/operation/distribution/DistributionOrder';
+import DistributionWithdraw from './pages/operation/distribution/DistributionWithdraw';
+import ArticleManage from './pages/operation/article/ArticleManage';
+import ArticleCategory from './pages/operation/article/ArticleCategory';
+import AddArticle from './pages/operation/article/AddArticle';
 
 // 导入店铺相关组件
 import ShopList from './pages/shop/ShopList';
@@ -138,12 +144,13 @@ const App = () => {
                 <Route path="/operation/distribution/distribution-setting" element={<DistributionSetting />} />
                 <Route path="/operation/distribution/distribution-apply" element={<DistributionApply />} />
                 <Route path="/operation/distribution/distributor" element={<Distributor />} />
-                <Route path="/operation/distribution/distribution-product" element={<PlaceholderPage title="分销商品" />} />
-                <Route path="/operation/distribution/distribution-order" element={<PlaceholderPage title="分销订单" />} />
-                <Route path="/operation/distribution/distribution-withdraw" element={<PlaceholderPage title="分销提现" />} />
-                <Route path="/operation/article/article-manage" element={<PlaceholderPage title="文章管理" />} />
+                <Route path="/operation/distribution/distribution-product" element={<DistributionProduct />} />
+                <Route path="/operation/distribution/distribution-order" element={<DistributionOrder />} />
+                <Route path="/operation/distribution/distribution-withdraw" element={<DistributionWithdraw />} />
+                <Route path="/operation/article/article-manage" element={<ArticleManage />} />
+                <Route path="/operation/article/add-article" element={<AddArticle />} />
                 <Route path="/operation/article/hot-search" element={<PlaceholderPage title="搜索热词" />} />
-                <Route path="/operation/article/article-category" element={<PlaceholderPage title="文章分类" />} />
+                <Route path="/operation/article/article-category" element={<ArticleCategory />} />
                 <Route path="/operation/article/es-segment" element={<PlaceholderPage title="ES分词" />} />
                 <Route path="/operation/feedback/feedback" element={<PlaceholderPage title="意见反馈" />} />
                 <Route path="/operation/站内信/站内信" element={<PlaceholderPage title="站内信" />} />

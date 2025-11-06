@@ -1,0 +1,177 @@
+/* AddArticle.css */
+
+.add-article-container {
+  padding: 0;
+  background-color: #ffffff;
+  border-radius: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.add-article-header {
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #e8e8e8;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* 表单样式 */
+.add-article-form .ant-form-item {
+  margin-bottom: 16px;
+}
+
+.add-article-form .ant-form-item-label {
+  padding-bottom: 8px;
+}
+
+.add-article-form .ant-form-item-label > label {
+  font-weight: 500;
+  color: #333;
+}
+
+/* 输入框样式 */
+.add-article-form .ant-input {
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.add-article-form .ant-input:focus {
+  border-color: #40a9ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+/* 选择器样式 */
+.add-article-form .ant-select {
+  border-radius: 4px;
+}
+
+.add-article-form .ant-select-focused .ant-select-selector {
+  border-color: #40a9ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+/* 富文本编辑器样式 */
+.rich-text-editor {
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  transition: border-color 0.3s;
+}
+
+.rich-text-editor:focus-within {
+  border-color: #40a9ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.rich-text-toolbar {
+  padding: 8px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  background-color: #fafafa;
+}
+
+.rich-text-toolbar-top {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.rich-text-toolbar-main {
+  display: flex;
+  gap: 2px;
+  flex-wrap: wrap;
+}
+
+.rich-text-toolbar-separator {
+  margin: 0 4px;
+  color: #d9d9d9;
+  font-size: 12px;
+}
+
+.rich-text-button {
+  padding: 2px 6px;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+  background-color: white;
+  cursor: pointer;
+  font-size: 12px;
+  min-width: 24px;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.rich-text-button:hover {
+  background-color: #f0f0f0;
+  border-color: #40a9ff;
+}
+
+.rich-text-button:focus {
+  outline: none;
+  border-color: #40a9ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.rich-text-button.active {
+  background-color: #e6f7ff;
+  border-color: #40a9ff;
+  color: #1890ff;
+}
+
+.rich-text-editor-content {
+  min-height: 300px;
+  padding: 12px;
+  outline: none;
+  line-height: 1.6;
+  font-size: 14px;
+  color: #333;
+}
+
+.rich-text-editor-content:empty:before {
+  content: attr(placeholder);
+  color: #999;
+}
+
+/* 开关样式 */
+.add-article-form .ant-switch-checked {
+  background-color: #52c41a;
+}
+
+/* 按钮样式 */
+.add-article-actions {
+  margin-top: 20px;
+  text-align: right;
+}
+
+.add-article-actions .ant-btn {
+  min-width: 80px;
+  padding: 6px 16px;
+}
+
+.add-article-actions .ant-btn-primary {
+  background-color: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+.add-article-actions .ant-btn-primary:hover,
+.add-article-actions .ant-btn-primary:focus {
+  background-color: #ff7875;
+  border-color: #ff7875;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .add-article-container {
+    padding: 12px;
+  }
+  
+  .add-article-form .ant-input,
+  .add-article-form .ant-select {
+    width: 100% !important;
+  }
+  
+  .add-article-actions {
+    text-align: center;
+  }
+  
+  .add-article-actions .ant-btn {
+    margin-bottom: 8px;
+  }
+}

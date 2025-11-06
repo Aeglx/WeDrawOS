@@ -1,0 +1,134 @@
+/* 分销商品页面样式 */
+.distribution-product-container {
+  padding: 20px;
+  background-color: #f0f2f5;
+  min-height: 100vh;
+}
+
+.distribution-product-card {
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+}
+
+/* 搜索区域样式 - 平台商品页面风格 */
+.search-area {
+  background-color: white;
+  padding: 10px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  border: 1px solid #e8e8e8;
+}
+
+.search-area .ant-input,
+.search-area .ant-select-selector {
+  width: 180px !important;
+  margin-right: 15px;
+  height: 32px !important;
+  font-size: 12px !important;
+  line-height: 32px !important;
+}
+
+/* 按钮样式 */
+.search-area .ant-btn {
+  height: 32px;
+  font-size: 12px;
+  padding: 0 16px;
+}
+
+.search-area .ant-btn-primary {
+  background-color: #ff0000 !important;
+  border-color: #ff0000 !important;
+  color: #ffffff !important;
+  font-weight: normal;
+  text-shadow: none;
+}
+
+.search-area .ant-btn-default {
+  background-color: #ffffff !important;
+  color: #666666 !important;
+  border-color: #d9d9d9 !important;
+}
+
+/* 表格区域样式 */
+.table-container {
+  margin-top: 16px;
+}
+
+.distribution-product-table {
+  font-size: 14px;
+}
+
+.distribution-product-table thead th {
+  background-color: #fafafa;
+  font-weight: 500;
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 12px 16px;
+  text-align: left;
+}
+
+.distribution-product-table tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.distribution-product-table tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* 商品详情模态框样式 */
+.product-detail {
+  padding: 10px 0;
+}
+
+.detail-item {
+  margin-bottom: 12px;
+  line-height: 24px;
+}
+
+.detail-label {
+  display: inline-block;
+  width: 80px;
+  color: #666;
+  font-size: 14px;
+}
+
+.detail-item span:not(.detail-label) {
+  font-size: 14px;
+  color: #333;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .distribution-product-container {
+    padding: 10px;
+  }
+  
+  .distribution-product-card {
+    padding: 16px;
+  }
+  
+  .search-area {
+    padding: 8px;
+  }
+  
+  .search-area .ant-input,
+  .search-area .ant-select-selector {
+    width: 150px !important;
+  }
+  
+  .detail-item {
+    margin-bottom: 8px;
+  }
+  
+  .detail-label {
+    width: 70px;
+    font-size: 13px;
+  }
+  
+  .detail-item span:not(.detail-label) {
+    font-size: 13px;
+  }
+}

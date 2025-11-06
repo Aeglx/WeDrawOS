@@ -1,0 +1,558 @@
+/* 文章管理页面样式 */
+.article-manage-container {
+  padding: 20px;
+  background-color: #f0f2f5;
+  min-height: 100vh;
+}
+
+/* 操作区域样式 */
+.operation-area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  background: white;
+  padding: 16px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.operation-area:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* 搜索区域样式 */
+.search-area {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.article-search-input {
+  width: 360px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.article-search-input:focus,
+.article-search-input:hover {
+  border-color: #40a9ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.search-button {
+  background-color: #1890ff;
+  border-color: #1890ff;
+  height: 32px;
+  font-size: 12px;
+  padding: 0 16px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.search-button:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(24, 144, 255, 0.3);
+}
+
+/* 发布按钮样式 */
+.publish-button {
+  background-color: #1890ff;
+  border-color: #1890ff;
+  color: white;
+  font-size: 14px;
+  height: 32px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.publish-button:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(24, 144, 255, 0.3);
+}
+
+/* 表格区域样式 */
+.table-area {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.table-area:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.article-table {
+  background-color: #ffffff;
+  border: 1px solid #f0f0f0;
+  border-radius: 4px;
+  padding: 0;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+.article-table .ant-table-thead > tr > th {
+  background-color: #fafafa;
+  font-weight: 600;
+  color: #262626;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 14px;
+  padding: 12px 16px;
+}
+
+.article-table .ant-table-tbody > tr > td {
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 14px;
+  height: 40px;
+  padding: 12px 16px;
+  transition: background-color 0.2s ease;
+}
+
+.article-table .ant-table-tbody > tr:hover > td {
+  background-color: #fafafa;
+}
+
+/* 编辑按钮样式 */
+.edit-button {
+  background-color: #1890ff;
+  border-color: #1890ff;
+  color: white;
+  font-size: 12px;
+  height: 28px;
+  margin-right: 8px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.edit-button:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(24, 144, 255, 0.3);
+}
+
+/* 删除按钮样式 */
+.delete-button {
+  background-color: #ff4d4f;
+  border-color: #ff4d4f;
+  color: white;
+  font-size: 12px;
+  height: 28px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.delete-button:hover {
+  background-color: #ff7875;
+  border-color: #ff7875;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(255, 77, 79, 0.3);
+}
+
+/* 表单样式 */
+.ant-form-item-label > label {
+  font-weight: 500;
+  color: #262626;
+}
+
+.ant-form-item-label > label::after {
+  margin: 0 8px;
+}
+
+.ant-form-item {
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+/* 输入框样式优化 */
+.ant-input,
+.ant-select,
+.ant-input-number,
+.ant-picker {
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  border-color: #d9d9d9;
+}
+
+.ant-input:focus,
+.ant-select-focused .ant-select-selector,
+.ant-input-number:focus,
+.ant-picker-focused {
+  border-color: #40a9ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.ant-input:hover,
+.ant-select-selector:hover,
+.ant-input-number:hover,
+.ant-picker:hover {
+  border-color: #40a9ff;
+}
+
+/* 附件上传样式 */
+.ant-upload {
+  margin-bottom: 16px;
+}
+
+.ant-upload-select {
+  border-radius: 6px;
+}
+
+/* 点击率样式 */
+.view-count {
+  color: #1890ff;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+/* 富文本编辑器样式 */
+.rich-text-editor {
+  margin-top: 8px;
+  min-height: 250px;
+  max-height: 400px;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  overflow: auto;
+  transition: all 0.3s ease;
+}
+
+.rich-text-editor:hover {
+  border-color: #40a9ff;
+}
+
+.rich-text-editor .ql-container {
+  min-height: 250px;
+  max-height: 400px;
+  overflow-y: auto;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border: 1px solid #d9d9d9;
+}
+
+.rich-text-editor .ql-toolbar {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border: 1px solid #d9d9d9;
+  border-bottom: 1px solid #d9d9d9;
+  background-color: #fafafa;
+  padding: 8px 12px;
+}
+
+.rich-text-editor .ql-editor {
+  min-height: 250px;
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 16px;
+}
+
+.rich-text-editor .ql-editor p {
+  margin: 0;
+}
+
+/* 模态框样式美化 */
+.ant-modal {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.ant-modal-content {
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  border: none;
+}
+
+.ant-modal-header {
+  background-color: #fafafa;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 16px 24px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.ant-modal-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #262626;
+  margin: 0;
+}
+
+.ant-modal-body {
+  padding: 24px;
+  font-size: 14px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.ant-modal-footer {
+  border-top: 1px solid #f0f0f0;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  background-color: #fafafa;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.ant-modal-footer .ant-btn {
+  border-radius: 6px;
+  padding: 6px 16px;
+  transition: all 0.3s ease;
+}
+
+.ant-modal-footer .ant-btn-primary {
+  background-color: #1890ff;
+  border-color: #1890ff;
+}
+
+.ant-modal-footer .ant-btn-primary:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(24, 144, 255, 0.3);
+}
+
+.ant-modal-footer .ant-btn-default:hover {
+  border-color: #40a9ff;
+  color: #40a9ff;
+}
+
+/* Switch 组件美化 */
+.ant-switch {
+  border-radius: 16px;
+  width: 52px;
+  height: 28px;
+  background-color: #d9d9d9;
+  transition: all 0.3s ease;
+}
+
+.ant-switch-checked {
+  background-color: #1890ff;
+}
+
+.ant-switch:hover:not(.ant-switch-disabled) {
+  background-color: #bfbfbf;
+}
+
+.ant-switch-checked:hover:not(.ant-switch-disabled) {
+  background-color: #40a9ff;
+}
+
+.ant-switch-inner {
+  height: 24px;
+  margin-top: 2px;
+  border-radius: 12px;
+  width: 24px;
+}
+
+/* 排序输入框样式 */
+.sort-input {
+  width: 80px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.sort-input:hover {
+  border-color: #40a9ff;
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* 组件进入动画 */
+.article-manage-container {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.operation-area,
+.table-area {
+  animation: slideIn 0.5s ease-out;
+}
+
+/* 按钮点击反馈 */
+.ant-btn:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
+}
+
+/* 模态框进入动画 */
+.ant-modal-enter {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* 表格行悬停效果增强 */
+.article-table .ant-table-tbody > tr:hover {
+  animation: pulse 0.3s ease-out;
+}
+
+/* 输入框焦点动画 */
+.ant-input:focus,
+.ant-select-focused .ant-select-selector,
+.ant-input-number:focus,
+.ant-picker-focused {
+  animation: pulse 0.3s ease-out;
+}
+
+/* 富文本编辑器工具栏按钮美化 */
+.rich-text-editor .ql-toolbar .ql-stroke {
+  stroke: #595959;
+}
+
+.rich-text-editor .ql-toolbar .ql-fill,
+.rich-text-editor .ql-toolbar .ql-stroke.ql-fill {
+  fill: #595959;
+}
+
+.rich-text-editor .ql-toolbar button:hover .ql-stroke,
+.rich-text-editor .ql-toolbar button.ql-active .ql-stroke {
+  stroke: #1890ff;
+}
+
+.rich-text-editor .ql-toolbar button:hover .ql-fill,
+.rich-text-editor .ql-toolbar button.ql-active .ql-fill {
+  fill: #1890ff;
+}
+
+.rich-text-editor .ql-toolbar button:hover,
+.rich-text-editor .ql-toolbar button.ql-active {
+  color: #1890ff;
+  border-color: #1890ff;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .article-manage-container {
+    padding: 10px;
+  }
+  
+  .operation-area {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 12px;
+    gap: 12px;
+  }
+  
+  .publish-button {
+    width: 100%;
+  }
+  
+  .search-area {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .article-search-input {
+    width: 100%;
+  }
+  
+  .table-area {
+    padding: 10px;
+  }
+  
+  .article-table {
+    font-size: 12px;
+  }
+  
+  .article-table .ant-table-thead > tr > th,
+  .article-table .ant-table-tbody > tr > td {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  
+  .rich-text-editor {
+    min-height: 200px;
+  }
+  
+  .rich-text-editor .ql-container,
+  .rich-text-editor .ql-editor {
+    min-height: 200px;
+  }
+  
+  .ant-modal {
+    margin: 10px;
+    width: auto !important;
+    max-width: 100%;
+  }
+  
+  .ant-modal-content {
+    border-radius: 8px;
+  }
+  
+  .ant-modal-body {
+    padding: 16px;
+  }
+  
+  .ant-modal-footer {
+    flex-direction: column;
+  }
+  
+  .ant-modal-footer .ant-btn {
+    width: 100%;
+  }
+}
+
+/* 打印样式 */
+@media print {
+  .article-manage-container {
+    background-color: white;
+  }
+  
+  .operation-area {
+    display: none;
+  }
+  
+  .table-area {
+    box-shadow: none;
+    padding: 0;
+  }
+  
+  .ant-table-thead > tr > th,
+  .ant-table-tbody > tr > td {
+    border: 1px solid #d9d9d9 !important;
+  }
+}
