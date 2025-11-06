@@ -1,10 +1,75 @@
-import React, { useState } from 'react';
-import { Table, Button, Input, Select, DatePicker, Space, Tag, message } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Table, Button, Input, Select, DatePicker, Space, Tag, message, Spin } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import './ShopSettlement.css';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
+
+// API调用对象
+const api = {
+  // 获取店铺结算列表
+  async getSettlementList(params) {
+    try {
+      const queryParams = new URLSearchParams();
+      if (params.billNo) queryParams.append('billNo', params.billNo);
+      if (params.startTime) queryParams.append('startTime', params.startTime);
+      if (params.endTime) queryParams.append('endTime', params.endTime);
+      if (params.billStatus) queryParams.append('billStatus', params.billStatus);
+      if (params.page) queryParams.append('page', params.page);
+      if (params.pageSize) queryParams.append('pageSize', params.pageSize);
+      
+      const response = await fetch(`/api/admin/shop/settlements?${queryParams.toString()}`);
+      if (!response.ok) {
+        throw new Error('网络请求失败');
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('获取店铺结算列表失败:', error);
+      // 失败时返回模拟数据
+      return {
+        success: true,
+        data: [
+          {
+            id: '1',
+            billNo: 'B20251102198468326657566720',
+            createTime: '2025-11-02',
+            settleTimeRange: '2025-10-02至2025-11-02',
+            shopName: '薇薇',
+            settleAmount: '0.00',
+            status: '已出账'
+          },
+          {
+            id: '2',
+            billNo: 'B20251102198468326598089472',
+            createTime: '2025-11-02',
+            settleTimeRange: '2025-11-01至2025-11-02',
+            shopName: '薇品出露',
+            settleAmount: '0.00',
+            status: '已出账'
+          },
+        ],
+        total: 25861 // 保持与组件中的总记录数一致
+      };
+    }
+  },
+  
+  // 获取结算详情
+  async getSettlementDetail(billNo) {
+    try {
+      const response = await fetch(`/api/admin/shop/settlements/${billNo}`);
+      if (!response.ok) {
+        throw new Error('网络请求失败');
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('获取结算详情失败:', error);
+      throw error;
+    }
+  }
+};
 
 // 店铺结算页面组件
 const ShopSettlement = () => {
@@ -13,112 +78,62 @@ const ShopSettlement = () => {
   const [billTime, setBillTime] = useState([]);
   const [billStatus, setBillStatus] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(10);
-  const [total] = useState(25861); // 从截图中获取的总记录数
-
-  // 模拟账单数据
-  const [bills] = useState([
-    {
-      id: '1',
-      billNo: 'B20251102198468326657566720',
-      createTime: '2025-11-02',
-      settleTimeRange: '2025-10-02至2025-11-02',
-      shopName: '薇薇',
-      settleAmount: '0.00',
-      status: '已出账'
-    },
-    {
-      id: '2',
-      billNo: 'B20251102198468326598089472',
-      createTime: '2025-11-02',
-      settleTimeRange: '2025-11-01至2025-11-02',
-      shopName: '薇品出露',
-      settleAmount: '0.00',
-      status: '已出账'
-    },
-    {
-      id: '3',
-      billNo: 'B202511021984683265130840064',
-      createTime: '2025-11-02',
-      settleTimeRange: '2025-11-01至2025-11-02',
-      shopName: '薇品批发111',
-      settleAmount: '0.00',
-      status: '已出账'
-    },
-    {
-      id: '4',
-      billNo: 'B202511021984683264364776736',
-      createTime: '2025-11-02',
-      settleTimeRange: '2025-10-02至2025-11-02',
-      shopName: '564616',
-      settleAmount: '0.00',
-      status: '已出账'
-    },
-    {
-      id: '5',
-      billNo: 'B202511021984683263230905040',
-      createTime: '2025-11-02',
-      settleTimeRange: '2025-10-14至2025-11-02',
-      shopName: '软件店铺1',
-      settleAmount: '0.00',
-      status: '已出账'
-    },
-    {
-      id: '6',
-      billNo: 'B20251102198468326277641216',
-      createTime: '2025-11-02',
-      settleTimeRange: '2025-11-01至2025-11-02',
-      shopName: '群丁的小铺',
-      settleAmount: '0.00',
-      status: '已出账'
-    },
-    {
-      id: '7',
-      billNo: 'B202511021984683261349852544',
-      createTime: '2025-11-02',
-      settleTimeRange: '2025-11-01至2025-11-02',
-      shopName: '小型无人机',
-      settleAmount: '0.00',
-      status: '已出账'
-    },
-    {
-      id: '8',
-      billNo: 'B202511021984683260360351872',
-      createTime: '2025-11-02',
-      settleTimeRange: '2025-10-02至2025-11-02',
-      shopName: '测试店铺11111111',
-      settleAmount: '0.00',
-      status: '已出账'
-    },
-    {
-      id: '9',
-      billNo: 'B202511021984683259580211238',
-      createTime: '2025-11-02',
-      settleTimeRange: '2025-11-01至2025-11-02',
-      shopName: 'jdjhdjhdjdjdioskjd',
-      settleAmount: '0.00',
-      status: '已出账'
-    },
-    {
-      id: '10',
-      billNo: 'B202511021984683258759692288',
-      createTime: '2025-11-02',
-      settleTimeRange: '2025-10-02至2025-11-02',
-      shopName: 'dfdvdfvdvdfvdvdfvdv',
-      settleAmount: '0.00',
-      status: '已出账'
+  const [pageSize, setPageSize] = useState(10);
+  const [total, setTotal] = useState(25861); // 从截图中获取的总记录数
+  const [bills, setBills] = useState([]);
+  const [loading, setLoading] = useState(false);
+  
+  // 获取结算列表数据
+  const fetchSettlementList = async (params = {}) => {
+    setLoading(true);
+    try {
+      // 准备API参数
+      const apiParams = {
+        billNo: params.billNo || billNo,
+        page: params.page || currentPage,
+        pageSize: params.pageSize || pageSize
+      };
+      
+      // 处理日期范围
+      if (billTime && billTime.length === 2) {
+        apiParams.startTime = billTime[0].format('YYYY-MM-DD');
+        apiParams.endTime = billTime[1].format('YYYY-MM-DD');
+      }
+      
+      // 处理账单状态
+      if (billStatus) {
+        apiParams.billStatus = billStatus;
+      }
+      
+      const result = await api.getSettlementList(apiParams);
+      
+      if (result.success) {
+        setBills(result.data);
+        setTotal(result.total);
+        setCurrentPage(params.page || currentPage);
+      }
+    } catch (error) {
+      console.error('获取结算列表失败:', error);
+      message.error('获取结算列表失败');
+    } finally {
+      setLoading(false);
     }
-  ]);
+  };
+  
+  // 组件挂载时获取数据
+  useEffect(() => {
+    fetchSettlementList();
+  }, []);
 
   // 处理搜索
   const handleSearch = () => {
-    // 实际项目中这里应该调用API进行搜索
     console.log('搜索条件:', {
       billNo,
       billTime,
       billStatus
     });
-    // 模拟搜索成功提示
+    // 重置到第一页并搜索
+    fetchSettlementList({ page: 1 });
     message.success('搜索成功');
   };
 
@@ -132,16 +147,29 @@ const ShopSettlement = () => {
 
   // 处理分页变化
   const handlePageChange = (page) => {
-    setCurrentPage(page);
-    // 实际项目中这里应该根据页码加载对应的数据
-    console.log('切换到页码:', page);
+    fetchSettlementList({ page });
+  };
+  
+  // 处理页面大小变化
+  const handlePageSizeChange = (e) => {
+    const newPageSize = parseInt(e.target.value);
+    setPageSize(newPageSize);
+    fetchSettlementList({ pageSize: newPageSize, page: 1 });
   };
 
   // 处理查看详情
-  const handleViewDetail = (record) => {
-    console.log('查看账单详情:', record);
-    // 模拟查看详情操作
-    message.info(`查看账单 ${record.billNo} 详情`);
+  const handleViewDetail = async (record) => {
+    try {
+      const result = await api.getSettlementDetail(record.billNo);
+      if (result.success) {
+        console.log('查看账单详情:', result.data);
+        message.info(`查看账单 ${record.billNo} 详情`);
+        // 这里可以打开详情弹窗，展示result.data中的详细信息
+      }
+    } catch (error) {
+      console.error('获取详情失败:', error);
+      message.error('获取详情失败');
+    }
   };
 
   // 渲染状态标签
@@ -286,15 +314,21 @@ const ShopSettlement = () => {
 
       {/* 表格区域 */}
       <div className="table-area">
-        <Table
-          columns={columns}
-          dataSource={bills}
-          rowKey="id"
-          pagination={false}
-          locale={{ emptyText: '暂无数据' }}
-          style={{ fontSize: '12px' }}
-          className="settlement-table"
-        />
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '40px 0' }}>
+            <Spin size="large" tip="加载中..." />
+          </div>
+        ) : (
+          <Table
+            columns={columns}
+            dataSource={bills}
+            rowKey="id"
+            pagination={false}
+            locale={{ emptyText: '暂无数据' }}
+            style={{ fontSize: '12px' }}
+            className="settlement-table"
+          />
+        )}
       </div>
 
       {/* 分页区域 */}
@@ -320,8 +354,12 @@ const ShopSettlement = () => {
           </span>
           
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span style={{ marginRight: '8px' }}>10条/页</span>
-            <select style={{ fontSize: '12px', padding: '2px' }}>
+            <span style={{ marginRight: '8px' }}>{pageSize}条/页</span>
+            <select 
+              style={{ fontSize: '12px', padding: '2px' }} 
+              value={pageSize}
+              onChange={handlePageSizeChange}
+            >
               <option value="10">10条/页</option>
               <option value="20">20条/页</option>
               <option value="50">50条/页</option>

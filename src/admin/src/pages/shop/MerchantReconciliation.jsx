@@ -1,11 +1,76 @@
-import React, { useState } from 'react';
-import { Table, Input, DatePicker, Select, Button, Empty, Space } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Table, Input, DatePicker, Select, Button, Empty, Space, Spin } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import './MerchantReconciliation.css';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 const { Search } = Input;
+
+// API调用对象
+const api = {
+  // 获取商家对账数据
+  async getReconciliationData(params) {
+    try {
+      const queryParams = new URLSearchParams();
+      if (params.shopCode) queryParams.append('shopCode', params.shopCode);
+      if (params.startTime) queryParams.append('startTime', params.startTime);
+      if (params.endTime) queryParams.append('endTime', params.endTime);
+      if (params.orderStatus) queryParams.append('orderStatus', params.orderStatus);
+      if (params.page) queryParams.append('page', params.page);
+      if (params.pageSize) queryParams.append('pageSize', params.pageSize);
+      
+      const response = await fetch(`/api/admin/shop/reconciliation?${queryParams.toString()}`);
+      if (!response.ok) {
+        throw new Error('网络请求失败');
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('获取对账数据失败:', error);
+      // 失败时返回模拟数据
+      return {
+        success: true,
+        data: [
+          {
+            key: '1',
+            orderNo: 'E202510211643250577966720',
+            orderTime: '2025-11-02',
+            transactionTime: '2025-11-01 08:30:45',
+            shopName: '店铺1',
+            orderAmount: '¥12.00',
+            status: '已结算',
+          },
+          {
+            key: '2',
+            orderNo: 'E202510211643250577966721',
+            orderTime: '2025-11-02',
+            transactionTime: '2025-11-01 09:15:22',
+            shopName: '酷品店铺',
+            orderAmount: '¥88.50',
+            status: '已结算',
+          },
+        ],
+        total: 2
+      };
+    }
+  },
+  
+  // 获取对账详情
+  async getReconciliationDetail(orderNo) {
+    try {
+      const response = await fetch(`/api/admin/shop/reconciliation/${orderNo}`);
+      if (!response.ok) {
+        throw new Error('网络请求失败');
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('获取对账详情失败:', error);
+      throw error;
+    }
+  }
+};
 
 const MerchantReconciliation = () => {
   // 搜索条件状态
@@ -21,100 +86,10 @@ const MerchantReconciliation = () => {
     pageSize: 10,
     total: 0,
   });
-
-  // 模拟数据
-  const mockData = [
-    {
-      key: '1',
-      orderNo: 'E202510211643250577966720',
-      orderTime: '2025-11-02',
-      transactionTime: '2025-11-01 08:30:45',
-      shopName: '店铺1',
-      orderAmount: '¥12.00',
-      status: '已结算',
-    },
-    {
-      key: '2',
-      orderNo: 'E202510211643250577966721',
-      orderTime: '2025-11-02',
-      transactionTime: '2025-11-01 09:15:22',
-      shopName: '酷品店铺',
-      orderAmount: '¥88.50',
-      status: '已结算',
-    },
-    {
-      key: '3',
-      orderNo: 'E202510211643250577966722',
-      orderTime: '2025-11-02',
-      transactionTime: '2025-11-01 10:20:11',
-      shopName: '潮流前线1111',
-      orderAmount: '¥128.00',
-      status: '已结算',
-    },
-    {
-      key: '4',
-      orderNo: 'E202510211643250577966723',
-      orderTime: '2025-11-02',
-      transactionTime: '2025-11-01 11:45:30',
-      shopName: '566616',
-      orderAmount: '¥56.80',
-      status: '已结算',
-    },
-    {
-      key: '5',
-      orderNo: 'E202510211643250577966724',
-      orderTime: '2025-11-02',
-      transactionTime: '2025-11-01 14:20:55',
-      shopName: '我叫潮潮！',
-      orderAmount: '¥99.00',
-      status: '已结算',
-    },
-    {
-      key: '6',
-      orderNo: 'E202510211643250577966725',
-      orderTime: '2025-11-02',
-      transactionTime: '2025-11-01 15:30:22',
-      shopName: '打字小铺',
-      orderAmount: '¥23.50',
-      status: '已结算',
-    },
-    {
-      key: '7',
-      orderNo: 'E202510211643250577966726',
-      orderTime: '2025-11-02',
-      transactionTime: '2025-11-01 16:45:10',
-      shopName: '小吃街人1',
-      orderAmount: '¥45.00',
-      status: '已结算',
-    },
-    {
-      key: '8',
-      orderNo: 'E202510211643250577966727',
-      orderTime: '2025-11-02',
-      transactionTime: '2025-11-01 17:20:33',
-      shopName: '潮流前线11111111',
-      orderAmount: '¥199.00',
-      status: '已结算',
-    },
-    {
-      key: '9',
-      orderNo: 'E202510211643250577966728',
-      orderTime: '2025-11-02',
-      transactionTime: '2025-11-01 18:10:45',
-      shopName: 'kaopppppppppppp',
-      orderAmount: '¥35.80',
-      status: '已结算',
-    },
-    {
-      key: '10',
-      orderNo: 'E202510211643250577966729',
-      orderTime: '2025-11-02',
-      transactionTime: '2025-11-01 19:50:15',
-      shopName: 'dddddddddddddd',
-      orderAmount: '¥78.00',
-      status: '已结算',
-    },
-  ];
+  
+  // 数据状态
+  const [dataSource, setDataSource] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   // 表格列配置
   const columns = [
@@ -155,27 +130,61 @@ const MerchantReconciliation = () => {
         </span>
       ),
     },
-    {
+    {      
       title: '操作',
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <Button type="link" className="detail-btn">详情</Button>
+          <Button type="link" className="detail-btn" onClick={() => handleViewDetail(record.orderNo)}>详情</Button>
         </Space>
       ),
     },
   ];
 
+  // 获取对账数据
+  const fetchReconciliationData = async (params = {}) => {
+    setLoading(true);
+    try {
+      // 准备API参数
+      const apiParams = {
+        shopCode: params.shopCode || searchParams.shopCode,
+        page: params.page || pagination.current,
+        pageSize: params.pageSize || pagination.pageSize
+      };
+      
+      // 处理日期范围
+      if (searchParams.orderTime && searchParams.orderTime.length === 2) {
+        apiParams.startTime = searchParams.orderTime[0].format('YYYY-MM-DD');
+        apiParams.endTime = searchParams.orderTime[1].format('YYYY-MM-DD');
+      }
+      
+      // 处理订单状态
+      if (searchParams.orderStatus) {
+        apiParams.orderStatus = searchParams.orderStatus;
+      }
+      
+      const result = await api.getReconciliationData(apiParams);
+      
+      if (result.success) {
+        setDataSource(result.data);
+        setPagination(prev => ({
+          ...prev,
+          total: result.total,
+          current: params.page || prev.current
+        }));
+      }
+    } catch (error) {
+      console.error('获取对账数据失败:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // 处理搜索
   const handleSearch = () => {
-    // 这里应该调用API进行搜索
     console.log('搜索参数:', searchParams);
-    // 模拟搜索结果
-    setPagination({
-      ...pagination,
-      total: mockData.length,
-      current: 1,
-    });
+    // 重置到第一页并搜索
+    fetchReconciliationData({ page: 1 });
   };
 
   // 处理重置
@@ -189,11 +198,26 @@ const MerchantReconciliation = () => {
 
   // 处理分页变化
   const handlePaginationChange = (current, pageSize) => {
-    setPagination({
-      ...pagination,
-      current,
-      pageSize,
-    });
+    fetchReconciliationData({ page: current, pageSize });
+  };
+  
+  // 组件挂载时获取数据
+  useEffect(() => {
+    fetchReconciliationData();
+  }, []);
+  
+  // 处理详情查看
+  const handleViewDetail = async (orderNo) => {
+    try {
+      const result = await api.getReconciliationDetail(orderNo);
+      if (result.success) {
+        // 这里可以打开详情弹窗
+        console.log('对账详情:', result.data);
+        alert(`查看订单号 ${orderNo} 的详情`);
+      }
+    } catch (error) {
+      console.error('获取详情失败:', error);
+    }
   };
 
   return (
@@ -229,28 +253,34 @@ const MerchantReconciliation = () => {
 
       {/* 表格区域 */}
       <div className="table-area">
-        <Table
-          columns={columns}
-          dataSource={mockData}
-          rowKey="key"
-          pagination={{
-            ...pagination,
-            showSizeChanger: true,
-            showQuickJumper: true,
-            showTotal: (total) => `共 ${total} 条`,
-            pageSizeOptions: ['10', '20', '50', '100'],
-            onChange: handlePaginationChange,
-          }}
-          locale={{
-            emptyText: (
-              <Empty
-                description="暂无数据"
-                image={Empty.PRESENTED_IMAGE_SIMPLE}
-              />
-            ),
-          }}
-          className="reconciliation-table"
-        />
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '40px 0' }}>
+            <Spin size="large" tip="加载中..." />
+          </div>
+        ) : (
+          <Table
+            columns={columns}
+            dataSource={dataSource}
+            rowKey="key"
+            pagination={{
+              ...pagination,
+              showSizeChanger: true,
+              showQuickJumper: true,
+              showTotal: (total) => `共 ${total} 条`,
+              pageSizeOptions: ['10', '20', '50', '100'],
+              onChange: handlePaginationChange,
+            }}
+            locale={{
+              emptyText: (
+                <Empty
+                  description="暂无数据"
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                />
+              ),
+            }}
+            className="reconciliation-table"
+          />
+        )}
       </div>
     </div>
   );

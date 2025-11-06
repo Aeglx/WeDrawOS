@@ -20,7 +20,7 @@ function register(app) {
   const adminRoutes = require('./routes/adminRoutes');
 const userRoutes = require('./routes/userRoutes');
 const sellerRoutes = require('./routes/sellerRoutes');
-const productRoutes = require('./routes/productRoutes');
+const legacyProductRoutes = require('./routes/productRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const statisticsRoutes = require('./routes/statisticsRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
@@ -33,12 +33,13 @@ const operationModule = require('./operations');
 const monitoringModule = require('./monitoring');
 const logModule = require('./logs');
 const wechatModule = require('./backend');
+const productModule = require('./product');
   
   // 注册各业务模块路由
   router.use('/admins', adminRoutes);
   router.use('/users', userRoutes);
   router.use('/sellers', sellerRoutes);
-  router.use('/products', productRoutes);
+  router.use('/products', legacyProductRoutes);
   router.use('/orders', orderRoutes);
   router.use('/statistics', statisticsRoutes);
   router.use('/categories', categoryRoutes);
@@ -52,6 +53,7 @@ const wechatModule = require('./backend');
   monitoringModule.initialize(app);
   logModule.initialize(app);
   wechatModule.initialize(app);
+  productModule.initialize(app); // 初始化产品模块
   
   // 保留旧版系统路由作为兼容（后续可移除）
   router.use('/system', legacySystemRoutes);

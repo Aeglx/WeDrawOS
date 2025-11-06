@@ -1,7 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Button, Input, Space, Select, Tag, Modal, message } from 'antd';
 import { SearchOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import { Spin } from 'antd';
 import './ProductList.css';
+
+// 导入产品API
+const api = {
+  // 获取产品列表
+  getProducts: async (params) => {
+    const response = await fetch(`/api/admin/product/list?${new URLSearchParams(params)}`);
+    const data = await response.json();
+    if (!data.success) {
+      throw new Error(data.message || '获取产品列表失败');
+    }
+    return data;
+  },
+  
+  // 审核产品
+  auditProduct: async (productId, result, remark) => {
+    const response = await fetch(`/api/admin/product/audit/${productId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ result, remark })
+    });
+    const data = await response.json();
+    if (!data.success) {
+      throw new Error(data.message || '审核产品失败');
+    }
+    return data;
+  },
+  
+  // 获取产品详情
+  getProductDetail: async (productId) => {
+    const response = await fetch(`/api/admin/product/detail/${productId}`);
+    const data = await response.json();
+    if (!data.success) {
+      throw new Error(data.message || '获取产品详情失败');
+    }
+    return data;
+  }
+};
 
 const { Option } = Select;
 
@@ -17,61 +57,46 @@ const ProductAudit = () => {
   const [currentProduct, setCurrentProduct] = useState(null);
   const [auditResult, setAuditResult] = useState('');
   const [auditRemark, setAuditRemark] = useState('');
+  const [products, setProducts] = useState([]);
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [loading, setLoading] = useState(false);
 
-  // 模拟待审核商品数据
-  const [products] = useState([
-    {
-      id: '1',
-      productId: '1067624538407650560',
-      name: '测试模板',
-      price: '100.00',
-      sales: 0,
-      stock: 4,
-      saleMode: '套餐',
-      productType: '实物商品',
-      status: '待审核',
-      auditStatus: '待审核',
-      softCopyright: '空编辑',
-      image: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0iI2UxZTFmMiI+CiAgPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMTgiIGZpbGw9Im5vbmUiLz4KICA8dGV4dCB4PSIyMCIgeT0iMjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5p2O5o+QPC90ZXh0Pgo8L3N2Zz4='
-    },
-    {
-      id: '2',
-      productId: '1187242602596427789',
-      name: '11',
-      price: '22.00',
-      sales: 0,
-      stock: 5,
-      saleMode: '零售',
-      productType: '实物商品',
-      status: '待审核',
-      auditStatus: '待审核',
-      softCopyright: '空编辑',
-      image: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0iI2UxZTFmMiI+CiAgPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMTgiIGZpbGw9Im5vbmUiLz4KICA8dGV4dCB4PSIyMCIgeT0iMjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5p2O5o+QPC90ZXh0Pgo8L3N2Zz4='
-    },
-    {
-      id: '3',
-      productId: '1186712581066297345',
-      name: '4模板',
-      price: '100.00',
-      sales: 0,
-      stock: 500,
-      saleMode: '套餐',
-      productType: '实物商品',
-      status: '审核失败',
-      auditStatus: '未通过',
-      softCopyright: '空编辑',
-      image: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0iI2UxZTFmMiI+CiAgPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMTgiIGZpbGw9Im5vbmUiLz4KICA8dGV4dCB4PSIyMCIgeT0iMjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5p2O5o+QPC90ZXh0Pgo8L3N2Zz4='
+  // 获取产品列表
+  const fetchProducts = async (page = 1, refresh = false) => {
+    try {
+      setLoading(true);
+      const result = await api.getProducts({
+        name: searchName,
+        id: searchId,
+        auditStatus,
+        page,
+        pageSize
+      });
+      
+      // 确保正确处理API返回的数据结构
+      setProducts(result.data || []);
+      setTotalProducts(result.total || 0);
+      if (refresh) {
+        setCurrentPage(page);
+      }
+    } catch (error) {
+      console.error('获取产品列表失败:', error);
+      message.error(error.message || '获取产品列表失败');
+      setProducts([]);
+      setTotalProducts(0);
+    } finally {
+      setLoading(false);
     }
-  ]);
+  };
+
+  // 组件挂载时获取数据
+  useEffect(() => {
+    fetchProducts(currentPage);
+  }, []); // 仅在组件挂载时执行一次
 
   // 处理搜索
   const handleSearch = () => {
-    // 实际项目中这里应该调用API进行搜索
-    console.log('搜索条件:', {
-      name: searchName,
-      id: searchId,
-      auditStatus
-    });
+    fetchProducts(1, true);
   };
 
   // 处理重置
@@ -80,6 +105,12 @@ const ProductAudit = () => {
     setSearchId('');
     setAuditStatus('');
     setCurrentPage(1);
+    fetchProducts(1, true);
+  };
+
+  // 处理页码变化
+  const handlePageChange = (page) => {
+    fetchProducts(page, true);
   };
 
   // 处理审核操作
@@ -91,32 +122,48 @@ const ProductAudit = () => {
   };
 
   // 处理查看操作
-  const handleView = (record) => {
-    // 实际项目中这里应该跳转到商品详情页
-    console.log('查看商品:', record);
+  const handleView = async (record) => {
+    try {
+      setLoading(true);
+      const result = await api.getProductDetail(record.id);
+      console.log('商品详情:', result.data);
+      message.success('获取商品详情成功');
+    } catch (error) {
+      console.error('获取商品详情失败:', error);
+      message.error(error.message || '获取商品详情失败');
+    } finally {
+      setLoading(false);
+    }
   };
 
   // 处理审核提交
-  const handleAuditSubmit = () => {
+  const handleAuditSubmit = async () => {
     if (!auditResult) {
       message.error('请选择审核结果');
       return;
     }
     
-    // 实际项目中这里应该调用审核API
-    console.log('审核结果:', { productId: currentProduct.id, result: auditResult, remark: auditRemark });
-    
-    // 关闭弹窗并提示
-    setAuditModalVisible(false);
-    message.success(`商品${auditResult === 'pass' ? '审核通过' : '审核拒绝'}成功`);
+    try {
+      setLoading(true);
+      await api.auditProduct(currentProduct.id, auditResult, auditRemark);
+      
+      // 关闭弹窗并提示
+      setAuditModalVisible(false);
+      message.success(`商品${auditResult === 'pass' ? '审核通过' : '审核驳回'}成功`);
+      
+      // 重新获取产品列表
+      fetchProducts(currentPage);
+    } catch (error) {
+      console.error('审核商品失败:', error);
+      message.error(error.message || '审核商品失败');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // 根据审核状态筛选商品
-  const getFilteredProducts = () => {
-    if (!auditStatus) {
-      return products;
-    }
-    return products.filter(product => product.auditStatus === auditStatus);
+  // 计算总页数
+  const getTotalPages = () => {
+    return Math.ceil(totalProducts / pageSize);
   };
 
   // 渲染状态标签
@@ -283,29 +330,63 @@ const ProductAudit = () => {
 
       {/* 商品表格 */}
       <div className="product-table">
-        <Table
-          columns={columns}
-          dataSource={getFilteredProducts()}
-          rowKey="id"
-          pagination={false}
-          locale={{ emptyText: '暂无数据' }}
-          style={{ fontSize: '12px' }}
-          className="ant-table"
-        />
+        <Spin spinning={loading} tip="加载中...">
+          <Table
+            columns={columns}
+            dataSource={products}
+            rowKey="id"
+            pagination={false}
+            locale={{ emptyText: '暂无数据' }}
+            style={{ fontSize: '12px' }}
+            className="ant-table"
+          />
+        </Spin>
         
         {/* 分页组件 */}
         <div style={{ margin: '16px 0', textAlign: 'right', fontSize: '12px' }}>
-          <span style={{ marginRight: '16px', color: '#666666', fontSize: '12px' }}>共 {getFilteredProducts().length} 条</span>
-          <span style={{ marginRight: '8px', fontSize: '12px' }}>上一页</span>
-          <span style={{ marginRight: '8px', fontSize: '12px' }}>1</span>
-          <span style={{ marginRight: '8px', fontSize: '12px' }}>下一页</span>
-          <span style={{ marginRight: '8px', fontSize: '12px' }}>10条/页</span>
+          <span style={{ marginRight: '16px', color: '#666666', fontSize: '12px' }}>共 {totalProducts} 条</span>
+          <span 
+            style={{ 
+              marginRight: '8px', 
+              fontSize: '12px', 
+              cursor: currentPage > 1 ? 'pointer' : 'not-allowed',
+              color: currentPage > 1 ? '#1890ff' : '#ccc'
+            }}
+            onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+          >
+            上一页
+          </span>
+          <span style={{ marginRight: '8px', fontSize: '12px' }}>{currentPage}</span>
+          <span 
+            style={{ 
+              marginRight: '8px', 
+              fontSize: '12px', 
+              cursor: currentPage < getTotalPages() ? 'pointer' : 'not-allowed',
+              color: currentPage < getTotalPages() ? '#1890ff' : '#ccc'
+            }}
+            onClick={() => currentPage < getTotalPages() && handlePageChange(currentPage + 1)}
+          >
+            下一页
+          </span>
+          <span style={{ marginRight: '8px', fontSize: '12px' }}>{pageSize}条/页</span>
           <span style={{ marginRight: '8px', fontSize: '12px' }}>跳至</span>
           <Input 
             type="number" 
             min={1} 
-            value={1} 
-            onChange={() => {}} 
+            max={getTotalPages()}
+            value={currentPage} 
+            onChange={(e) => {
+              const page = parseInt(e.target.value);
+              if (page && page >= 1 && page <= getTotalPages()) {
+                handlePageChange(page);
+              }
+            }} 
+            onPressEnter={(e) => {
+              const page = parseInt(e.target.value);
+              if (page && page >= 1 && page <= getTotalPages()) {
+                handlePageChange(page);
+              }
+            }}
             style={{ width: 60, height: 28, display: 'inline-block', marginRight: '8px', fontSize: '12px' }}
           />
           <span style={{ fontSize: '12px' }}>页</span>

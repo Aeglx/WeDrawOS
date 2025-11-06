@@ -1,13 +1,72 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Table, Button, Input, Space, Tag, Modal, Select, message, Upload, Form, DatePicker, Row, Col } from 'antd';
+import { Table, Button, Input, Space, Tag, Modal, Select, message, Upload, Form, DatePicker, Row, Col, Spin } from 'antd';
 import { SearchOutlined, EditOutlined, DeleteOutlined, EyeOutlined, ExclamationCircleOutlined, PlusOutlined, UploadOutlined, DownloadOutlined, UserOutlined, PhoneOutlined, MailOutlined } from '@ant-design/icons';
 import * as XLSX from 'xlsx';
 import './UserList.css';
+
+// API调用对象
+const api = {
+  // 获取用户列表
+  getUsers: async (params) => {
+    const queryParams = new URLSearchParams();
+    Object.keys(params).forEach(key => {
+      if (params[key] !== undefined && params[key] !== null && params[key] !== '') {
+        queryParams.append(key, params[key]);
+      }
+    });
+    const response = await fetch(`/api/admin/user/list?${queryParams}`);
+    if (!response.ok) throw new Error('获取用户列表失败');
+    return response.json();
+  },
+  
+  // 获取用户详情
+  getUserDetail: async (userId) => {
+    const response = await fetch(`/api/admin/user/detail/${userId}`);
+    if (!response.ok) throw new Error('获取用户详情失败');
+    return response.json();
+  },
+  
+  // 添加用户
+  addUser: async (userData) => {
+    const response = await fetch('/api/admin/user/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(userData)
+    });
+    if (!response.ok) throw new Error('添加用户失败');
+    return response.json();
+  },
+  
+  // 更新用户状态
+  updateUserStatus: async (userId, status) => {
+    const response = await fetch(`/api/admin/user/status/${userId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ status })
+    });
+    if (!response.ok) throw new Error('更新用户状态失败');
+    return response.json();
+  },
+  
+  // 删除用户
+  deleteUser: async (userId) => {
+    const response = await fetch(`/api/admin/user/delete/${userId}`, {
+      method: 'DELETE'
+    });
+    if (!response.ok) throw new Error('删除用户失败');
+    return response.json();
+  }
+};
 
 const { Search } = Input;
 const { Option } = Select;
 
 const UserList = () => {
+  // 状态管理
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -29,83 +88,47 @@ const UserList = () => {
   const [form] = Form.useForm();
   const uploadButtonRef = useRef(null);
 
-  // 加载用户列表
-  const loadUsers = async () => {
+  // 加载用户数据
+  const loadUsers = async (params = {}) => {
     setLoading(true);
     try {
-      // 模拟用户数据
-      const mockUsers = [];
-      for (let i = 1; i <= 50; i++) {
-        mockUsers.push({
-          id: `U${String(i).padStart(10, '0')}`,
-          username: `用户${i}`,
-          avatar: `https://picsum.photos/40/40`,
-          email: `user${i}@example.com`,
-          phone: `1380013800${i}`,
-          openid: `o${String(i).padStart(20, '0')}`,
-          status: i % 10 === 0 ? 0 : 1,
-          role: i % 5 === 0 ? 'seller' : 'buyer',
-          createdAt: `2024-01-${String(i).padStart(2, '0')} 10:00:00`,
-          lastLogin: `2024-02-${String(i).padStart(2, '0')} 15:30:00`,
-          membership: i % 3 === 0 ? 'VIP' : i % 5 === 0 ? '高级会员' : '普通会员'
-        });
-      }
+      const requestParams = {
+        page: currentPage,
+        pageSize: pageSize,
+        ...searchConditions,
+        status: statusFilter === 'all' ? undefined : statusFilter === 'active' ? 1 : 0,
+        ...params
+      };
       
-      setUsers(mockUsers);
-      setTotal(mockUsers.length);
+      const response = await api.getUsers(requestParams);
+      
+      if (response.success) {
+        setUsers(response.data.users);
+        setTotal(response.data.total);
+        setFilteredUsers(response.data.users);
+      } else {
+        message.error(response.message || '获取用户列表失败');
+      }
     } catch (error) {
-      console.error('加载用户列表失败:', error);
-      message.error('加载用户列表失败');
+      console.error('获取用户列表失败:', error);
+      message.error(error.message || '获取用户列表失败');
     } finally {
       setLoading(false);
     }
   };
 
+  // 组件挂载时加载数据
   useEffect(() => {
     loadUsers();
   }, []);
 
-  // 搜索和筛选逻辑
-  useEffect(() => {
-    let result = [...users];
-    
-    // 高级搜索逻辑 - 根据各个字段分别搜索
-    if (searchConditions.id) {
-      result = result.filter(user => user.id.toLowerCase().includes(searchConditions.id.toLowerCase()));
-    }
-    
-    if (searchConditions.username) {
-      result = result.filter(user => user.username.toLowerCase().includes(searchConditions.username.toLowerCase()));
-    }
-    
-    if (searchConditions.email) {
-      result = result.filter(user => user.email.toLowerCase().includes(searchConditions.email.toLowerCase()));
-    }
-    
-    if (searchConditions.phone) {
-      result = result.filter(user => user.phone.includes(searchConditions.phone));
-    }
-    
-    if (searchConditions.openid) {
-      result = result.filter(user => user.openid.includes(searchConditions.openid));
-    }
-    
-    // 状态筛选逻辑
-    if (statusFilter !== 'all') {
-      result = result.filter(user => 
-        statusFilter === 'active' ? user.status === 1 : user.status === 0
-      );
-    }
-    
-    setFilteredUsers(result);
-    setTotal(result.length);
-    setCurrentPage(1); // 重置到第一页
-  }, [users, searchConditions, statusFilter]);
-
   // 分页处理
   const handlePageChange = (page, size) => {
     setCurrentPage(page);
-    setPageSize(size);
+    if (size !== pageSize) {
+      setPageSize(size);
+    }
+    loadUsers();
   };
 
   // 搜索功能
@@ -116,6 +139,8 @@ const UserList = () => {
   // 筛选功能
   const handleFilter = (value) => {
     setStatusFilter(value);
+    setCurrentPage(1); // 重置到第一页
+    loadUsers();
   };
 
   // 更新搜索条件
@@ -128,8 +153,8 @@ const UserList = () => {
 
   // 高级搜索
   const handleAdvancedSearch = () => {
-    // 搜索逻辑现在直接在useEffect中根据searchConditions执行
-    // 这里可以添加搜索时的视觉反馈
+    setCurrentPage(1); // 重置到第一页
+    loadUsers();
     message.info('正在搜索...');
   };
 
@@ -144,6 +169,8 @@ const UserList = () => {
     });
     setSearchText('');
     setStatusFilter('all');
+    setCurrentPage(1);
+    loadUsers();
   };
 
   // 添加会员
@@ -158,46 +185,33 @@ const UserList = () => {
     setAddModalVisible(false);
   };
 
-  // 保存新会员
-  const handleSaveMember = () => {
-    form.validateFields().then(values => {
+  // 保存会员信息
+  const handleSaveMember = async () => {
+    try {
+      const values = await form.validateFields();
+      
       setLoading(true);
-      try {
-        // 创建新会员数据
-        const newMember = {
-          id: `U${String(users.length + 1).padStart(10, '0')}`,
-          username: values.username,
-          avatar: 'https://picsum.photos/40/40',
-          email: values.email,
-          phone: values.phone,
-          openid: values.openid || `o${String(users.length + 1).padStart(20, '0')}`,
-          status: values.status === 'active' ? 1 : 0,
-          role: values.role,
-          membership: values.membership,
-          createdAt: new Date().toLocaleString('zh-CN'),
-          lastLogin: new Date().toLocaleString('zh-CN')
-        };
-        
-        // 添加到用户列表
-        const updatedUsers = [newMember, ...users];
-        setUsers(updatedUsers);
-        
-        message.success('会员添加成功');
+      
+      const response = await api.addUser(values);
+      
+      if (response.success) {
         setAddModalVisible(false);
-        form.resetFields();
-      } catch (error) {
-        console.error('添加会员失败:', error);
-        message.error('添加会员失败');
-      } finally {
-        setLoading(false);
+        message.success('添加会员成功');
+        loadUsers(); // 重新加载用户列表
+      } else {
+        message.error(response.message || '添加会员失败');
       }
-    }).catch(info => {
-      message.warning('请完善会员信息');
-    });
+    } catch (error) {
+      console.error('添加会员失败:', error);
+      message.error(error.message || '添加会员失败');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // 生成会员ID
+  // 移除不再需要的函数
   const generateMemberId = () => {
+    // 不再使用，因为ID由后端生成
     return `U${String(users.length + 1).padStart(10, '0')}`;
   };
 
@@ -217,20 +231,43 @@ const UserList = () => {
       content: '确定要删除这个用户吗？此操作不可撤销。',
       onOk: async () => {
         try {
-          setUsers(users.filter(user => user.id !== id));
-          message.success('删除成功');
+          setLoading(true);
+          const response = await api.deleteUser(id);
+          
+          if (response.success) {
+            message.success('删除成功');
+            loadUsers(); // 重新加载用户列表
+          } else {
+            message.error(response.message || '删除失败');
+          }
         } catch (error) {
           console.error('删除用户失败:', error);
-          message.error('删除失败');
+          message.error(error.message || '删除失败');
+        } finally {
+          setLoading(false);
         }
       }
     });
   };
 
   // 查看用户详情
-  const handleView = (record) => {
-    setSelectedUser(record);
-    setDetailModalVisible(true);
+  const handleView = async (record) => {
+    try {
+      setLoading(true);
+      const response = await api.getUserDetail(record.id);
+      
+      if (response.success) {
+        setSelectedUser(response.data);
+        setDetailModalVisible(true);
+      } else {
+        message.error(response.message || '获取用户详情失败');
+      }
+    } catch (error) {
+      console.error('获取用户详情失败:', error);
+      message.error(error.message || '获取用户详情失败');
+    } finally {
+      setLoading(false);
+    }
   };
 
   // 切换用户状态
@@ -239,11 +276,24 @@ const UserList = () => {
       title: '确认操作',
       icon: <ExclamationCircleOutlined />,
       content: currentStatus === 1 ? '确定要禁用这个用户吗？' : '确定要启用这个用户吗？',
-      onOk: () => {
-        setUsers(users.map(user => 
-          user.id === id ? { ...user, status: currentStatus === 1 ? 0 : 1 } : user
-        ));
-        message.success(currentStatus === 1 ? '禁用成功' : '启用成功');
+      onOk: async () => {
+        try {
+          setLoading(true);
+          const newStatus = currentStatus === 1 ? 0 : 1;
+          const response = await api.updateUserStatus(id, newStatus);
+          
+          if (response.success) {
+            message.success(currentStatus === 1 ? '禁用成功' : '启用成功');
+            loadUsers(); // 重新加载用户列表
+          } else {
+            message.error(response.message || '更新状态失败');
+          }
+        } catch (error) {
+          console.error('更新用户状态失败:', error);
+          message.error(error.message || '更新状态失败');
+        } finally {
+          setLoading(false);
+        }
       }
     });
   };
@@ -432,12 +482,7 @@ const UserList = () => {
     return Upload.LIST_IGNORE;
   };
 
-  // 分页数据处理
-  const getPagedData = () => {
-    const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    return filteredUsers.slice(startIndex, endIndex);
-  };
+  // 分页由后端处理，移除前端分页逻辑
 
   // 表格列配置
   const columns = [
@@ -732,7 +777,7 @@ const UserList = () => {
       <div className="user-table-container">
         <Table
           columns={columns}
-          dataSource={getPagedData()}
+          dataSource={users}
           rowKey="id"
           loading={loading}
           pagination={{
@@ -742,7 +787,8 @@ const UserList = () => {
             pageSizeOptions: ['10', '20', '50', '100'],
             showSizeChanger: true,
             showTotal: (total) => `共 ${total} 条记录`,
-            onChange: handlePageChange
+            onChange: handlePageChange,
+            onShowSizeChange: handlePageSizeChange
           }}
           className="user-table"
           scroll={{ x: 'max-content' }}

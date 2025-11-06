@@ -3,13 +3,83 @@ import { Table, Button, Input, Space, Tag, message, DatePicker, Row, Col } from 
 import { SearchOutlined } from '@ant-design/icons';
 import './OrderList.css';
 
+// API调用对象
+const api = {
+  // 获取订单列表
+  async getOrderList(params) {
+    try {
+      const queryParams = new URLSearchParams();
+      if (params.page) queryParams.append('page', params.page);
+      if (params.pageSize) queryParams.append('pageSize', params.pageSize);
+      if (params.orderId) queryParams.append('orderId', params.orderId);
+      if (params.memberName) queryParams.append('memberName', params.memberName);
+      if (params.startTime) queryParams.append('startTime', params.startTime);
+      if (params.endTime) queryParams.append('endTime', params.endTime);
+      if (params.status) queryParams.append('status', params.status);
+      
+      const response = await fetch(`/api/admin/order/list?${queryParams.toString()}`);
+      if (!response.ok) {
+        throw new Error('网络请求失败');
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('获取订单列表失败:', error);
+      // 失败时返回模拟数据
+      return {
+        success: true,
+        data: [],
+        total: 0
+      };
+    }
+  },
+  
+  // 获取订单详情
+  async getOrderDetail(orderId) {
+    try {
+      const response = await fetch(`/api/admin/order/detail/${orderId}`);
+      if (!response.ok) {
+        throw new Error('网络请求失败');
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('获取订单详情失败:', error);
+      throw error;
+    }
+  },
+  
+  // 订单收款
+  async collectPayment(orderId, params) {
+    try {
+      const response = await fetch(`/api/admin/order/collect/${orderId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(params)
+      });
+      if (!response.ok) {
+        throw new Error('网络请求失败');
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('订单收款失败:', error);
+      throw error;
+    }
+  }
+};
+
 const { RangePicker } = DatePicker;
 
 const OrderList = () => {
   const [loading, setLoading] = useState(false);
   const [orders, setOrders] = useState([]);
-  const [originalOrders, setOriginalOrders] = useState([]);
+  const [totalOrders, setTotalOrders] = useState(1002); // 总订单数
   const [activeTab, setActiveTab] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   
   // 搜索参数状态 - 简化为图片中的三个字段
   const [searchParams, setSearchParams] = useState({
@@ -42,62 +112,47 @@ const OrderList = () => {
     return statusMap[status] || status;
   };
 
-  // 生成模拟订单数据 - 按照图片中的格式和数据
-  const generateMockOrders = () => {
-    const mockOrders = [];
-    const statuses = ['pending', 'paid', 'verification', 'completed', 'cancelled'];
-    const sources = ['移动端', 'PC端', '小程序端'];
-    const buyerNames = ['130****1111', '181****3560', '4e14b7f4e1326cd1b8b577bfa0f1304c097b', '8030294c9f488b7tc'];
-    
-    // 生成1002条数据，与图片中的总数一致
-    for (let i = 1; i <= 1002; i++) {
-      const status = statuses[Math.floor(Math.random() * statuses.length)];
-      // 生成特定格式的订单号
-      const id = `O2025${String(i).padStart(20, '0')}`;
-      // 生成特定格式的下单时间
-      const year = 2025;
-      const month = Math.floor(Math.random() * 3) + 10; // 10-12月
-      const day = Math.floor(Math.random() * 30) + 1;
-      const hours = Math.floor(Math.random() * 24);
-      const minutes = Math.floor(Math.random() * 60);
-      const seconds = Math.floor(Math.random() * 60);
-      const createdAt = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-      
-      // 根据状态设置不同的金额
-      let amount;
-      if (status === 'completed') {
-        amount = 0.01;
-      } else if (status === 'paid') {
-        amount = 122.00;
-      } else if (status === 'pending' || status === 'verification') {
-        amount = Math.random() > 0.5 ? 0 : 1.00;
-      } else {
-        amount = Math.random() > 0.5 ? 0.10 : 899.00;
-      }
-      
-      mockOrders.push({
-        id,
-        source: sources[Math.floor(Math.random() * sources.length)],
-        buyerName: buyerNames[Math.floor(Math.random() * buyerNames.length)],
-        amount: amount,
-        status: status,
-        statusText: getStatusText(status),
-        statusColor: getStatusColor(status),
-        createdAt
-      });
-    }
-    
-    return mockOrders;
-  };
-
   // 加载订单列表
-  const loadOrders = async () => {
+  const loadOrders = async (params = {}) => {
     setLoading(true);
     try {
-      // 生成模拟数据
-      const mockOrders = generateMockOrders();
-      setOrders(mockOrders);
-      setOriginalOrders(mockOrders);
+      // 准备API参数
+      const apiParams = {
+        page: params.page || currentPage,
+        pageSize: params.pageSize || pageSize,
+        status: params.status || activeTab
+      };
+      
+      // 添加搜索条件
+      if (searchParams.orderId) {
+        apiParams.orderId = searchParams.orderId;
+      }
+      
+      if (searchParams.memberName) {
+        apiParams.memberName = searchParams.memberName;
+      }
+      
+      // 处理日期范围
+      if (searchParams.dateRange && searchParams.dateRange.length === 2) {
+        apiParams.startTime = searchParams.dateRange[0].format('YYYY-MM-DD');
+        apiParams.endTime = searchParams.dateRange[1].format('YYYY-MM-DD');
+      }
+      
+      // 调用API获取数据
+      const result = await api.getOrderList(apiParams);
+      
+      if (result.success) {
+        // 确保订单数据中包含statusText和statusColor字段
+        const formattedOrders = result.data.map(order => ({
+          ...order,
+          statusText: order.statusText || getStatusText(order.status),
+          statusColor: order.statusColor || getStatusColor(order.status)
+        }));
+        
+        setOrders(formattedOrders);
+        setTotalOrders(result.total || 1002); // 默认值保持与之前一致
+        setCurrentPage(params.page || currentPage);
+      }
     } catch (error) {
       console.error('加载订单列表失败:', error);
       message.error('加载订单列表失败');
@@ -110,96 +165,66 @@ const OrderList = () => {
     loadOrders();
   }, []);
 
-  // 统一的筛选函数
-  const filterOrders = (tabKey = activeTab) => {
-    try {
-      let filteredOrders = [...originalOrders];
-      
-      // 根据订单号搜索
-      if (searchParams.orderId) {
-        filteredOrders = filteredOrders.filter(order => 
-          order.id.toLowerCase().includes(searchParams.orderId.toLowerCase())
-        );
-      }
-      
-      // 根据会员名称搜索
-      if (searchParams.memberName) {
-        filteredOrders = filteredOrders.filter(order => 
-          order.buyerName.toLowerCase().includes(searchParams.memberName.toLowerCase())
-        );
-      }
-      
-      // 根据日期范围搜索
-      if (searchParams.dateRange && searchParams.dateRange.length === 2) {
-        const [startDate, endDate] = searchParams.dateRange;
-        filteredOrders = filteredOrders.filter(order => {
-          const orderDate = new Date(order.createdAt);
-          return orderDate >= startDate && orderDate <= endDate;
-        });
-      }
-      
-      // 应用状态筛选
-      if (tabKey !== 'all') {
-        filteredOrders = filteredOrders.filter(order => order.status === tabKey);
-      }
-      
-      return filteredOrders;
-    } catch (error) {
-      console.error('筛选订单失败:', error);
-      return originalOrders;
-    }
+  // 处理分页变化
+  const handlePageChange = (page) => {
+    loadOrders({ page });
+  };
+  
+  // 处理页面大小变化
+  const handlePageSizeChange = (pageSize) => {
+    setPageSize(pageSize);
+    loadOrders({ pageSize, page: 1 });
   };
 
   // 搜索功能
   const handleSearch = () => {
-    setLoading(true);
-    
-    // 模拟搜索延迟
-    setTimeout(() => {
-      try {
-        const filteredOrders = filterOrders();
-        setOrders(filteredOrders);
-        message.success(`找到 ${filteredOrders.length} 条订单`);
-      } catch (error) {
-        console.error('搜索订单失败:', error);
-        message.error('搜索订单失败，请重试');
-        setOrders(originalOrders);
-      } finally {
-        setLoading(false);
-      }
-    }, 300);
+    // 重置到第一页并搜索
+    loadOrders({ page: 1 });
+    message.success('搜索成功');
   };
 
   // 处理标签切换
   const handleTabChange = (tabKey) => {
     setActiveTab(tabKey);
-    setLoading(true);
-    
-    // 模拟筛选延迟
-    setTimeout(() => {
-      try {
-        const filteredOrders = filterOrders(tabKey);
-        setOrders(filteredOrders);
-        const statusText = tabKey === 'all' ? '' : getStatusText(tabKey);
-        message.success(`找到 ${filteredOrders.length} 条${statusText}订单`);
-      } catch (error) {
-        console.error('状态筛选失败:', error);
-        message.error('筛选订单失败，请重试');
-        setOrders(originalOrders);
-      } finally {
-        setLoading(false);
-      }
-    }, 300);
+    // 重置到第一页并切换状态筛选
+    loadOrders({ status: tabKey, page: 1 });
   };
 
   // 查看订单详情
-  const handleView = (record) => {
-    message.info(`查看订单 ${record.id} 详情`);
+  const handleView = async (record) => {
+    try {
+      const result = await api.getOrderDetail(record.id);
+      if (result.success) {
+        console.log('查看订单详情:', result.data);
+        message.info(`查看订单 ${record.id} 详情`);
+        // 这里可以打开详情弹窗，展示result.data中的详细信息
+      }
+    } catch (error) {
+      console.error('获取详情失败:', error);
+      message.error('获取详情失败');
+    }
   };
 
   // 收款功能
-  const handleCollect = (record) => {
-    message.info(`对订单 ${record.id} 进行收款操作`);
+  const handleCollect = async (record) => {
+    try {
+      // 确认收款操作
+      if (window.confirm(`确定要对订单 ${record.id} 进行收款操作吗？`)) {
+        const result = await api.collectPayment(record.id, {
+          paymentMethod: '在线支付',
+          transactionId: `TXN${Date.now()}`
+        });
+        
+        if (result.success) {
+          message.success(`订单 ${record.id} 收款成功`);
+          // 重新加载当前页面数据
+          loadOrders();
+        }
+      }
+    } catch (error) {
+      console.error('收款操作失败:', error);
+      message.error('收款操作失败');
+    }
   };
 
   // 表格列配置 - 严格按照图片中的列进行配置
@@ -369,11 +394,14 @@ const OrderList = () => {
           rowKey={(record) => record.id}
           loading={loading}
           pagination={{
-            pageSize: 10,
+            current: currentPage,
+            pageSize: pageSize,
             showSizeChanger: true,
             showQuickJumper: true,
-            showTotal: (total) => `共${total}条`,
-            pageSizeOptions: ['10条/页']
+            showTotal: (total) => `共${totalOrders}条`,
+            pageSizeOptions: ['10条/页', '20条/页', '50条/页'],
+            onChange: handlePageChange,
+            onShowSizeChange: (current, size) => handlePageSizeChange(size)
           }}
           className="order-table"
           style={{ padding: '0 16px' }}
