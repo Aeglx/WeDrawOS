@@ -1,177 +1,201 @@
-/* AddArticle.css */
+/* AddArticle.css - 严格按照图片样式实现 */
 
+/* 容器样式 */
 .add-article-container {
-  padding: 0;
+  width: 100%;
+  padding: 20px;
   background-color: #ffffff;
-  border-radius: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-}
-
-.add-article-header {
-  margin-bottom: 16px;
-  padding: 12px 16px;
-  background-color: #f5f5f5;
-  border-bottom: 1px solid #e8e8e8;
-  font-size: 16px;
-  font-weight: 500;
-  color: #333;
+  min-height: 100vh;
 }
 
 /* 表单样式 */
-.add-article-form .ant-form-item {
-  margin-bottom: 16px;
+.add-article-form {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.add-article-form .ant-form-item-label {
-  padding-bottom: 8px;
+/* 标题输入框样式 */
+.title-input {
+  font-size: 18px !important;
+  border: none !important;
+  border-bottom: 1px solid #e8e8e8 !important;
+  border-radius: 0 !important;
+  padding: 10px 0 !important;
+  margin-bottom: 20px;
+  box-shadow: none !important;
 }
 
-.add-article-form .ant-form-item-label > label {
-  font-weight: 500;
-  color: #333;
+.title-input:focus {
+  border-color: #1890ff !important;
+  box-shadow: none !important;
 }
 
-/* 输入框样式 */
-.add-article-form .ant-input {
-  border-radius: 4px;
-  transition: all 0.3s;
+/* 作者输入框样式 */
+.author-input {
+  border: none !important;
+  border-bottom: 1px solid #e8e8e8 !important;
+  border-radius: 0 !important;
+  padding: 10px 0 !important;
+  margin-bottom: 20px;
+  box-shadow: none !important;
 }
 
-.add-article-form .ant-input:focus {
-  border-color: #40a9ff;
-  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
-}
-
-/* 选择器样式 */
-.add-article-form .ant-select {
-  border-radius: 4px;
-}
-
-.add-article-form .ant-select-focused .ant-select-selector {
-  border-color: #40a9ff;
-  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+.author-input:focus {
+  border-color: #1890ff !important;
+  box-shadow: none !important;
 }
 
 /* 富文本编辑器样式 */
 .rich-text-editor {
-  border: 1px solid #d9d9d9;
+  width: 100%;
+  border: 1px solid #e8e8e8;
   border-radius: 4px;
-  transition: border-color 0.3s;
-}
-
-.rich-text-editor:focus-within {
-  border-color: #40a9ff;
-  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+  overflow: hidden;
 }
 
 .rich-text-toolbar {
   padding: 8px 12px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid #e8e8e8;
   background-color: #fafafa;
-}
-
-.rich-text-toolbar-top {
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.rich-text-toolbar-main {
   display: flex;
-  gap: 2px;
+  align-items: center;
   flex-wrap: wrap;
-}
-
-.rich-text-toolbar-separator {
-  margin: 0 4px;
-  color: #d9d9d9;
-  font-size: 12px;
+  gap: 4px;
 }
 
 .rich-text-button {
-  padding: 2px 6px;
+  width: 28px;
+  height: 28px;
   border: 1px solid #d9d9d9;
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: white;
   cursor: pointer;
-  font-size: 12px;
-  min-width: 24px;
+  font-size: 14px;
   text-align: center;
-  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  transition: all 0.2s ease;
 }
 
 .rich-text-button:hover {
   background-color: #f0f0f0;
-  border-color: #40a9ff;
+  border-color: #1890ff;
 }
 
 .rich-text-button:focus {
   outline: none;
-  border-color: #40a9ff;
-  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
-}
-
-.rich-text-button.active {
-  background-color: #e6f7ff;
-  border-color: #40a9ff;
-  color: #1890ff;
+  border-color: #1890ff;
 }
 
 .rich-text-editor-content {
-  min-height: 300px;
-  padding: 12px;
+  min-height: 400px;
+  padding: 16px;
   outline: none;
   line-height: 1.6;
-  font-size: 14px;
+  font-size: 16px;
   color: #333;
+  background-color: #ffffff;
 }
 
 .rich-text-editor-content:empty:before {
   content: attr(placeholder);
-  color: #999;
+  color: #bfbfbf;
+  font-style: italic;
 }
 
-/* 开关样式 */
-.add-article-form .ant-switch-checked {
-  background-color: #52c41a;
-}
-
-/* 按钮样式 */
+/* 操作按钮样式 */
 .add-article-actions {
-  margin-top: 20px;
+  margin-top: 30px;
   text-align: right;
 }
 
-.add-article-actions .ant-btn {
-  min-width: 80px;
-  padding: 6px 16px;
+.cancel-button,
+.submit-button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid #d9d9d9;
+  background-color: white;
+  margin-left: 10px;
+  transition: all 0.2s ease;
 }
 
-.add-article-actions .ant-btn-primary {
-  background-color: #ff4d4f;
-  border-color: #ff4d4f;
+.cancel-button:hover {
+  border-color: #1890ff;
+  color: #1890ff;
 }
 
-.add-article-actions .ant-btn-primary:hover,
-.add-article-actions .ant-btn-primary:focus {
-  background-color: #ff7875;
-  border-color: #ff7875;
+.submit-button {
+  background-color: #1890ff;
+  color: white;
+  border-color: #1890ff;
+}
+
+.submit-button:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
+}
+
+.submit-button:disabled {
+  background-color: #f5f5f5;
+  color: #bfbfbf;
+  border-color: #d9d9d9;
+  cursor: not-allowed;
+}
+
+/* 移除Ant Design默认样式的干扰 */
+.add-article-form .ant-form-item {
+  margin-bottom: 0;
+}
+
+.add-article-form .ant-form-item-control-input {
+  min-height: 0;
+}
+
+.add-article-form .ant-form-item-control {
+  line-height: normal;
+}
+
+/* 编辑器底部文章标签样式 */
+.article-tag {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #f0f0f0;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #666;
 }
 
 /* 响应式设计 */
 @media (max-width: 768px) {
   .add-article-container {
-    padding: 12px;
+    padding: 10px;
   }
   
-  .add-article-form .ant-input,
-  .add-article-form .ant-select {
-    width: 100% !important;
+  .add-article-form {
+    max-width: 100%;
+  }
+  
+  .rich-text-editor-content {
+    min-height: 300px;
+    padding: 12px;
   }
   
   .add-article-actions {
     text-align: center;
   }
   
-  .add-article-actions .ant-btn {
-    margin-bottom: 8px;
+  .cancel-button,
+  .submit-button {
+    width: auto;
+    margin: 5px;
   }
 }

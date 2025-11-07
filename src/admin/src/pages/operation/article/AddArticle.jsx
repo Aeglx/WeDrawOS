@@ -1,18 +1,19 @@
-import React, { useState, useRef } from 'react';
-import { Input, Button, Form, Select, Switch, message } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
-import dayjs from 'dayjs';
+import React, { useState, useRef, useEffect } from 'react';
+import { Form, Input, Select, DatePicker, Switch, message } from 'antd';
 import './AddArticle.css';
 
-// 模拟分类数据
-const mockCategories = [
-  { label: '行业动态', value: '行业动态' },
-  { label: '平台公告', value: '平台公告' },
-  { label: '使用指南', value: '使用指南' },
-  { label: '常见问题', value: '常见问题' }
+const { TextArea } = Input;
+const { Option } = Select;
+
+// 分类数据
+const categoryData = [
+  { value: '1', label: '行业动态' },
+  { value: '2', label: '平台公告' },
+  { value: '3', label: '使用指南' },
+  { value: '4', label: '常见问题' },
 ];
 
-// 富文本编辑器组件，根据截图实现
+// 富文本编辑器组件，严格按照图片样式实现
 const RichTextEditor = ({ value, onChange, placeholder = '请输入内容' }) => {
   const editorRef = useRef(null);
   
@@ -33,104 +34,64 @@ const RichTextEditor = ({ value, onChange, placeholder = '请输入内容' }) =>
     }
   };
   
-  // 处理图片上传（模拟）
-  const handleImageUpload = () => {
-    message.info('图片上传功能待实现');
-  };
-  
   return (
     <div className="rich-text-editor">
-      {/* 上传图片按钮 */}
-      <div className="rich-text-toolbar rich-text-toolbar-top">
-        <Button 
-          type="link" 
-          icon={<UploadOutlined />} 
-          onClick={handleImageUpload}
-          style={{ color: '#1890ff' }}
-        >
-          上传图片
-        </Button>
-      </div>
-      
       {/* 工具栏 */}
       <div className="rich-text-toolbar">
-        <div className="rich-text-toolbar-main">
-          {/* 文本格式化 */}
-          <button 
-            className="rich-text-button"
-            onClick={() => handleFormat('bold')} 
-            title="加粗"
-          >
-            <strong>B</strong>
-          </button>
-          <button 
-            className="rich-text-button"
-            onClick={() => handleFormat('italic')} 
-            title="斜体"
-          >
-            <em>I</em>
-          </button>
-          <button 
-            className="rich-text-button"
-            onClick={() => handleFormat('underline')} 
-            title="下划线"
-          >
-            <u>U</u>
-          </button>
-          
-          <span className="rich-text-toolbar-separator">|</span>
-          
-          {/* 对齐 */}
-          <button 
-            className="rich-text-button"
-            onClick={() => handleFormat('justifyLeft')} 
-            title="左对齐"
-          >
-            ≡
-          </button>
-          <button 
-            className="rich-text-button"
-            onClick={() => handleFormat('justifyCenter')} 
-            title="居中对齐"
-          >
-            ≡|
-          </button>
-          <button 
-            className="rich-text-button"
-            onClick={() => handleFormat('justifyRight')} 
-            title="右对齐"
-          >
-            |≡
-          </button>
-          
-          <span className="rich-text-toolbar-separator">|</span>
-          
-          {/* 列表 */}
-          <button 
-            className="rich-text-button"
-            onClick={() => handleFormat('insertUnorderedList')} 
-            title="无序列表"
-          >
-            •
-          </button>
-          <button 
-            className="rich-text-button"
-            onClick={() => handleFormat('insertOrderedList')} 
-            title="有序列表"
-          >
-            1.
-          </button>
-          
-          {/* 更多按钮按照截图要求 */}
-          <span className="rich-text-toolbar-separator">|</span>
-          <button className="rich-text-button" title="减少缩进" onClick={() => handleFormat('outdent')}>-</button>
-          <button className="rich-text-button" title="增加缩进" onClick={() => handleFormat('indent')}>+</button>
-          <span className="rich-text-toolbar-separator">|</span>
-          <button className="rich-text-button" title="撤销" onClick={() => handleFormat('undo')}>↶</button>
-          <button className="rich-text-button" title="重做" onClick={() => handleFormat('redo')}>↷</button>
-          <span className="rich-text-toolbar-separator">|</span>
-          <button className="rich-text-button" title="清除格式" onClick={() => handleFormat('removeFormat')}>⨯</button>
-        </div>
+        {/* 文本格式化 */}
+        <button 
+          className="rich-text-button"
+          onClick={() => handleFormat('bold')} 
+          title="加粗"
+        >
+          <strong>B</strong>
+        </button>
+        <button 
+          className="rich-text-button"
+          onClick={() => handleFormat('italic')} 
+          title="斜体"
+        >
+          <em>I</em>
+        </button>
+        <button 
+          className="rich-text-button"
+          onClick={() => handleFormat('underline')} 
+          title="下划线"
+        >
+          <u>U</u>
+        </button>
+        <span className="toolbar-separator">|</span>
+        
+        {/* 列表 */}
+        <button 
+          className="rich-text-button"
+          onClick={() => handleFormat('insertUnorderedList')} 
+          title="无序列表"
+        >
+          •列表
+        </button>
+        <button 
+          className="rich-text-button"
+          onClick={() => handleFormat('insertOrderedList')} 
+          title="有序列表"
+        >
+          1.列表
+        </button>
+        <span className="toolbar-separator">|</span>
+        
+        {/* 撤销/重做 */}
+        <button className="rich-text-button" title="撤销" onClick={() => handleFormat('undo')}>←</button>
+        <button className="rich-text-button" title="重做" onClick={() => handleFormat('redo')}>→</button>
+        <span className="toolbar-separator">|</span>
+        
+        {/* 标题 */}
+        <button className="rich-text-button" title="H1" onClick={() => handleFormat('formatBlock', 'H1')}>H1</button>
+        <button className="rich-text-button" title="H2" onClick={() => handleFormat('formatBlock', 'H2')}>H2</button>
+        <button className="rich-text-button" title="段落" onClick={() => handleFormat('formatBlock', 'P')}>P</button>
+        <span className="toolbar-separator">|</span>
+        
+        {/* 清除格式 */}
+        <button className="rich-text-button" title="清除格式" onClick={() => handleFormat('removeFormat')}>清除</button>
       </div>
       
       {/* 编辑区域 */}
@@ -147,145 +108,176 @@ const RichTextEditor = ({ value, onChange, placeholder = '请输入内容' }) =>
   );
 };
 
-const AddArticle = () => {
+const AddArticle = ({ visible = true, onClose, articleData = null }) => {
   const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
   const [editorContent, setEditorContent] = useState('');
-  const [showStatus, setShowStatus] = useState(false);
   
-  // 处理富文本内容变化
-  const handleEditorChange = (content) => {
-    setEditorContent(content);
-  };
+  // 判断是编辑模式还是新增模式
+  const isEditMode = !!articleData;
   
-  // 处理开关变化
-  const handleShowChange = (checked) => {
-    setShowStatus(checked);
+  // 初始化表单数据
+  useEffect(() => {
+    if (isEditMode && articleData) {
+      form.setFieldsValue({
+        category: articleData.category || '',
+        title: articleData.title || '',
+        author: articleData.author || '',
+        publishDate: articleData.publishDate ? new Date(articleData.publishDate) : null,
+        isTop: articleData.isTop || false,
+        sortOrder: articleData.sortOrder || ''
+      });
+      setEditorContent(articleData.content || '');
+    }
+  }, [isEditMode, articleData, form]);
+
+  const handleEditorChange = (value) => {
+    setEditorContent(value);
   };
   
   // 处理表单提交
-  const handleSubmit = () => {
-    form.validateFields().then(values => {
-      const articleData = {
+  const handleSubmit = async () => {
+    try {
+      setLoading(true);
+      const values = await form.validateFields();
+      // 模拟API请求
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const submitData = {
         ...values,
         content: editorContent,
-        show: showStatus,
-        createTime: dayjs().format('YYYY-MM-DD HH:mm:ss')
+        publishDate: values.publishDate ? values.publishDate.format('YYYY-MM-DD') : ''
       };
       
-      console.log('提交的文章数据:', articleData);
-      message.success('文章添加成功');
-      
-      // 重置表单
-      form.resetFields();
-      setEditorContent('');
-      setShowStatus(false);
-    }).catch(error => {
-      console.error('表单验证失败:', error);
-    });
+      console.log('提交的文章数据:', submitData);
+      message.success(isEditMode ? '文章更新成功' : '文章保存成功');
+      if (onClose) onClose(submitData);
+    } catch (error) {
+      message.error('提交失败，请检查表单');
+      console.error('提交错误:', error);
+    } finally {
+      setLoading(false);
+    }
   };
   
   // 处理取消
   const handleCancel = () => {
-    form.resetFields();
-    setEditorContent('');
-    setShowStatus(false);
-    message.info('已取消操作');
+    if (onClose) onClose();
   };
   
+  // 处理关闭按钮
+  const handleClose = () => {
+    if (onClose) onClose();
+  };
+  
+  if (!visible) return null;
+
   return (
-    <div className="add-article-container">
-      <h2 className="add-article-header">添加文章</h2>
-      
-      <Form form={form} layout="vertical" className="add-article-form">
-        {/* 文章标题 */}
-        <Form.Item
-          name="title"
-          label="文章标题"
-          rules={[{ required: true, message: '请输入文章标题' }]}
-        >
-          <Input placeholder="请输入文章标题" style={{ width: '300px' }} />
-        </Form.Item>
+    <div className="modal-overlay">
+      <div className="modal-container">
+        {/* 模态框标题栏 */}
+        <div className="modal-header">
+          <h2 className="modal-title">{isEditMode ? '编辑文章' : '发布文章'}</h2>
+          <button className="modal-close" onClick={handleClose}>×</button>
+        </div>
         
-        {/* 文章分类 */}
-        <Form.Item
-          name="category"
-          label="文章分类"
-          rules={[{ required: true, message: '请选择文章分类' }]}
-        >
-          <Select placeholder="请选择" style={{ width: '200px' }}>
-            {mockCategories.map(cat => (
-              <Select.Option key={cat.value} value={cat.value}>{cat.label}</Select.Option>
-            ))}
-          </Select>
-        </Form.Item>
+        {/* 模态框内容 */}
+        <div className="modal-content">
+          <Form form={form} layout="vertical" className="article-form">
+            {/* 分类 */}
+            <Form.Item
+              name="category"
+              label="分类"
+              rules={[{ required: true, message: '请选择文章分类' }]}
+            >
+              <Select placeholder="请选择文章分类" style={{ width: '200px' }}>
+                {categoryData.map(category => (
+                  <Option key={category.value} value={category.value}>
+                    {category.label}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+
+            {/* 文章标题 */}
+            <Form.Item
+              name="title"
+              label="文章标题"
+              rules={[{ required: true, message: '请输入文章标题' }]}
+            >
+              <Input placeholder="请输入文章标题" />
+            </Form.Item>
+
+            {/* 作者 */}
+            <Form.Item
+              name="author"
+              label="作者"
+              rules={[{ required: true, message: '请输入作者' }]}
+            >
+              <Input placeholder="请输入作者" />
+            </Form.Item>
+
+            {/* 发布日期 */}
+            <Form.Item
+              name="publishDate"
+              label="发布日期"
+              rules={[{ required: true, message: '请选择日期' }]}
+            >
+              <DatePicker style={{ width: '200px' }} placeholder="请选择日期" />
+            </Form.Item>
+
+            {/* 是否置顶 */}
+            <Form.Item
+              name="isTop"
+              label="是否置顶"
+              valuePropName="checked"
+            >
+              <Switch />
+            </Form.Item>
+
+            {/* 排序 */}
+            <Form.Item
+              name="sortOrder"
+              label="排序"
+              rules={[{ required: true, message: '请输入排序号' }]}
+            >
+              <Input placeholder="请输入排序号" style={{ width: '100px' }} />
+            </Form.Item>
+
+            {/* 文章内容 */}
+            <Form.Item
+              name="content"
+              label="文章内容"
+              rules={[{ required: true, message: '请输入文章内容' }]}
+            >
+              <RichTextEditor
+                value={editorContent}
+                onChange={handleEditorChange}
+                placeholder="请输入文章内容"
+              />
+            </Form.Item>
+          </Form>
+        </div>
         
-        {/* 文章排序 */}
-        <Form.Item
-          name="sort"
-          label="文章排序"
-          rules={[{ required: true, message: '请输入排序值' }]}
-        >
-          <Input type="number" defaultValue={1} style={{ width: '100px' }} />
-        </Form.Item>
-        
-        {/* 点击率（新增） */}
-        <Form.Item
-          name="viewCount"
-          label="点击率"
-          rules={[{ required: true, message: '请输入点击率' }]}
-        >
-          <Input type="number" defaultValue={0} style={{ width: '100px' }} />
-        </Form.Item>
-        
-        {/* 发布时间（新增） */}
-        <Form.Item
-          name="publishTime"
-          label="发布时间"
-          rules={[{ required: true, message: '请输入发布时间' }]}
-        >
-          <Input 
-            defaultValue={dayjs().format('YYYY-MM-DD HH:mm:ss')} 
-            style={{ width: '200px' }} 
-            placeholder="YYYY-MM-DD HH:mm:ss"
-          />
-        </Form.Item>
-        
-        {/* 文章内容 */}
-        <Form.Item
-          name="content"
-          label="文章内容"
-          rules={[{ required: true, message: '请输入文章内容' }]}
-        >
-          <RichTextEditor
-            value={editorContent}
-            onChange={handleEditorChange}
-            placeholder="请输入文章内容"
-          />
-        </Form.Item>
-        
-        {/* 是否展示 */}
-        <Form.Item
-          name="show"
-          label="是否展示"
-        >
-          <Switch 
-            checked={showStatus} 
-            onChange={handleShowChange}
-            checkedChildren="显示" 
-            unCheckedChildren="隐藏"
-          />
-        </Form.Item>
-        
-        {/* 操作按钮 */}
-        <Form.Item className="add-article-actions">
-          <Button onClick={handleCancel} style={{ marginRight: '8px' }}>
+        {/* 模态框底部按钮 */}
+        <div className="modal-footer">
+          <button 
+            type="button" 
+            onClick={handleCancel} 
+            className="cancel-button"
+          >
             取消
-          </Button>
-          <Button type="primary" onClick={handleSubmit}>
-            提交
-          </Button>
-        </Form.Item>
-      </Form>
+          </button>
+          <button 
+            type="button" 
+            onClick={handleSubmit} 
+            className="submit-button"
+            disabled={loading}
+          >
+            {isEditMode ? '更新' : '保存'}
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
