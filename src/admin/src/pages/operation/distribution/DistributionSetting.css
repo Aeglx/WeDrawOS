@@ -27,7 +27,7 @@
 }
 
 .setting-label {
-  font-size: 14px;
+  font-size: 12px;
   color: #666;
   flex: 0 0 150px;
 }
@@ -45,7 +45,7 @@
 }
 
 .ratio-value {
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 500;
   color: #333;
   margin-right: 16px;

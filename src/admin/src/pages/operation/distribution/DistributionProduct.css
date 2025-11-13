@@ -57,7 +57,7 @@
 }
 
 .distribution-product-table {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .distribution-product-table thead th {
@@ -92,11 +92,11 @@
   display: inline-block;
   width: 80px;
   color: #666;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .detail-item span:not(.detail-label) {
-  font-size: 14px;
+  font-size: 12px;
   color: #333;
 }
 

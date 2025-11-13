@@ -1,0 +1,125 @@
+/* 意见反馈页面样式 */
+.feedback-container {
+  padding: 20px;
+  background-color: #f0f2f5;
+  min-height: 100vh;
+}
+
+.feedback-card {
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+}
+
+.feedback-card .ant-card-head {
+  border-bottom: 1px solid #e8e8e8;
+  margin-bottom: 24px;
+}
+
+.feedback-card .ant-card-head-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #262626;
+}
+
+/* 表格样式 */
+.feedback-card .ant-table {
+  font-size: 12px;
+}
+
+.feedback-card .ant-table-thead > tr > th {
+  background-color: #fafafa;
+  border-bottom: 1px solid #e8e8e8;
+  font-weight: 500;
+  padding: 12px 8px;
+  color: #595959;
+}
+
+.feedback-card .ant-table-tbody > tr > td {
+  padding: 12px 8px;
+  border-bottom: 1px solid #e8e8e8;
+  color: #262626;
+}
+
+/* 查看按钮样式 */
+.view-button {
+  background-color: #ff7875;
+  border: none;
+  color: #ffffff;
+  padding: 4px 12px;
+  font-size: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.view-button:hover {
+  background-color: #ff5150;
+}
+
+/* 分页样式 */
+.feedback-pagination {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.total-count {
+  margin-right: 16px;
+  font-size: 12px;
+  color: #595959;
+}
+
+.feedback-pagination .ant-pagination {
+  margin: 0;
+}
+
+.feedback-pagination .ant-pagination-item a {
+  font-size: 12px;
+}
+
+.feedback-pagination .ant-pagination-prev button,
+.feedback-pagination .ant-pagination-next button {
+  font-size: 12px;
+}
+
+.feedback-pagination .ant-select-selection-item {
+  font-size: 12px;
+}
+
+.feedback-pagination .ant-pagination-options-size-changer .ant-select-selector {
+  font-size: 12px;
+  height: 24px;
+  line-height: 24px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .feedback-container {
+    padding: 10px;
+  }
+  
+  .feedback-card {
+    padding: 16px;
+  }
+  
+  .feedback-card .ant-table {
+    font-size: 11px;
+  }
+  
+  .feedback-card .ant-table-thead > tr > th,
+  .feedback-card .ant-table-tbody > tr > td {
+    padding: 8px 4px;
+  }
+  
+  .feedback-pagination {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .total-count {
+    margin-bottom: 8px;
+  }
+}

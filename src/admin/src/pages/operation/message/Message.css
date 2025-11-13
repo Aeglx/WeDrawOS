@@ -1,0 +1,260 @@
+/* 站内信页面样式 */
+.message-container {
+  padding: 20px;
+  background-color: #f0f2f5;
+  min-height: 100vh;
+}
+
+.message-card {
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+}
+
+/* 发消息按钮 */
+.send-message-button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 24px;
+}
+
+.send-message-button {
+  font-size: 12px;
+  padding: 6px 12px;
+}
+
+/* 搜索表单 */
+.search-form {
+  margin-bottom: 24px;
+}
+
+.search-input {
+  width: 200px;
+  font-size: 12px;
+}
+
+.search-button {
+  font-size: 12px;
+  padding: 6px 12px;
+}
+
+/* 表格样式 */
+.message-card .ant-table {
+  font-size: 12px;
+}
+
+.message-card .ant-table-thead > tr > th {
+  background-color: #fafafa;
+  border-bottom: 1px solid #e8e8e8;
+  font-weight: 500;
+  padding: 12px 8px;
+  color: #595959;
+}
+
+.message-card .ant-table-tbody > tr > td {
+  padding: 12px 8px;
+  border-bottom: 1px solid #e8e8e8;
+  color: #262626;
+}
+
+/* 操作按钮 */
+.operation-buttons {
+  display: flex;
+  gap: 16px;
+}
+
+.operation-buttons .detail-button {
+  color: #1890ff;
+  font-size: 12px;
+}
+
+.operation-buttons .delete-button {
+  color: #ff7875;
+  font-size: 12px;
+}
+
+/* 分页样式 */
+.pagination-container {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.total-count {
+  margin-right: 16px;
+  font-size: 12px;
+  color: #595959;
+}
+
+.pagination-container .ant-pagination {
+  margin: 0;
+}
+
+.pagination-container .ant-pagination-item a {
+  font-size: 12px;
+}
+
+.pagination-container .ant-pagination-prev button,
+.pagination-container .ant-pagination-next button {
+  font-size: 12px;
+}
+
+.pagination-container .ant-select-selection-item {
+  font-size: 12px;
+}
+
+.pagination-container .ant-pagination-options-size-changer .ant-select-selector {
+  font-size: 12px;
+  height: 24px;
+  line-height: 24px;
+}
+
+/* 发送消息弹窗样式 */
+.send-message-modal .ant-modal-header {
+  padding: 16px;
+}
+
+.send-message-modal .ant-modal-title {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.send-message-modal .ant-modal-body {
+  padding: 16px;
+}
+
+.send-message-form {
+  width: 100%;
+}
+
+.send-message-form .form-input {
+  width: 100%;
+  font-size: 12px;
+  height: 32px;
+}
+
+.send-message-form .form-textarea {
+  width: 100%;
+  font-size: 12px;
+}
+
+/* 发送对象和范围选项 */
+.send-to-options,
+.send-range-options {
+  display: flex;
+  gap: 16px;
+}
+
+.option-button {
+  font-size: 12px;
+  padding: 6px 16px;
+}
+
+.option-button.selected {
+  background-color: #1890ff;
+  color: #ffffff;
+  border-color: #1890ff;
+}
+
+/* 选择会员按钮 */
+.select-member-button {
+  font-size: 12px;
+  padding: 0;
+  margin-bottom: 8px;
+}
+
+.selected-members-container {
+  margin-top: 8px;
+}
+
+.selected-members-label {
+  font-size: 12px;
+  color: #595959;
+}
+
+/* 选择会员弹窗样式 */
+.select-member-modal .ant-modal-header {
+  padding: 16px;
+}
+
+.select-member-modal .ant-modal-title {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.select-member-modal .ant-modal-body {
+  padding: 16px;
+  height: 500px;
+  overflow-y: auto;
+}
+
+/* 会员搜索容器 */
+.member-search-container {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.member-search-container .search-input {
+  width: 160px;
+}
+
+.member-search-container .search-button {
+  margin-top: 24px;
+}
+
+/* 会员表格 */
+.member-table .ant-table-thead > tr > th {
+  background-color: #fafafa;
+  border-bottom: 1px solid #e8e8e8;
+  font-weight: 500;
+  padding: 12px 8px;
+  color: #595959;
+  font-size: 12px;
+}
+
+.member-table .ant-table-tbody > tr > td {
+  padding: 12px 8px;
+  border-bottom: 1px solid #e8e8e8;
+  color: #262626;
+  font-size: 12px;
+}
+
+.member-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .message-container {
+    padding: 10px;
+  }
+  
+  .message-card {
+    padding: 16px;
+  }
+  
+  .send-to-options,
+  .send-range-options {
+    flex-direction: column;
+  }
+  
+  .member-search-container {
+    flex-direction: column;
+  }
+  
+  .member-search-container .search-input {
+    width: 100%;
+  }
+  
+  .member-search-container .search-button {
+    margin-top: 8px;
+  }
+}

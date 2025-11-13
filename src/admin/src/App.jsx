@@ -28,6 +28,8 @@ import DesignatedPointProduct from './pages/promotion/point-activity/DesignatedP
 import NotFound from './pages/NotFound';
 // 占位页面组件 - 实际项目中应替换为真实组件
 import PlaceholderPage from './pages/PlaceholderPage';
+import Feedback from './pages/operation/feedback/Feedback';
+import Message from './pages/operation/message/Message';
 import PrivacyPolicy from './pages/operation/privacy-policy/PrivacyPolicy';
 import DistributionSetting from './pages/operation/distribution/DistributionSetting';
 import DistributionApply from './pages/operation/distribution/DistributionApply';
@@ -38,6 +40,7 @@ import DistributionWithdraw from './pages/operation/distribution/DistributionWit
 import ArticleManage from './pages/operation/article/ArticleManage';
 import ArticleCategory from './pages/operation/article/ArticleCategory';
 import AddArticle from './pages/operation/article/AddArticle';
+import ESSegment from './pages/operation/article/ESSegment';
 import SearchHotwords from './pages/operation/search-hotwords/SearchHotwords';
 
 // 导入店铺相关组件
@@ -152,9 +155,9 @@ const App = () => {
                 <Route path="/operation/article/add-article" element={<AddArticle />} />
                 <Route path="/operation/article/hot-search" element={<SearchHotwords />} />
                 <Route path="/operation/article/article-category" element={<ArticleCategory />} />
-                <Route path="/operation/article/es-segment" element={<PlaceholderPage title="ES分词" />} />
-                <Route path="/operation/feedback/feedback" element={<PlaceholderPage title="意见反馈" />} />
-                <Route path="/operation/站内信/站内信" element={<PlaceholderPage title="站内信" />} />
+                <Route path="/operation/article/es-segment" element={<ESSegment />} />
+                <Route path="/operation/feedback/feedback" element={<Feedback />} />
+                <Route path="/operation/站内信/站内信" element={<Message />} />
                 <Route path="/operation/sms/sms" element={<PlaceholderPage title="短信" />} />
                 <Route path="/operation/wechat-official/basic/account-info" element={<PlaceholderPage title="账号信息" />} />
                 <Route path="/operation/wechat-official/basic/fan-manage" element={<PlaceholderPage title="粉丝管理" />} />

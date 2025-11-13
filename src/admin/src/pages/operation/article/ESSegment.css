@@ -1,0 +1,42 @@
+.es-segment-container {
+  padding: 24px;
+  background-color: #ffffff;
+  min-height: 100vh;
+}
+
+.es-segment-header {
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.es-segment-table {
+  margin-bottom: 16px;
+}
+
+.es-segment-table .ant-table-thead > tr > th {
+  font-size: 12px;
+  font-weight: 500;
+  background-color: #fafafa;
+  color: #333333;
+  padding: 12px 8px;
+  text-align: left;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.es-segment-table .ant-table-tbody > tr > td {
+  font-size: 12px;
+  color: #666666;
+  padding: 12px 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.es-segment-pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.es-segment-pagination .ant-pagination {
+  margin: 0;
+}

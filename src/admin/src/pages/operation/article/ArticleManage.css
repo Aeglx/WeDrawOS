@@ -66,7 +66,7 @@
   background-color: #1890ff;
   border-color: #1890ff;
   color: white;
-  font-size: 14px;
+  font-size: 12px;
   height: 32px;
   border-radius: 6px;
   transition: all 0.3s ease;
@@ -99,7 +99,7 @@
   border-radius: 4px;
   padding: 0;
   overflow: hidden;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .article-table .ant-table-thead > tr > th {
@@ -107,13 +107,13 @@
   font-weight: 600;
   color: #262626;
   border-bottom: 1px solid #f0f0f0;
-  font-size: 14px;
+  font-size: 12px;
   padding: 12px 16px;
 }
 
 .article-table .ant-table-tbody > tr > td {
   border-bottom: 1px solid #f0f0f0;
-  font-size: 14px;
+  font-size: 12px;
   height: 40px;
   padding: 12px 16px;
   transition: background-color 0.2s ease;
@@ -215,7 +215,7 @@
 .view-count {
   color: #1890ff;
   font-weight: 500;
-  font-size: 15px;
+  font-size: 12px;
 }
 
 /* 富文本编辑器样式 */
@@ -253,7 +253,7 @@
 
 .rich-text-editor .ql-editor {
   min-height: 250px;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 1.6;
   padding: 16px;
 }

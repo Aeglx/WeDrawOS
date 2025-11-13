@@ -12,7 +12,11 @@ const SearchHotwords = () => {
   // 热词统计页筛选
   const [statisticFilter, setStatisticFilter] = useState('过去7天');
   // 设置热词页表单数据
-  const [hotwordSettings, setHotwordSettings] = useState({ word: '', score: 1, dailyUpdateCount: 1 });
+  const [hotwordSettings, setHotwordSettings] = useState({ dailyUpdateCount: 1 });
+const [isModalVisible, setIsModalVisible] = useState(false);
+const [modalHotword, setModalHotword] = useState('');
+const [modalScore, setModalScore] = useState(1);
+const [modalPurpose, setModalPurpose] = useState('setting'); // 'setting' 或 'today'
   const [hotwordList, setHotwordList] = useState([]);
 
   const tabs = ['今日热词', '历史热词', '热词统计', '设置热词'];
@@ -87,10 +91,10 @@ const SearchHotwords = () => {
     console.log('删除热词:', id);
   };
 
+  // 设置今日热词按钮事件处理函数
   const handleSetTodayHotwords = () => {
-    // 模拟设置今日热词操作
-    console.log('设置今日热词');
-    alert('设置今日热词功能将在后续实现');
+    setModalPurpose('today');
+    setIsModalVisible(true);
   };
 
   const handleDateChange = (e) => {
@@ -101,13 +105,28 @@ const SearchHotwords = () => {
     setStatisticFilter(filter);
   };
 
-  const handleAddHotword = () => {
-    if (hotwordSettings.word) {
-      setHotwordList([
-        ...hotwordList,
-        { ...hotwordSettings, id: Date.now() }
-      ]);
-      setHotwordSettings({ word: '', score: 1, dailyUpdateCount: 1 });
+  // 打开添加热词模态框的按钮事件处理函数
+  const showModal = () => {
+    setModalPurpose('setting');
+    setIsModalVisible(true);
+  };
+
+  // 处理模态框提交
+  const handleModalSubmit = () => {
+    if (modalHotword) {
+      const newHotword = { id: Date.now(), word: modalHotword, score: modalScore };
+      
+      if (modalPurpose === 'today') {
+        // 设置今日热词
+        setTodayHotwords([...todayHotwords, newHotword]);
+      } else {
+        // 添加到设置热词列表
+        setHotwordList([...hotwordList, newHotword]);
+      }
+      
+      setModalHotword('');
+      setModalScore(1);
+      setIsModalVisible(false);
     }
   };
 
@@ -265,32 +284,8 @@ const SearchHotwords = () => {
           <div className="setting-container">
             <div className="settings-section">
               <div className="setting-row">
-                <label className="setting-label">热词默认权重/热词:</label>
-                <div className="input-group">
-                  <input 
-                    type="text" 
-                    value={hotwordSettings.word}
-                    onChange={(e) => setHotwordSettings({...hotwordSettings, word: e.target.value})}
-                    placeholder="请输入热词"
-                    className="setting-input"
-                  />
-                </div>
+                <button className="add-button" onClick={showModal}>添加热词</button>
               </div>
-              <div className="setting-row">
-                <div className="input-group-with-label">
-                  <label className="score-label">分数:</label>
-                  <input 
-                    type="number" 
-                    value={hotwordSettings.score}
-                    onChange={(e) => setHotwordSettings({...hotwordSettings, score: parseInt(e.target.value)})}
-                    min="1"
-                    className="score-input"
-                  />
-                  <button className="add-button" onClick={handleAddHotword}>添加热词</button>
-                </div>
-              </div>
-            </div>
-            <div className="settings-section">
               <div className="setting-row">
                 <label className="setting-label">每日持久化词增加数量:</label>
                 <input 
@@ -349,6 +344,44 @@ const SearchHotwords = () => {
       <div className="content-container">
         {renderContent()}
       </div>
+      
+      {/* 热词设置模态框 */}
+      {isModalVisible && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <div className="modal-header">
+              <h3>{modalPurpose === 'today' ? '设置今日热词' : '添加热词'}</h3>
+              <button className="modal-close" onClick={() => setIsModalVisible(false)}>×</button>
+            </div>
+            <div className="modal-body">
+              <div className="modal-form-group">
+                <label className="modal-label">*热词:</label>
+                <input 
+                  type="text" 
+                  value={modalHotword}
+                  onChange={(e) => setModalHotword(e.target.value)}
+                  placeholder="请输入热词"
+                  className="modal-input"
+                />
+              </div>
+              <div className="modal-form-group">
+                <label className="modal-label">*分数:</label>
+                <input 
+                  type="number" 
+                  value={modalScore}
+                  onChange={(e) => setModalScore(parseInt(e.target.value))}
+                  min="1"
+                  className="modal-input"
+                />
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button className="modal-cancel" onClick={() => setIsModalVisible(false)}>取消</button>
+              <button className="modal-submit" onClick={handleModalSubmit}>提交</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

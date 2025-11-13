@@ -14,7 +14,8 @@ const Login = () => {
     setLoading(true);
     try {
       // 调用登录API
-      const response = await axios.post('/api/admin/admins/login', {
+      const apiBase = import.meta.env.VITE_API_BASE || '/api';
+      const response = await axios.post(`${apiBase}/admin/admins/login`, {
         username: values.username,
         password: values.password
       });

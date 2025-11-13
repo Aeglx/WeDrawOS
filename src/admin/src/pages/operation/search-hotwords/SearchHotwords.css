@@ -17,7 +17,7 @@
   border: none;
   border-bottom: 2px solid transparent;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 12px;
   margin-right: 20px;
   color: #666;
   outline: none;
@@ -44,7 +44,7 @@
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 12px;
   margin-bottom: 10px;
   transition: background-color 0.3s ease;
 }
@@ -64,7 +64,7 @@
 .description-box p {
   margin: 0;
   color: #666;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .hotwords-list {
@@ -89,7 +89,7 @@
 }
 
 .hotword-text {
-  font-size: 14px;
+  font-size: 12px;
   color: #333;
 }
 
@@ -100,7 +100,7 @@
   padding: 4px 10px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 12px;
   width: 28px;
   height: 28px;
   display: flex;
@@ -117,7 +117,7 @@
 .loading {
   text-align: center;
   padding: 20px;
-  font-size: 14px;
+  font-size: 12px;
   color: #666;
   font-weight: 400;
 }
@@ -131,7 +131,7 @@
   padding: 6px 8px;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .bar-chart-container {
@@ -199,7 +199,7 @@
   border: 1px solid #e0e0e0;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 12px;
   color: #666;
   transition: all 0.3s ease;
 }
@@ -220,7 +220,7 @@
   padding: 6px 8px;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .number-filter {
@@ -228,7 +228,7 @@
   padding: 6px 8px;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .search-filter-button {
@@ -238,7 +238,7 @@
   padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 12px;
   transition: background-color 0.3s ease;
 }
 
@@ -261,7 +261,7 @@
   padding: 10px;
   text-align: left;
   border-bottom: 1px solid #e0e0e0;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .statistics-table th {
@@ -290,7 +290,7 @@
 }
 
 .setting-label {
-    font-size: 14px;
+    font-size: 12px;
     color: #333;
     margin-right: 10px;
     font-weight: 500;
@@ -308,7 +308,7 @@
   padding: 8px 12px;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .input-group-with-label {
@@ -318,7 +318,7 @@
 }
 
 .score-label {
-  font-size: 14px;
+  font-size: 12px;
   color: #666;
   margin-right: 5px;
 }
@@ -328,7 +328,7 @@
   padding: 8px;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .add-button {
@@ -338,7 +338,7 @@
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 12px;
   transition: background-color 0.3s ease;
 }
 
@@ -351,7 +351,7 @@
   padding: 8px 12px;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .settings-actions {
@@ -366,7 +366,7 @@
   padding: 8px 20px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 12px;
   transition: background-color 0.3s ease;
 }
 
@@ -376,7 +376,7 @@
 
 /* 历史热词页面样式补充 */
 .history-hotwords h3 {
-  font-size: 16px;
+  font-size: 12px;
   margin-bottom: 15px;
   color: #333;
   font-weight: 500;
@@ -389,7 +389,7 @@
 
 /* 热词统计页面样式补充 */
 .statistics-container h3 {
-  font-size: 16px;
+  font-size: 12px;
   margin-bottom: 15px;
   color: #333;
   font-weight: 500;
@@ -402,7 +402,7 @@
 
 /* 设置热词页面样式补充 */
 .setting-container h3 {
-  font-size: 16px;
+  font-size: 12px;
   margin-bottom: 15px;
   color: #333;
   font-weight: 500;
@@ -442,4 +442,132 @@
   .input-group {
     width: 100%;
   }
+}
+
+/* 模态框样式 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: white;
+  border-radius: 4px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 12px;
+  color: #333;
+  font-weight: 500;
+}
+
+.modal-close {
+  background-color: transparent;
+  border: none;
+  font-size: 12px;
+  color: #999;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.modal-close:hover {
+  background-color: #f5f5f5;
+  color: #666;
+}
+
+.modal-body {
+  padding: 16px;
+}
+
+.modal-form-group {
+  margin-bottom: 16px;
+}
+
+.modal-label {
+  display: block;
+  font-size: 12px;
+  color: #333;
+  margin-bottom: 8px;
+  font-weight: 400;
+}
+
+.modal-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 12px;
+  box-sizing: border-box;
+}
+
+.modal-input:focus {
+  outline: none;
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px;
+  border-top: 1px solid #e8e8e8;
+}
+
+.modal-cancel {
+  background-color: transparent;
+  border: 1px solid #e0e0e0;
+  color: #666;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.3s ease;
+}
+
+.modal-cancel:hover {
+  border-color: #1890ff;
+  color: #1890ff;
+}
+
+.modal-submit {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.3s ease;
+}
+
+.modal-submit:hover {
+  background-color: #ff7875;
 }

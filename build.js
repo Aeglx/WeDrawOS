@@ -6,6 +6,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const esbuild = require('esbuild');
 const logger = console;
 
 // 构建配置
@@ -21,21 +22,21 @@ const subProjects = [
     name: 'api',
     srcPath: path.join(__dirname, 'src', 'api'),
     buildPath: path.join(config.outputDir, 'api'),
-    buildCommand: null, // API项目直接复制
+    buildCommand: null,
     description: '后端API服务'
   },
   {
     name: 'admin',
     srcPath: path.join(__dirname, 'src', 'admin'),
     buildPath: path.join(config.outputDir, 'admin'),
-    buildCommand: 'npm run build', // 使用vite构建
+    buildCommand: 'npm run admin:build',
     description: '管理端前端'
   },
   {
     name: 'buyer',
     srcPath: path.join(__dirname, 'src', 'buyer'),
     buildPath: path.join(config.outputDir, 'buyer'),
-    buildCommand: 'npm run build', // 使用vite构建
+    buildCommand: 'npm run buyer:build',
     description: '买家端前端'
   }
 ];
@@ -147,31 +148,17 @@ async function buildSubProjects() {
       if (project.buildCommand) {
         // 如果有指定的构建命令，执行构建
         logger.info(`执行构建命令: ${project.buildCommand}`);
-        
-        // 切换到子项目目录执行构建
-        const originalCwd = process.cwd();
-        try {
-          process.chdir(path.dirname(project.srcPath));
-          execSync(project.buildCommand, { stdio: 'inherit' });
-          
-          // 将构建产物移动到dist对应目录
-          if (project.name === 'admin') {
-            // admin项目的构建产物在dist目录下
-            const adminDistPath = path.join(project.srcPath, 'dist');
-            if (fs.existsSync(adminDistPath)) {
-              copyDirectory(adminDistPath, project.buildPath);
-              logger.info(`已将${project.name}构建产物移动到${project.buildPath}`);
-            } else {
-              logger.warn(`${project.name}构建产物目录不存在: ${adminDistPath}`);
-            }
-          }
-        } finally {
-          process.chdir(originalCwd);
+        execSync(project.buildCommand, { stdio: 'inherit' });
+        const builtDistPath = path.join(project.srcPath, 'dist');
+        if (fs.existsSync(builtDistPath)) {
+          copyDirectory(builtDistPath, project.buildPath);
+          logger.info(`已将${project.name}构建产物移动到${project.buildPath}`);
+        } else {
+          logger.warn(`${project.name}构建产物目录不存在: ${builtDistPath}`);
         }
       } else {
-        // 否则直接复制源代码
-        logger.info(`直接复制源代码到${project.buildPath}`);
-        copyDirectory(project.srcPath, project.buildPath);
+        logger.info('编译并压缩后端API服务');
+        await buildApiProject();
       }
       
       logger.info(`${project.name}构建成功`);
@@ -208,11 +195,11 @@ async function copyConfigFiles() {
 async function createRequiredDirs() {
   logger.info('创建必要的目录...');
   
-  const dirs = ['logs', 'uploads'];
-  dirs.forEach(dir => {
-    const dirPath = path.join(config.outputDir, dir);
+  const apiDirs = ['logs', 'uploads'];
+  apiDirs.forEach(dir => {
+    const dirPath = path.join(config.outputDir, 'api', dir);
     fs.mkdirSync(dirPath, { recursive: true });
-    logger.info(`已创建目录: ${dir}`);
+    logger.info(`已创建目录: api/${dir}`);
   });
 }
 
