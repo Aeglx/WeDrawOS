@@ -258,6 +258,89 @@
 4. 复制必要配置与静态资源：将后端运行所需的配置、模板、静态资源复制到 `dist/api`。
 5. （可选）在 `dist/api` 执行 `npm ci --production`，准备部署依赖。
 
+## 五端扩展（H5/PC/小程序/iOS App/Android App）
+
+- 端划分
+  - 管理端（React Web）：`dist/admin`
+  - 卖家端（React Web）：`dist/seller`
+  - 买家端 H5（PC/移动自适应，uni-app）：`dist/buyer/h5`
+  - 买家端 小程序（微信，uni-app）：`dist/buyer/mp-weixin`
+  - 买家端 iOS App（uni-app app-plus iOS 打包）：`dist/buyer/app-ios`
+  - 买家端 Android App（uni-app app-plus Android 打包）：`dist/buyer/app-android`
+
+- 架构与接口统一
+  - 所有前端端都通过统一 `API_BASE` 访问后端 `/api/*`；后端统一 CORS 白名单与 WebSocket `Origin` 校验。
+  - 鉴权统一使用 JWT（Bearer）；小程序与 App 使用各自平台的安全存储与生命周期管理。
+
+- 平台差异与适配
+  - 网络：`uni.request` 封装基础 URL；小程序需在后台配置“request合法域名/上传/Socket合法域名”。
+  - 上传：H5 用 `multipart/form-data`，小程序用 `wx.uploadFile`，App 用 `plus.uploader` 或 `uni.uploadFile`；后端需接受多端上传头与表单格式。
+  - 推送：App 使用 `uni-push`（Android FCM/厂商通道、iOS APNs）；小程序使用订阅消息；H5 使用 WebSocket 或浏览器通知。
+  - 深链：App 配置 iOS Universal Links 与 Android App Links；小程序场景值跳转；H5 处理 URL 参数。
+  - 存储：小程序 `wx.setStorage`、App 使用 Keychain/Keystore 持久化；统一刷新令牌与登出逻辑。
+
+- 构建与产物组织
+  - H5：`dist/buyer/h5`
+  - 小程序：`dist/buyer/mp-weixin`
+  - iOS App：`dist/buyer/app-ios`
+  - Android App：`dist/buyer/app-android`
+  - React Web：`dist/admin`、`dist/seller`
+  - 后端：`dist/api`
+
+- 根级构建编排（新增命令建议）
+  - 买家端（uni-app）：
+    - `buyer:h5:build`: 在买家子项目执行 H5 构建输出到 `dist/buyer/h5`
+    - `buyer:mp:build`: 在买家子项目执行微信小程序构建输出到 `dist/buyer/mp-weixin`
+    - `buyer:ios:build`: 在买家子项目执行 iOS 打包输出到 `dist/buyer/app-ios`
+    - `buyer:android:build`: 在买家子项目执行 Android 打包输出到 `dist/buyer/app-android`
+  - 管理端/卖家端（React）：沿用 `admin:build`、`seller:build`
+  - 后端：编译/压缩到 `dist/api`
+  - orchestrator：清理根 `dist/` 后按端次序执行各构建，保持产物目录规范。
+
+### 使用 uni-app x 支持五端
+
+- 技术栈
+  - 框架：`uni-app x`（Vue3 + TypeScript + Pinia + Vite）
+  - 统一环境变量：`VITE_API_BASE` 指向后端 `/api` 基础地址，H5/小程序/App 共用。
+  - 网络封装：使用 `uni.request`（或基于它的封装）读取 `import.meta.env.VITE_API_BASE`。
+
+- 子项目与目录
+  - 买家端子项目建议路径：`src/buyer-uni`（或替换现有 `src/buyer`）。
+  - 平台产物输出：
+    - H5/PC：`dist/buyer/h5`（响应式布局适配 PC/移动）
+    - 微信小程序：`dist/buyer/mp-weixin`
+    - iOS：`dist/buyer/app-ios`
+    - Android：`dist/buyer/app-android`
+
+- 构建命令（示意）
+  - H5：`uni build -p h5`（或在 HBuilderX 执行对应构建），输出到 `dist/buyer/h5`
+  - 小程序：`uni build -p mp-weixin`，输出到 `dist/buyer/mp-weixin`
+  - iOS：`uni build -p app-ios`（或 HBuilderX 打包），输出到 `dist/buyer/app-ios`
+  - Android：`uni build -p app-android`（或 HBuilderX 打包），输出到 `dist/buyer/app-android`
+
+- 平台适配要点
+  - 请求域名：微信小程序后台配置“request/upload/socket 合法域名”。
+  - 上传：小程序使用 `wx.uploadFile`，App 使用 `uni.uploadFile/plus.uploader`；后端需接受不同端的上传头与表单格式。
+  - 推送：App 使用 `uni-push`（FCM/厂商通道、APNs）；小程序使用订阅消息；H5 使用 WebSocket/浏览器通知。
+  - 深链：iOS 配置 Universal Links，Android 配置 App Links；H5 URL 参数；小程序场景值跳转。
+  - 存储：小程序 `wx.setStorage`，App 使用 Keychain/Keystore；统一刷新令牌与登出行为。
+
+- UI 与交互
+  - H5/PC：统一使用响应式布局；PC 提供更密集的表格与多列筛选；移动端保留底部导航与更大触控区域。
+  - 小程序：保留 TabBar 与平台规范交互；
+  - App：支持推送、文件选择与系统分享等原生能力。
+
+- 发布与合规
+  - 小程序：配置合法域名、上传审核；关注订阅消息与数据合规。
+  - iOS App：证书签名（APNs、签名证书/描述文件）、上架审核与隐私合规、Universal Links 配置。
+  - Android App：keystore 签名、FCM/厂商推送通道配置、商店审核与隐私合规、App Links 配置。
+  - H5：CDN 长缓存静态资源，短缓存 `index.html`；开启预压缩文件（gzip/brotli）。
+
+- 时间与风险（新增端）
+  - uni-app H5 与微信小程序基础：7–10 天（登录、商品、购物车、下单、订单列表）。
+  - iOS/Android 基础壳与打包：3–5 天（登录、商品列表与详情、下单流程联通、推送初始化）。
+  - 商店审核与证书配置：1–3 天（取决于合规材料）。
+
 ## 验证清单
 
 - 启动后端：`node dist/api/index.js`，日志仅出现一套服务地址与文档入口（参考 `src/api/index.js:644-651`）。
