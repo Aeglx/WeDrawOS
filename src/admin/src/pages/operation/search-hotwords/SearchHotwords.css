@@ -1,176 +1,445 @@
 .search-hotwords-container {
-  width: 100%;
-  height: 100%;
-  padding: 20px;
+  min-height: 100vh;
   background-color: #fff;
+  padding: 20px;
+  font-family: Arial, sans-serif;
 }
 
-/* 标签页样式 */
 .tabs-container {
   display: flex;
-  border-bottom: 1px solid #e8e8e8;
   margin-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .tab-button {
   padding: 10px 20px;
-  background: none;
+  background-color: transparent;
   border: none;
-  font-size: 14px;
-  color: #333;
+  border-bottom: 2px solid transparent;
   cursor: pointer;
-  position: relative;
-  transition: color 0.3s;
-}
-
-.tab-button:hover {
-  color: #1890ff;
+  font-size: 14px;
+  margin-right: 20px;
+  color: #666;
+  outline: none;
+  transition: all 0.3s ease;
 }
 
 .tab-button.active {
-  color: #ff4d4f;
+  color: #000;
+  border-bottom-color: #000;
+  font-weight: 500;
 }
 
-.tab-button.active::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background-color: #ff4d4f;
+.content-container {
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
 }
 
-/* 设置按钮样式 */
 .set-today-button {
-  background-color: #ff4d4f;
+  background-color: #1890ff;
   color: white;
   border: none;
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease;
 }
 
 .set-today-button:hover {
-  background-color: #ff7875;
+  background-color: #40a9ff;
 }
 
-/* 说明文本框样式 */
 .description-box {
-  background-color: #f0f9ff;
-  border: 1px solid #91d5ff;
-  padding: 12px;
-  border-radius: 4px;
+  background-color: #f7f7f7;
+  border-left: 4px solid #1890ff;
+  padding: 10px 15px;
   margin-bottom: 20px;
+  border-radius: 4px;
 }
 
 .description-box p {
   margin: 0;
-  color: #333;
+  color: #666;
   font-size: 14px;
-  line-height: 1.5;
 }
 
-/* 热词列表样式 */
 .hotwords-list {
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .hotword-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px;
-  border: 1px solid #e8e8e8;
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
   border-radius: 4px;
-  margin-bottom: 12px;
-  transition: border-color 0.3s;
+  transition: all 0.3s ease;
 }
 
 .hotword-item:hover {
-  border-color: #d9d9d9;
+  background-color: #f5f5f5;
 }
 
 .hotword-text {
-  color: #1890ff;
   font-size: 14px;
-}
-
-/* 删除按钮样式 */
-.delete-button {
-  width: 24px;
-  height: 24px;
-  background-color: transparent;
-  border: none;
-  color: #d9d9d9;
-  font-size: 24px;
-  line-height: 1;
-  cursor: pointer;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s;
-}
-
-.delete-button:hover {
-  background-color: #ff4d4f;
-  color: white;
-}
-
-/* 加载状态样式 */
-.loading {
-  text-align: center;
-  padding: 40px;
-  color: #999;
-  font-size: 14px;
-}
-
-/* 历史热词样式 */
-.history-hotwords h3,
-.statistics-container h3,
-.setting-container h3 {
-  font-size: 16px;
-  margin-bottom: 16px;
   color: #333;
 }
 
-.hotword-date {
-  color: #999;
+.delete-button {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+  background-color: #ff7875;
+}
+
+.loading {
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+  color: #666;
+  font-weight: 400;
+}
+
+/* 历史热词页面样式 */
+.date-picker-container {
+  margin-bottom: 10px;
+}
+
+.date-picker {
+  padding: 6px 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.bar-chart-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  height: 300px;
+  margin-bottom: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.bar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80px;
+  position: relative;
+}
+
+.bar-label {
   font-size: 12px;
+  color: #666;
+  margin-bottom: 5px;
+  text-align: center;
+  height: 40px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.bar-wrapper {
+  height: 200px;
+  width: 30px;
+  background-color: #f5f5f5;
+  border-radius: 4px 4px 0 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.bar {
+  background-color: #ff6b6b;
+  transition: height 0.3s ease;
+  height: 0;
+}
+
+.bar-value {
+  font-size: 12px;
+  color: #333;
+  margin-top: 5px;
+}
+
+/* 热词统计页面样式 */
+.statistic-filters {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.filter-button {
+  padding: 6px 12px;
+  background-color: transparent;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #666;
+  transition: all 0.3s ease;
+}
+
+.filter-button.active {
+  background-color: #1890ff;
+  color: white;
+  border-color: #1890ff;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.select-filter {
+  padding: 6px 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.number-filter {
+  width: 60px;
+  padding: 6px 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.search-filter-button {
+  background-color: #1890ff;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.search-filter-button:hover {
+  background-color: #40a9ff;
+}
+
+.statistics-table {
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+.statistics-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.statistics-table th,
+.statistics-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 14px;
+}
+
+.statistics-table th {
+  background-color: #f5f5f5;
+  font-weight: 500;
+}
+
+.statistics-table tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* 设置热词页面样式 */
+.settings-section {
+  margin-bottom: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 15px;
+}
+
+.setting-row {
+  margin-bottom: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.setting-label {
+    font-size: 14px;
+    color: #333;
+    margin-right: 10px;
+    font-weight: 500;
+    width: 120px;
+    text-align: left;
+  }
+
+.input-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.setting-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.input-group-with-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.score-label {
+  font-size: 14px;
+  color: #666;
+  margin-right: 5px;
+}
+
+.score-input {
+  width: 60px;
+  padding: 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.add-button {
+  background-color: #1890ff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.add-button:hover {
+  background-color: #40a9ff;
+}
+
+.number-input {
+  width: 80px;
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.settings-actions {
+  margin-top: 20px;
+  text-align: right;
+}
+
+.save-button {
+  background-color: #52c41a;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.save-button:hover {
+  background-color: #73d13d;
+}
+
+/* 历史热词页面样式补充 */
+.history-hotwords h3 {
+  font-size: 16px;
+  margin-bottom: 15px;
+  color: #333;
+  font-weight: 500;
+}
+
+.hotword-date {
+  font-size: 12px;
+  color: #999;
+}
+
+/* 热词统计页面样式补充 */
+.statistics-container h3 {
+  font-size: 16px;
+  margin-bottom: 15px;
+  color: #333;
+  font-weight: 500;
 }
 
 .hotword-count {
-  color: #666;
   font-size: 12px;
+  color: #666;
+}
+
+/* 设置热词页面样式补充 */
+.setting-container h3 {
+  font-size: 16px;
+  margin-bottom: 15px;
+  color: #333;
+  font-weight: 500;
 }
 
 /* 响应式设计 */
 @media (max-width: 768px) {
-  .search-hotwords-container {
-    padding: 10px;
-  }
-  
   .tabs-container {
     flex-wrap: wrap;
   }
   
   .tab-button {
-    padding: 8px 12px;
-    font-size: 13px;
+    margin-right: 10px;
+    margin-bottom: 5px;
   }
   
-  .hotword-item {
-    padding: 10px;
+  .statistic-filters {
+    flex-direction: column;
+    align-items: flex-start;
   }
   
-  .description-box {
-    padding: 10px;
+  .filter-group {
+    width: 100%;
+    justify-content: flex-start;
   }
   
-  .description-box p {
-    font-size: 13px;
+  .setting-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .setting-label {
+    text-align: left;
+    width: auto;
+  }
+  
+  .input-group {
+    width: 100%;
   }
 }

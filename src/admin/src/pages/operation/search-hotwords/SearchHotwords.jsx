@@ -7,6 +7,13 @@ const SearchHotwords = () => {
   const [historyHotwords, setHistoryHotwords] = useState([]);
   const [statisticsData, setStatisticsData] = useState([]);
   const [loading, setLoading] = useState(true);
+  // 历史热词页日期选择
+  const [selectedDate, setSelectedDate] = useState('2025-11-12');
+  // 热词统计页筛选
+  const [statisticFilter, setStatisticFilter] = useState('过去7天');
+  // 设置热词页表单数据
+  const [hotwordSettings, setHotwordSettings] = useState({ word: '', score: 1, dailyUpdateCount: 1 });
+  const [hotwordList, setHotwordList] = useState([]);
 
   const tabs = ['今日热词', '历史热词', '热词统计', '设置热词'];
 
@@ -28,16 +35,38 @@ const SearchHotwords = () => {
         
         // 模拟历史热词数据
         setHistoryHotwords([
-          { id: 101, word: '笔记本', score: 90, date: '2024-01-15' },
-          { id: 102, word: '耳机', score: 85, date: '2024-01-15' },
-          { id: 103, word: '手机壳', score: 80, date: '2024-01-15' }
+          { id: 101, word: '笔记本', score: 90, date: '2025-11-12' },
+          { id: 102, word: '耳机', score: 85, date: '2025-11-12' },
+          { id: 103, word: '手机壳', score: 80, date: '2025-11-12' },
+          { id: 104, word: '平板电脑', score: 75, date: '2025-11-11' },
+          { id: 105, word: '口红', score: 70, date: '2025-11-10' },
+          { id: 106, word: '音箱', score: 65, date: '2025-11-09' },
+          { id: 107, word: '键盘', score: 60, date: '2025-11-08' },
+          { id: 108, word: '鼠标', score: 55, date: '2025-11-07' },
+          { id: 109, word: '显示器', score: 50, date: '2025-11-06' },
+          { id: 110, word: '摄像头', score: 45, date: '2025-11-05' }
         ]);
         
         // 模拟热词统计数据
         setStatisticsData([
-          { id: 201, word: '手机', count: 1523 },
-          { id: 202, word: '电脑', count: 1256 },
-          { id: 203, word: '耳机', count: 986 }
+          { word: '平板笔记本', count: 100 },
+          { word: '彩妆', count: 80 },
+          { word: '音箱', count: 60 },
+          { word: '平板电脑t10', count: 50 },
+          { word: '数码', count: 45 },
+          { word: 'AA88', count: 35 },
+          { word: 'aa商品', count: 30 },
+          { word: '口红', count: 28 },
+          { word: '国家可见宽宏大量', count: 25 },
+          { word: '国际特种兵', count: 20 },
+          { word: '设计', count: 18 },
+        ]);
+        
+        // 模拟设置热词数据
+        setHotwordList([
+          { id: 1, word: '手机', score: 54 },
+          { id: 2, word: '口红', score: 34 },
+          { id: 3, word: '平板电脑', score: 20 },
         ]);
         
         setLoading(false);
@@ -62,6 +91,30 @@ const SearchHotwords = () => {
     // 模拟设置今日热词操作
     console.log('设置今日热词');
     alert('设置今日热词功能将在后续实现');
+  };
+
+  const handleDateChange = (e) => {
+    setSelectedDate(e.target.value);
+  };
+
+  const handleStatisticFilterChange = (filter) => {
+    setStatisticFilter(filter);
+  };
+
+  const handleAddHotword = () => {
+    if (hotwordSettings.word) {
+      setHotwordList([
+        ...hotwordList,
+        { ...hotwordSettings, id: Date.now() }
+      ]);
+      setHotwordSettings({ word: '', score: 1, dailyUpdateCount: 1 });
+    }
+  };
+
+  const handleSaveSettings = () => {
+    console.log('保存设置:', hotwordSettings);
+    console.log('热词列表:', hotwordList);
+    alert('保存设置功能将在后续实现');
   };
 
   // 根据当前标签渲染内容
@@ -95,16 +148,40 @@ const SearchHotwords = () => {
           </div>
         );
       case '历史热词':
+        const filteredHistoryHotwords = historyHotwords.filter(word => word.date === selectedDate);
         return (
           <div className="history-hotwords">
-            <h3>历史热词记录</h3>
-            <div className="hotwords-list">
-              {historyHotwords.map((item) => (
-                <div key={item.id} className="hotword-item">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <span className="hotword-text">{item.word}</span>
-                    <span className="hotword-date">({item.date})</span>
+            <div className="date-picker-container">
+              <input 
+                type="date" 
+                value={selectedDate} 
+                onChange={handleDateChange}
+                className="date-picker"
+              />
+            </div>
+            <div className="description-box">
+              <p>这是展示历史一天的热词数据统计，可根据日期查看每日热词搜索次数表现</p>
+            </div>
+            <div className="bar-chart-container">
+              {statisticsData.map((item, index) => (
+                <div key={item.word || index} className="bar-item">
+                  <div className="bar-label">{item.word}</div>
+                  <div className="bar-wrapper">
+                    <div 
+                      className="bar" 
+                      style={{ height: `${(item.count / 100) * 100}%` }}
+                    ></div>
                   </div>
+                  <div className="bar-value">{item.count}</div>
+                </div>
+              ))}
+            </div>
+            <div className="hotwords-list">
+              {filteredHistoryHotwords.map((item) => (
+                <div key={item.id} className="hotword-item">
+                  <div className="hotword-text">{item.word}</div>
+                  <div className="hotword-date">{item.date}</div>
+                  <div className="hotword-count">分数: {item.score}</div>
                 </div>
               ))}
             </div>
@@ -113,25 +190,138 @@ const SearchHotwords = () => {
       case '热词统计':
         return (
           <div className="statistics-container">
-            <h3>热词搜索统计</h3>
-            <div className="hotwords-list">
-              {statisticsData.map((item) => (
-                <div key={item.id} className="hotword-item">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <span className="hotword-text">{item.word}</span>
-                    <span className="hotword-count">搜索次数: {item.count}</span>
+            <div className="statistic-filters">
+              <button 
+                className={`filter-button ${statisticFilter === '今天' ? 'active' : ''}`}
+                onClick={() => handleStatisticFilterChange('今天')}
+              >
+                今天
+              </button>
+              <button 
+                className={`filter-button ${statisticFilter === '昨天' ? 'active' : ''}`}
+                onClick={() => handleStatisticFilterChange('昨天')}
+              >
+                昨天
+              </button>
+              <button 
+                className={`filter-button ${statisticFilter === '过去7天' ? 'active' : ''}`}
+                onClick={() => handleStatisticFilterChange('过去7天')}
+              >
+                过去7天
+              </button>
+              <button 
+                className={`filter-button ${statisticFilter === '过去30天' ? 'active' : ''}`}
+                onClick={() => handleStatisticFilterChange('过去30天')}
+              >
+                过去30天
+              </button>
+              <div className="filter-group">
+                <select className="select-filter">
+                  <option>年月周词</option>
+                  <option>周</option>
+                  <option>月</option>
+                  <option>年</option>
+                </select>
+                <input type="number" defaultValue="50" className="number-filter" />
+                <button className="search-filter-button">搜索</button>
+              </div>
+            </div>
+            <div className="bar-chart-container">
+              {statisticsData.map((item, index) => (
+                <div key={item.word || index} className="bar-item">
+                  <div className="bar-label">{item.word}</div>
+                  <div className="bar-wrapper">
+                    <div 
+                      className="bar" 
+                      style={{ height: `${(item.count / 100) * 100}%` }}
+                    ></div>
                   </div>
+                  <div className="bar-value">{item.count}</div>
                 </div>
               ))}
+            </div>
+            <div className="statistics-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>热词名称</th>
+                    <th>搜索次数</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {statisticsData.map((item, index) => (
+                    <tr key={index} className="table-row">
+                      <td>{item.word}</td>
+                      <td>{item.count}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         );
       case '设置热词':
         return (
           <div className="setting-container">
-            <h3>热词设置</h3>
-            <div className="description-box">
-              <p>在这里可以配置热词的权重和推荐规则</p>
+            <div className="settings-section">
+              <div className="setting-row">
+                <label className="setting-label">热词默认权重/热词:</label>
+                <div className="input-group">
+                  <input 
+                    type="text" 
+                    value={hotwordSettings.word}
+                    onChange={(e) => setHotwordSettings({...hotwordSettings, word: e.target.value})}
+                    placeholder="请输入热词"
+                    className="setting-input"
+                  />
+                </div>
+              </div>
+              <div className="setting-row">
+                <div className="input-group-with-label">
+                  <label className="score-label">分数:</label>
+                  <input 
+                    type="number" 
+                    value={hotwordSettings.score}
+                    onChange={(e) => setHotwordSettings({...hotwordSettings, score: parseInt(e.target.value)})}
+                    min="1"
+                    className="score-input"
+                  />
+                  <button className="add-button" onClick={handleAddHotword}>添加热词</button>
+                </div>
+              </div>
+            </div>
+            <div className="settings-section">
+              <div className="setting-row">
+                <label className="setting-label">每日持久化词增加数量:</label>
+                <input 
+                  type="number" 
+                  value={hotwordSettings.dailyUpdateCount}
+                  onChange={(e) => setHotwordSettings({...hotwordSettings, dailyUpdateCount: parseInt(e.target.value)})}
+                  min="1"
+                  className="number-input"
+                />
+              </div>
+            </div>
+            <div className="settings-section">
+              <h4 className="setting-section-title">已有热词</h4>
+              <div className="hotwords-list">
+                {hotwordList.map((item) => (
+                  <div key={item.id} className="hotword-item">
+                    <div className="hotword-text">{item.word}</div>
+                    <div className="hotword-count">分数: {item.score}</div>
+                    <button 
+                      className="delete-button"
+                      onClick={() => setHotwordList(hotwordList.filter(hotword => hotword.id !== item.id))}
+                      aria-label="删除"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="settings-actions">
+              <button className="save-button" onClick={handleSaveSettings}>保存</button>
             </div>
           </div>
         );

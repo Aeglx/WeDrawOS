@@ -38,6 +38,7 @@ import DistributionWithdraw from './pages/operation/distribution/DistributionWit
 import ArticleManage from './pages/operation/article/ArticleManage';
 import ArticleCategory from './pages/operation/article/ArticleCategory';
 import AddArticle from './pages/operation/article/AddArticle';
+import SearchHotwords from './pages/operation/search-hotwords/SearchHotwords';
 
 // 导入店铺相关组件
 import ShopList from './pages/shop/ShopList';
@@ -149,7 +150,7 @@ const App = () => {
                 <Route path="/operation/distribution/distribution-withdraw" element={<DistributionWithdraw />} />
                 <Route path="/operation/article/article-manage" element={<ArticleManage />} />
                 <Route path="/operation/article/add-article" element={<AddArticle />} />
-                <Route path="/operation/article/hot-search" element={<PlaceholderPage title="搜索热词" />} />
+                <Route path="/operation/article/hot-search" element={<SearchHotwords />} />
                 <Route path="/operation/article/article-category" element={<ArticleCategory />} />
                 <Route path="/operation/article/es-segment" element={<PlaceholderPage title="ES分词" />} />
                 <Route path="/operation/feedback/feedback" element={<PlaceholderPage title="意见反馈" />} />
