@@ -5,14 +5,17 @@
 ### 启动单个服务
 
 - **启动API服务**: `npm run dev`
+  
   - 服务地址: http://localhost:3000
   - 使用nodemon实现热重载
 
 - **启动管理端**: `npm run admin:dev`
+  
   - 服务地址: http://localhost:3001
   - API代理到 http://localhost:3000
 
 - **启动买家端**: `npm run buyer:dev`
+  
   - 服务地址: http://localhost:3002
   - API代理到 http://localhost:3000
 
@@ -33,6 +36,7 @@
 ### 部署流程
 
 1. **执行构建**: `npm run build`
+   
    - 构建脚本会:
      - 清理并创建dist目录
      - 编译前端项目(admin和buyer)，使用vite进行压缩优化
@@ -41,11 +45,13 @@
      - 创建日志和上传目录
 
 2. **配置静态服务器**:
+   
    - 管理端静态文件: `dist/admin`
    - 买家端静态文件: `dist/buyer`
    - 推荐使用Nginx或Apache配置静态资源服务
 
 3. **启动API服务**:
+   
    - 可以使用PM2等进程管理工具: `pm2 start dist/api/index.js`
    - 或直接使用: `npm start`
 
