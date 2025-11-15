@@ -1,0 +1,6 @@
+html, body, #root {
+  font-size: 12px;
+}
+button, input, select, textarea {
+  font-size: 12px;
+}

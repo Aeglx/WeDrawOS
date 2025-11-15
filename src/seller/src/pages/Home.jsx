@@ -40,7 +40,7 @@ export default function Home() {
               <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
                 <Avatar size={80} src="https://via.placeholder.com/80" />
                 <Space direction="vertical">
-                  <div style={{ fontSize: 20, fontWeight: 600 }}>Hi, GOODS</div>
+                  <div style={{ fontWeight: 600 }}>Hi, GOODS</div>
                   <div>店铺名称：杂货铺</div>
                   <div>店铺状态：开店中</div>
                   <Button type="primary" style={{ background: '#ff7a45', borderColor: '#ff7a45', width: 140 }}>点击联系客服</Button>
@@ -49,11 +49,38 @@ export default function Home() {
               <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
                 {scoreData.map(s => (
                   <div key={s.label} style={{ textAlign: 'center' }}>
-                    <Progress type="circle" percent={Math.round((s.value / 5) * 100)} size={120} strokeColor={s.color} format={() => `${s.value}分`} />
+                    <Progress type="circle" percent={Math.round((s.value / 5) * 100)} size={120} strokeColor={s.color} format={() => <span style={{ fontSize: 12 }}>{s.value}分</span>} />
                     <div style={{ marginTop: 8 }}>{s.label}</div>
                   </div>
                 ))}
               </div>
+            </div>
+            <div style={{ marginTop: 16 }}>
+              <Tabs
+                items={[
+                  { key: '1', label: '商品', children: (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+                      <Button type="primary">发布商品</Button>
+                      <Button>商品列表</Button>
+                      <Button>品牌管理</Button>
+                      <Button>分类管理</Button>
+                    </div>
+                  ) },
+                  { key: '2', label: '订单', children: (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+                      <Button>订单列表</Button>
+                      <Button>售后服务</Button>
+                    </div>
+                  ) },
+                  { key: '3', label: '促销', children: (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+                      <Button>优惠券</Button>
+                      <Button>秒杀</Button>
+                      <Button>满减</Button>
+                    </div>
+                  ) }
+                ]}
+              />
             </div>
           </Card>
         </Col>
@@ -71,6 +98,8 @@ export default function Home() {
         </Col>
       </Row>
 
+      
+
       <Card title="待办事项" style={{ marginTop: 16 }}>
         <Row gutter={16}>
           {todoSections.slice(0, 3).map(sec => (
@@ -80,7 +109,7 @@ export default function Home() {
                 <Row>
                   {sec.items.map(it => (
                     <Col span={12} key={it.label} style={{ textAlign: 'center', marginBottom: 12 }}>
-                      <div style={{ color: '#f5222d', fontSize: 18 }}>{it.count}</div>
+                      <div style={{ color: '#f5222d', fontWeight: 600 }}>{it.count}</div>
                       <div style={{ color: '#666' }}>{it.label}</div>
                     </Col>
                   ))}
@@ -97,7 +126,7 @@ export default function Home() {
                 <Row>
                   {sec.items.map(it => (
                     <Col span={12} key={it.label} style={{ textAlign: 'center', marginBottom: 12 }}>
-                      <div style={{ color: '#f5222d', fontSize: 18 }}>{it.count}</div>
+                      <div style={{ color: '#f5222d', fontWeight: 600 }}>{it.count}</div>
                       <div style={{ color: '#666' }}>{it.label}</div>
                     </Col>
                   ))}
@@ -113,41 +142,15 @@ export default function Home() {
           {metrics.map((m, i) => (
             <Col span={6} key={m.title}>
               <div style={{ height: 96, borderRadius: 8, padding: 16, color: '#fff', display: 'flex', flexDirection: 'column', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', background: ['#ff8f6b', '#8fb3ff', '#7fb0a9', '#9aa3af'][i] }}>
-                <div style={{ fontSize: 16 }}>{m.title}</div>
-                <div style={{ fontSize: 20, fontWeight: 600 }}>{m.value}</div>
+                <div>{m.title}</div>
+                <div style={{ fontWeight: 600 }}>{m.value}</div>
               </div>
             </Col>
           ))}
         </Row>
       </Card>
 
-      <Card title="常用功能" style={{ marginTop: 16 }}>
-        <Tabs
-          items={[
-            { key: '1', label: '商品', children: (
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                <Button type="primary">发布商品</Button>
-                <Button>商品列表</Button>
-                <Button>品牌管理</Button>
-                <Button>分类管理</Button>
-              </div>
-            ) },
-            { key: '2', label: '订单', children: (
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                <Button>订单列表</Button>
-                <Button>售后服务</Button>
-              </div>
-            ) },
-            { key: '3', label: '促销', children: (
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                <Button>优惠券</Button>
-                <Button>秒杀</Button>
-                <Button>满减</Button>
-              </div>
-            ) }
-          ]}
-        />
-      </Card>
+      
     </div>
   )
 }
