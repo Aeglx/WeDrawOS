@@ -49,7 +49,7 @@ export default function Home() {
               <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
                 {scoreData.map(s => (
                   <div key={s.label} style={{ textAlign: 'center' }}>
-                    <Progress type="circle" percent={Math.round((s.value / 5) * 100)} width={120} strokeColor={s.color} format={() => `${s.value}分`} />
+                    <Progress type="circle" percent={Math.round((s.value / 5) * 100)} size={120} strokeColor={s.color} format={() => `${s.value}分`} />
                     <div style={{ marginTop: 8 }}>{s.label}</div>
                   </div>
                 ))}
