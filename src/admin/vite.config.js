@@ -4,13 +4,14 @@ import path from 'path'
 import dotenv from 'dotenv'
 
 dotenv.config({ path: path.resolve(__dirname, '../../.env') })
+const devPort = (Number(process.env.ADMIN_PORT) === 6000 ? 6001 : (Number(process.env.ADMIN_PORT) || 6001))
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: Number(process.env.ADMIN_PORT) || 6000,
-    strictPort: true,
+    port: devPort,
+    strictPort: false,
     proxy: {
       '/api': {
         target: 'http://localhost:3000',
@@ -20,8 +21,8 @@ export default defineConfig({
     }
   },
   preview: {
-    port: Number(process.env.ADMIN_PORT) || 6000,
-    strictPort: true
+    port: devPort,
+    strictPort: false
   },
   resolve: {
     alias: {

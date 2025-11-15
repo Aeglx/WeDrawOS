@@ -24,7 +24,7 @@
     "seller:preview": "cd src/seller && vite preview",
     "prepare:ai": "node src/api/ai-service/prepare-model.js",
     "dev:all": "concurrently \"npm run dev\" \"npm run admin:dev\" \"npm run buyer:dev\"",
-    "dev:all:full": "npm run prepare:ai && concurrently \"npm run dev\" \"npm run admin:dev\" \"npm run buyer:dev\" \"npm run seller:dev\"",
+    "dev:all:full": "set AI_PREPARE_SOFT=1 && npm run prepare:ai && concurrently \"npm run dev\" \"npm run admin:dev\" \"npm run buyer:dev\" \"npm run seller:dev\"",
     "start:prod": "npm run build && node dist/api/index.js",
     "build:all": "npm run admin:build && npm run buyer:build && npm run seller:build && npm run build",
     "prod:all": "npm run prepare:ai && npm run build:all && concurrently \"npm run start\" \"npm run admin:preview\" \"npm run buyer:preview\" \"npm run seller:preview\"",

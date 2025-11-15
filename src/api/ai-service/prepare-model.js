@@ -113,6 +113,10 @@ async function main() {
     console.error('请检查网络或使用以下任一链接手动下载并放置到目标路径:')
     MIRRORS.forEach(u => console.error(' - ' + u))
     console.error(`目标路径: ${MODEL_PATH}`)
+    if (process.env.AI_PREPARE_SOFT === '1') {
+      console.error('软失败模式已启用，继续启动其他服务')
+      return
+    }
     process.exitCode = 1
   }
 }
