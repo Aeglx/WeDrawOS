@@ -62,14 +62,26 @@ WeDrawOS/
 
 ## 一键命令
 
-- 开发（并行启动 API/Admin/Buyer/Seller，并异步准备 AI）
+- 开发（并行启动 API/Admin/Buyer/Seller，并异步准备 AI；自动打印项目地址摘要）
   - `npm run dev:all`
 - 构建（Admin/Buyer/Seller + 后端）
   - `npm run build:all`
-- 生产（构建后并行启动 API 与前端预览，并异步准备 AI）
+- 生产（构建后并行启动 API 与前端预览，并异步准备 AI；自动打印项目地址摘要）
   - `npm run prod:all`
 
-说明：AI 模型检测/下载采用软模式并行执行（`AI_PREPARE_SOFT=1`），下载时间较长但不影响项目启动；如需单独准备模型可执行 `npm run prepare:ai`。
+说明：一键启动会在启动前自动清理固定端口并在结尾打印项目地址摘要；AI 模型检测/下载采用软模式并行执行（`AI_PREPARE_SOFT=1`），下载时间较长但不影响项目启动；如需单独准备模型可执行 `npm run prepare:ai`。
+
+## 快速开始
+
+- 安装依赖：`npm install`
+- 配置环境：复制并编辑 `.env`
+- 清理端口占用：`npm run port:kill:all`
+- 一键开发：`npm run dev:all`
+- 访问地址：
+  - API: `http://localhost:3000`
+  - 管理端: `http://localhost:6000`
+  - 买家端: `http://localhost:4000`
+  - 卖家端: `http://localhost:5000`
 
 ### 端口清理命令（Windows）
 
@@ -84,16 +96,34 @@ WeDrawOS/
 - 单一 API 实例监听 `3000`，端口固定且禁止变更；若占用请先执行端口清理命令。
 - 子项目通过 `resolve.modules` 指向根目录 `node_modules`，统一版本与依赖解析。
 - 构建输出在各自 `vite.config.js` 中显式设置至 `../../dist/<子项目>`（避免本地 `dist` 杂散目录）。
+ - 地址摘要脚本在全项目启动后自动检测并打印各端地址（`scripts/summary.js`）。
 
 ## AI 模型
 
 - 默认模型：TinyLlama GGUF（约 1GB）；路径可由 `AI_MODEL_PATH` 指定，默认位于 `src/api/ai-service/models/`。
 - 并行准备：在 `dev:all`、`prod:all` 命令中后台并行下载，失败不阻塞（软模式）。
+ - 接口示例：
+   - 健康检查：`GET /api/ai/health`
+   - 对话接口：`POST /api/ai/chat`，示例请求体：
+     ```json
+     { "prompt": "你好，请简单介绍一下你自己" }
+     ```
+
+## 环境变量（核心）
+
+- `PORT=3000` 后端 API 固定端口
+- `ADMIN_PORT=6000` 管理端固定端口
+- `BUYER_PORT=4000` 买家端固定端口
+- `SELLER_PORT=5000` 卖家端固定端口
+- `AI_MODEL_PATH` 本地 AI 模型文件路径（可选）
+- `AI_PREPARE_SOFT=1` AI 下载软模式（失败不阻塞）
+- `CORS_ORIGINS` 允许跨域来源（逗号分隔）
+- `DB_HOST`/`DB_PORT`/`DB_USER`/`DB_PASSWORD`/`DB_NAME` 数据库连接配置
 - 健康检查与模拟：在模型未就绪时提供模拟回复模式，确保联调不受阻。
 
 ## 常见问题
 
-- 端口占用 `EADDRINUSE`：确保仅运行一个 API 实例；使用端口清理命令释放被占用端口（例如 `npm run port:kill:3000`）。
+- 端口占用 `EADDRINUSE`：确保仅运行一个 API/前端实例；一键命令会自动清理端口，或使用端口清理命令（例如 `npm run port:kill:3000`、`npm run port:kill:6000`）。
 - 模型下载缓慢：属正常，建议保持后台执行；也可手动下载并置于 `AI_MODEL_PATH`。
 - 依赖解析失败：确认各子项目 `resolve.modules` 包含根目录 `node_modules`。
 
