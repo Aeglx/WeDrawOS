@@ -1,10 +1,11 @@
 import React from 'react'
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
-import Login from './pages/Login'
+import Router from './router'
 import SellerLayout from './components/layout/SellerLayout'
 import Home from './pages/Home'
 import GoodsList from './pages/GoodsList'
-import PublishGoods from './pages/PublishGoods'
+    <div className="App">
+      <Router />
+    </div>
 import OrdersList from './pages/OrdersList'
 import AfterSale from './pages/AfterSale'
 import CouponList from './pages/CouponList'

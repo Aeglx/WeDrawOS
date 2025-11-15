@@ -29,6 +29,8 @@ const port = process.env.PORT || 3000; // 严格遵循README要求，使用3000�
 const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
+const { getInstance: getEnvUtils } = require('./core/utils/environment/EnvironmentUtils');
+const envUtils = getEnvUtils();
 
 const corsOrigins = (process.env.CORS_ORIGINS || process.env.CORS_ORIGIN || '').split(',').map(s => s.trim()).filter(Boolean);
 const corsOptions = {
@@ -632,15 +634,24 @@ app.use((req, res) => {
   });
 });
 
-// 启动服务器
-app.listen(port, () => {
-  console.log('✅ WeDraw API服务器已启动');
-  console.log('📡 服务地址: http://localhost:' + port);
-  console.log('📚 API文档: http://localhost:' + port + '/api/docs');
-  console.log('💚 健康检查: http://localhost:' + port + '/api/health');
-  console.log('🔍 文档JSON: http://localhost:' + port + '/api/docs.json');
-  console.log('========================================');
-});
+;(async () => {
+  const inUse = await envUtils.isPortInUse(Number(port));
+  if (inUse) {
+    console.error('❌ 端口占用: ' + port);
+    console.error('请确保仅启动一个 API 实例');
+    console.error('如需清理端口，请执行: npm run port:kill:' + port);
+    process.exitCode = 1;
+    return;
+  }
+  app.listen(port, () => {
+    console.log('✅ WeDraw API服务器已启动');
+    console.log('📡 服务地址: http://localhost:' + port);
+    console.log('📚 API文档: http://localhost:' + port + '/api/docs');
+    console.log('💚 健康检查: http://localhost:' + port + '/api/health');
+    console.log('🔍 文档JSON: http://localhost:' + port + '/api/docs.json');
+    console.log('========================================');
+  });
+})();
 
 // 导出app实例供测试使用
 module.exports = app;

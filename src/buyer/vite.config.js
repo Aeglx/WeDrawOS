@@ -19,6 +19,13 @@ export default defineConfig({
       }
     }
   },
+  build: {
+    outDir: path.resolve(__dirname, '../../dist/buyer'),
+    assetsDir: 'assets',
+    sourcemap: false,
+    minify: 'esbuild',
+    target: 'es2018'
+  },
   preview: {
     port: Number(process.env.BUYER_PORT) || 4000,
     strictPort: true
