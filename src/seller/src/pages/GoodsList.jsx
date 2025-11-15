@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Table, Tag, Button, Space, Input, Select, Image, message, Form, Row, Col, Tabs } from 'antd'
+import { Card, Table, Tag, Button, Space, Input, Select, Image, message, Tabs } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import api from '../services/api'
 
@@ -7,14 +7,17 @@ export default function GoodsList() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState([])
-  const [form] = Form.useForm()
   const [tabKey, setTabKey] = useState('all')
+  const [name, setName] = useState('')
+  const [sn, setSn] = useState('')
+  const [mode, setMode] = useState('')
+  const [type, setType] = useState('')
+  const [status, setStatus] = useState('')
 
   const fetchData = async () => {
     setLoading(true)
     try {
-      const values = form.getFieldsValue()
-      const res = await api.get('/seller/goods', { params: { ...values, tab: tabKey } })
+      const res = await api.get('/seller/goods', { params: { name, sn, mode, type, status, tab: tabKey } })
       const list = res.data?.data || []
       setData(list.map((it, i) => ({
         key: it.id || i + 1,
@@ -82,25 +85,41 @@ export default function GoodsList() {
 
   return (
     <div>
-      <Card styles={{ body: { paddingBottom: 4 } }}>
-        <Form form={form} layout="vertical">
-          <Row gutter={16}>
-            <Col span={6}><Form.Item label="商品名称" name="name"><Input placeholder="请输入商品名称" /></Form.Item></Col>
-            <Col span={6}><Form.Item label="状态" name="status"><Select placeholder="请选择" options={[{ value: 'all', label: '全部' }, { value: 'sale', label: '在售' }, { value: 'down', label: '下架' }]} /></Form.Item></Col>
-            <Col span={6}><Form.Item label="销售模式" name="mode"><Select placeholder="请选择" options={[{ value: '零售', label: '零售' }]} /></Form.Item></Col>
-            <Col span={6}><Form.Item label="商品类型" name="type"><Select placeholder="请选择" options={[{ value: '实物', label: '实物' }, { value: '虚拟', label: '虚拟' }]} /></Form.Item></Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={6}><Form.Item label="商品编号" name="sn"><Input placeholder="商品编号" /></Form.Item></Col>
-            <Col span={12}>
-              <Space>
-                <Button type="primary" danger onClick={fetchData}>搜索</Button>
-                <Button onClick={() => { form.resetFields(); fetchData() }}>重置</Button>
-              </Space>
-            </Col>
-          </Row>
-        </Form>
-      </Card>
+      <div style={{ background: '#fff', padding: 10, marginBottom: 12, borderRadius: 4, border: '1px solid #e8e8e8' }}>
+        <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 15 }}>
+          <div style={{ display: 'flex', alignItems: 'center', marginRight: 16 }}>
+            <span style={{ fontSize: 12, color: '#666', marginRight: 8, width: 80, display: 'inline-block', whiteSpace: 'nowrap' }}>商品名称</span>
+            <Input placeholder="请输入商品名称" value={name} onChange={e => setName(e.target.value)} style={{ width: 180, height: 32 }} allowClear />
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', marginRight: 16 }}>
+            <span style={{ fontSize: 12, color: '#666', marginRight: 8, width: 80, display: 'inline-block', whiteSpace: 'nowrap' }}>状态</span>
+            <Select placeholder="请选择" value={status} onChange={setStatus} allowClear style={{ width: 180, height: 32 }} options={[{ value: 'sale', label: '在售' }, { value: 'down', label: '下架' }]} />
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', marginRight: 16 }}>
+            <span style={{ fontSize: 12, color: '#666', marginRight: 8, width: 80, display: 'inline-block', whiteSpace: 'nowrap' }}>销售模式</span>
+            <Select placeholder="请选择" value={mode} onChange={setMode} allowClear style={{ width: 180, height: 32 }} options={[{ value: '零售', label: '零售' }, { value: '套餐', label: '套餐' }]} />
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', marginRight: 16 }}>
+            <span style={{ fontSize: 12, color: '#666', marginRight: 8, width: 80, display: 'inline-block', whiteSpace: 'nowrap' }}>商品类型</span>
+            <Select placeholder="请选择" value={type} onChange={setType} allowClear style={{ width: 180, height: 32 }} options={[{ value: '实物', label: '实物' }, { value: '虚拟', label: '虚拟' }]} />
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', marginRight: 16 }}>
+            <span style={{ fontSize: 12, color: '#666', marginRight: 8, width: 80, display: 'inline-block', whiteSpace: 'nowrap' }}>商品编号</span>
+            <Input placeholder="商品编号" value={sn} onChange={e => setSn(e.target.value)} style={{ width: 180, height: 32 }} allowClear />
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', marginRight: 16 }}>
+            <Button type="primary" onClick={fetchData} style={{ height: 32, backgroundColor: '#ff0000', borderColor: '#ff0000' }}>搜索</Button>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Button onClick={() => { setName(''); setSn(''); setStatus(''); setMode(''); setType(''); fetchData() }} style={{ height: 32 }}>重置</Button>
+          </div>
+        </div>
+      </div>
 
       <Card style={{ marginTop: 12 }}>
         <Tabs activeKey={tabKey} onChange={k => { setTabKey(k); fetchData() }} items={[
