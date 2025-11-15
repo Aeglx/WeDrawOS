@@ -19,7 +19,7 @@ export default function GoodsList() {
     try {
       const res = await api.get('/seller/goods', { params: { name, sn, mode, type, status, tab: tabKey } })
       const list = res.data?.data || []
-      setData(list.map((it, i) => ({
+      const mapped = list.map((it, i) => ({
         key: it.id || i + 1,
         id: it.id || 1989627749225172994 + i,
         image: it.image || 'https://via.placeholder.com/40',
@@ -27,9 +27,20 @@ export default function GoodsList() {
         mode: it.mode || '零售',
         type: it.type || '实物',
         price: it.price || 99 + i,
-        sales: it.sales || 0,
-        status: it.status || (i % 2 === 0 ? '在售' : '下架')
-      })))
+        sales: it.sales ?? 0,
+        stock: it.stock ?? (100 - i * 3),
+        auditStatus: it.auditStatus || (i % 5 === 0 ? '审核未通过' : i % 3 === 0 ? '审核通过' : '待审核'),
+        status: it.status || (i % 2 === 0 ? '上架' : '下架')
+      }))
+
+      const filtered = mapped.filter(row => {
+        if (tabKey === 'sale') return row.status === '上架'
+        if (tabKey === 'store') return row.status === '下架'
+        if (tabKey === 'audit') return row.auditStatus === '待审核'
+        if (tabKey === 'reject') return row.auditStatus === '审核未通过'
+        return true
+      })
+      setData(filtered)
     } catch (e) {
       setData(Array.from({ length: 10 }).map((_, i) => ({
         key: i,
@@ -40,7 +51,9 @@ export default function GoodsList() {
         type: '实物',
         price: 99 + i,
         sales: 0,
-        status: i % 2 === 0 ? '在售' : '下架'
+        stock: 100 - i * 3,
+        auditStatus: i % 5 === 0 ? '审核未通过' : i % 3 === 0 ? '审核通过' : '待审核',
+        status: i % 2 === 0 ? '上架' : '下架'
       })))
     } finally {
       setLoading(false)
@@ -69,15 +82,29 @@ export default function GoodsList() {
         <Button type="link" onClick={() => navigate(`/goods/detail/${record.key}`)}>{v}</Button>
       </Space>
     ) },
-    { title: '销售模式', dataIndex: 'mode', key: 'mode', render: v => <Tag color="#69c0ff" style={{ border: '1px solid #69c0ff', background: '#e6f7ff' }}>{v}</Tag> },
-    { title: '商品类型', dataIndex: 'type', key: 'type', render: v => <Tag color="#69c0ff" style={{ border: '1px solid #69c0ff', background: '#e6f7ff' }}>{v}</Tag> },
+    { title: '销售模式', dataIndex: 'mode', key: 'mode', render: v => <Tag style={{ border: '1px solid #91d5ff', background: '#e6f7ff', color: '#1890ff' }}>{v}</Tag> },
+    { title: '商品类型', dataIndex: 'type', key: 'type', render: v => <Tag style={{ border: '1px solid #91d5ff', background: '#e6f7ff', color: '#1890ff' }}>{v}</Tag> },
     { title: '价格', dataIndex: 'price', key: 'price', render: v => `¥ ${v}` },
     { title: '销量', dataIndex: 'sales', key: 'sales' },
+    { title: '库存', dataIndex: 'stock', key: 'stock' },
+    { title: '审核状态', dataIndex: 'auditStatus', key: 'auditStatus', render: v => {
+      const map = {
+        '待审核': { bg: '#fffbe6', border: '#ffe58f', color: '#faad14' },
+        '审核通过': { bg: '#f6ffed', border: '#b7eb8f', color: '#52c41a' },
+        '审核未通过': { bg: '#fff2f0', border: '#ffccc7', color: '#ff4d4f' }
+      }
+      const s = map[v] || map['待审核']
+      return <Tag style={{ background: s.bg, border: `1px solid ${s.border}`, color: s.color }}>{v}</Tag>
+    } },
+    { title: '状态', dataIndex: 'status', key: 'status', render: v => {
+      const ok = v === '上架'
+      return <Tag style={{ background: ok ? '#f6ffed' : '#fafafa', border: `1px solid ${ok ? '#b7eb8f' : '#d9d9d9'}`, color: ok ? '#52c41a' : '#999' }}>{v}</Tag>
+    } },
     { title: '操作', key: 'action', render: (_, record) => (
       <Space>
         <Button type="link">编辑</Button>
         <Button type="link">库存</Button>
-        <Button type="link" onClick={() => onShelfToggle(record)}>{record.status === '在售' ? '下架' : '上架'}</Button>
+        <Button type="link" onClick={() => onShelfToggle(record)}>{record.status === '上架' ? '下架' : '上架'}</Button>
         <Button type="link">复制</Button>
       </Space>
     ) }
