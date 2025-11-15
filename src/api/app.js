@@ -181,16 +181,7 @@ try {
 }
 
 // 安全导入API文档模块
-let setupWechatApiDocs = null;
-try {
-  console.log('【DEBUG】app.js: 尝试导入wechatApiDocs');
-  const docsModule = require('./docs/wechatApiDocs');
-  setupWechatApiDocs = docsModule.setupWechatApiDocs || function() {};
-  console.log('【DEBUG】app.js: 成功导入wechatApiDocs');
-} catch (docsError) {
-  console.error('【严重警告】app.js: 导入wechatApiDocs失败:', docsError.message);
-  setupWechatApiDocs = function() {};
-}
+let setupWechatApiDocs = function() {};
 
 // 安全导入后台服务模块
 let messageConsumer = null;

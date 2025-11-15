@@ -114,7 +114,7 @@ async function installDependencies() {
   logger.info('安装生产环境依赖...');
   
   try {
-    execSync('npm install --production', { stdio: 'inherit' });
+    execSync('npm install', { stdio: 'inherit' });
     logger.info('依赖安装完成');
   } catch (error) {
     throw new Error('依赖安装失败');
@@ -233,3 +233,31 @@ if (require.main === module) {
 }
 
 module.exports = { build };
+
+/**
+ * 使用 esbuild 打包后端 API 入口
+ */
+async function buildApiProject() {
+  const entryFile = path.join(__dirname, 'src', 'api', 'index.js');
+  const outFile = path.join(config.outputDir, 'api', 'index.js');
+  const outDir = path.join(config.outputDir, 'api');
+
+  fs.mkdirSync(outDir, { recursive: true });
+
+  await esbuild.build({
+    entryPoints: [entryFile],
+    outfile: outFile,
+    bundle: true,
+    minify: true,
+    sourcemap: true,
+    platform: 'node',
+    target: ['node18'],
+    legalComments: 'none',
+    external: [],
+  });
+
+  const staticDir = path.join(__dirname, 'src', 'api', 'static');
+  if (fs.existsSync(staticDir)) {
+    copyDirectory(staticDir, path.join(outDir, 'static'));
+  }
+}

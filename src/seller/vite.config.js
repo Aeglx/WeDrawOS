@@ -5,11 +5,10 @@ import dotenv from 'dotenv'
 
 dotenv.config({ path: path.resolve(__dirname, '../../.env') })
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: Number(process.env.ADMIN_PORT) || 6000,
+    port: Number(process.env.SELLER_PORT) || 5000,
     strictPort: true,
     proxy: {
       '/api': {
@@ -19,17 +18,22 @@ export default defineConfig({
       }
     }
   },
-  preview: {
-    port: Number(process.env.ADMIN_PORT) || 6000,
-    strictPort: true
-  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src')
     },
-    // 确保能找到根目录的node_modules
     modules: [path.resolve(__dirname, '../../node_modules'), 'node_modules']
   },
-  // 确保vite能正确解析导入路径
+  build: {
+    outDir: path.resolve(__dirname, '../../dist/seller'),
+    assetsDir: 'assets',
+    sourcemap: false,
+    minify: 'esbuild',
+    target: 'es2018'
+  },
+  preview: {
+    port: Number(process.env.SELLER_PORT) || 5000,
+    strictPort: true
+  },
   root: __dirname
 })

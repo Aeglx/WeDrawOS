@@ -28,6 +28,12 @@ function initializeWebSocket(server) {
     server,
     path: '/api/im/ws',
     verifyClient: (info, done) => {
+      const origins = (process.env.CORS_ORIGINS || process.env.CORS_ORIGIN || '').split(',').map(s => s.trim()).filter(Boolean);
+      const reqOrigin = info.origin || info.req.headers.origin;
+      if (origins.length && reqOrigin && !origins.includes(reqOrigin)) {
+        logger.warn('WebSocket连接拒绝：非法来源 ' + reqOrigin);
+        return done(false, 403, 'Forbidden');
+      }
       // 从请求头或URL中获取token进行验证
       const token = info.req.headers['sec-websocket-protocol'] || 
                    info.req.headers.authorization || 

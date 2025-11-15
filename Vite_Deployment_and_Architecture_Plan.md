@@ -330,7 +330,7 @@
   - 小程序：保留 TabBar 与平台规范交互；
   - App：支持推送、文件选择与系统分享等原生能力。
 
-- 发布与合规
+  - 发布与合规
   - 小程序：配置合法域名、上传审核；关注订阅消息与数据合规。
   - iOS App：证书签名（APNs、签名证书/描述文件）、上架审核与隐私合规、Universal Links 配置。
   - Android App：keystore 签名、FCM/厂商推送通道配置、商店审核与隐私合规、App Links 配置。
@@ -338,6 +338,66 @@
 
 - 时间与风险（新增端）
   - uni-app H5 与微信小程序基础：7–10 天（登录、商品、购物车、下单、订单列表）。
+
+## 买家PC端 1:1 复刻规范（参考 https://pc-b2b2c.pickmall.cn/）
+
+- 目标与范围
+  - 按该站样式与布局进行 1:1 复刻（像素级对齐、交互一致），数据可为虚拟数据（Mock）。
+  - 优先页面：首页、分类页、商品详情页、搜索结果页、购物车、结算页、订单列表与详情、用户中心基础页。
+
+- 布局结构（主页与全局）
+  - 顶部栏（Top Bar）：登录/注册、消息、我的订单、客户服务、商家入驻等入口。
+  - 主头部（Header）：左侧 Logo，中间搜索框与关键词联想，右侧购物车入口与数量提示。
+  - 导航（Nav/Mega Menu）：一级分类水平导航；悬浮显示多列的二级/三级分类（Mega Menu）。
+  - 主视觉（Banner/Carousel）：全宽轮播图，支持指示器与左右切换；Banner 下方推荐位（多宫格）。
+  - 楼层（Floor Sections）：按类目分楼层（如家电、服饰等），楼层标题 + Tab 切换 + 商品栅格列表；每个楼层右侧放置促销/榜单。
+  - 侧边栏（Sidebar）：悬浮快捷入口（回到顶部/购物车/客服/二维码下载）。
+  - 底部（Footer）：购物指南、配送方式、支付方式、售后服务、关于我们、商家帮助等链接区与版权信息（参考 lilishop 页脚文案风格）。
+
+- 设计规范（PC/H5 响应式）
+  - 容器宽度：PC 主容器 1200–1440px（居中），最小宽度 1200px；H5 使用 100% 流式布局。
+  - 网格与间距：24 栅格；间距 8/12/16/24；卡片圆角 6–8；阴影轻（0 2 8）。
+  - 字体与字号：标题 18–22，正文 14–16，辅助 12；中英文字体栈与抗锯齿。
+  - 颜色：主色参考站点主题（红/橙/蓝），按钮主色/悬浮色/禁用色一致；文本主/次/弱三级；分割线统一灰阶。
+  - 交互：Hover 高亮、按压反馈、Tab 切换、下拉菜单展开/收起动画；搜索建议 200ms 防抖；图片懒加载与骨架屏。
+
+- 组件清单与拆分
+  - 基础：`Header`, `TopBar`, `SearchBox`, `CartButton`, `Footer`。
+  - 导航：`NavBar`, `MegaMenu`, `Breadcrumb`。
+  - 展示：`Carousel`, `PromoGrid`, `FloorSection`, `ProductCard`, `RankingList`。
+  - 列表与表单：`Pagination`, `FilterPanel`, `Sorter`, `SkuSelector`, `QuantityInput`。
+  - 侧边：`FloatSidebar`, `QRCodePanel`, `BackToTop`。
+
+- 数据与 Mock 约定
+  - 切换开关：`VITE_USE_MOCK=true` 时走本地 Mock，`false` 时走真实 API。
+  - Mock 存放：`public/mocks/` 或 `src/mocks/`，按模块分：`home.json`, `categories.json`, `products.json`, `product-detail.json`, `cart.json`, `orders.json`。
+  - 统一封装：在买家端服务层（uni-app x 使用 `uni.request` 封装；React 使用 Axios 封装）根据 `VITE_USE_MOCK` 读取本地 JSON 或请求后端。
+  - 数据结构示例：
+    - 商品：`{ id, name, price, originalPrice, images: [url], tags: [], rating, sales, stock, sku: [{id, attrs, price, stock}] }`
+    - 分类：`{ id, name, children: [...] }`
+    - 楼层：`{ id, title, tabs: [{name, products: [...] }] }`
+  - 搜索建议：本地根据 `keyword` 前缀匹配（大小写不敏感），返回 `[{text, count}]`；联动热门关键词。
+
+- 路由与导航（PC/H5 一致）
+  - 首页：`/`
+  - 分类：`/category/:id`
+  - 搜索：`/search?q=...`
+  - 商品详情：`/product/:id`
+  - 购物车：`/cart`
+  - 结算：`/checkout`
+  - 订单：`/orders`、`/orders/:id`
+  - 用户中心：`/account`（订单、地址、优惠券、消息）
+
+- 性能与 SEO
+  - 图片懒加载与占位；优先加载首屏楼层与 Banner；资源指纹与合并。
+  - H5/PC 可选预渲染（Prerender）提升首屏；SEO 友好路由与元信息（如需）。
+  - 监控：PV/UV、首屏时间、交互延迟、错误日志。
+
+- 验收标准
+  - 视觉：关键布局与组件在 PC 端像素级对齐（容差 ≤ 2px），色值与字号一致；交互行为（Hover/展开/轮播）一致。
+  - 功能：搜索建议、楼层 Tab 切换、商品卡片 hover、购物车入口数量提示、浮动侧栏行为。
+  - 数据：Mock 在 `VITE_USE_MOCK=true` 时完整覆盖主流程；关闭时能平滑切到真实 API。
+
   - iOS/Android 基础壳与打包：3–5 天（登录、商品列表与详情、下单流程联通、推送初始化）。
   - 商店审核与证书配置：1–3 天（取决于合规材料）。
 

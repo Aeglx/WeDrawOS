@@ -28,49 +28,32 @@ const app = express();
 const port = process.env.PORT || 3000; // 严格遵循README要求，使用3000端口
 const fs = require('fs');
 const path = require('path');
+const cors = require('cors');
 
-// CORS中间件配置，允许跨域请求
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-  next();
-});
+const corsOrigins = (process.env.CORS_ORIGINS || process.env.CORS_ORIGIN || '').split(',').map(s => s.trim()).filter(Boolean);
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (!corsOrigins.length || corsOrigins.includes(origin)) return callback(null, true);
+    callback(new Error('Not allowed by CORS'), false);
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+};
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 // 中间件配置
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// 导入AI服务路由
-const aiRoutes = require('./ai-service/aiRoutes');
-// 使用AI服务路由，挂载到/api/ai路径下
-app.use('/api/ai', aiRoutes);
-console.log('✅ AI服务路由已注册到 /api/ai 路径')
+// 统一在 registerApiRoutes 中注册 AI 路由
 
 // 基本的Swagger配置
 // setupBasicSwagger函数已移除，只使用Wedraw文档风格作为唯一的API文档入口
 
-// 引入Wedraw文档风格的API文档系统
-let setupSwagger;
-try {
-  // 只使用Wedraw文档风格作为唯一的API文档
-  const wedrawApiDocs = require('./docs/wechatApiDocs');
-  if (wedrawApiDocs.setupWechatApiDocs) {
-    setupSwagger = wedrawApiDocs.setupWechatApiDocs;
-    console.log('✅ 成功加载Wedraw文档风格API文档系统');
-  } else {
-    throw new Error('Wedraw文档模块未找到或不完整');
-  }
-} catch (error) {
-  console.error('❌ 加载Wedraw文档系统失败:', error.message);
-  // 创建一个基本的setupSwagger函数
-  setupSwagger = function(app) {
-    console.log('⚠️  使用简化版API文档配置');
-  };
-}
+const { setupSwagger } = require('./core/docs/swaggerConfig');
 
 // 扫描API路由函数
 async function scanApiRoutes() {
@@ -589,27 +572,36 @@ function registerApiRoutes(app) {
     console.warn('⚠️  加载AI服务路由失败:', error.message);
   }
   
-  // 注册其他API路由
-  const apiDirs = [
-    'common-api',
-    'buyer-api',
-    'seller-api',
-    'admin-api',
-    'im-api'
-  ];
-  
-  apiDirs.forEach(dir => {
-    try {
-      // 直接加载路由模块，不尝试从dist目录加载
-      const apiRoutes = require(`./${dir}/routes`);
-      if (apiRoutes && typeof apiRoutes === 'function') {
-        app.use('/api', apiRoutes);
-        console.log(`✅ 成功注册${dir}路由`);
-      }
-    } catch (error) {
-      console.warn(`⚠️  加载${dir}路由失败:`, error.message);
-    }
-  });
+  // 注册各模块，避免动态 require 影响打包
+  try {
+    const commonApi = require('./common-api');
+    if (typeof commonApi.register === 'function') commonApi.register(app);
+    else if (typeof commonApi.initialize === 'function') commonApi.initialize(app);
+  } catch (e) { console.warn('⚠️  注册common-api模块失败:', e.message); }
+
+  try {
+    const buyerApi = require('./buyer-api');
+    if (typeof buyerApi.register === 'function') buyerApi.register(app);
+    else if (typeof buyerApi.initialize === 'function') buyerApi.initialize(app);
+  } catch (e) { console.warn('⚠️  注册buyer-api模块失败:', e.message); }
+
+  try {
+    const sellerApi = require('./seller-api');
+    if (typeof sellerApi.register === 'function') sellerApi.register(app);
+    else if (typeof sellerApi.initialize === 'function') sellerApi.initialize(app);
+  } catch (e) { console.warn('⚠️  注册seller-api模块失败:', e.message); }
+
+  try {
+    const adminApi = require('./admin-api');
+    if (typeof adminApi.register === 'function') adminApi.register(app);
+    else if (typeof adminApi.initialize === 'function') adminApi.initialize(app);
+  } catch (e) { console.warn('⚠️  注册admin-api模块失败:', e.message); }
+
+  try {
+    const imApi = require('./im-api');
+    if (typeof imApi.register === 'function') imApi.register(app);
+    else if (typeof imApi.initialize === 'function') imApi.initialize(app);
+  } catch (e) { console.warn('⚠️  注册im-api模块失败:', e.message); }
 }
 
 // 设置静态文件服务
@@ -644,9 +636,9 @@ app.use((req, res) => {
 app.listen(port, () => {
   console.log('✅ WeDraw API服务器已启动');
   console.log('📡 服务地址: http://localhost:' + port);
-  console.log('📚 WeDraw文档风格API: http://localhost:' + port + '/api/wedraw-docs');
+  console.log('📚 API文档: http://localhost:' + port + '/api/docs');
   console.log('💚 健康检查: http://localhost:' + port + '/api/health');
-  console.log('🔍 文档JSON: http://localhost:' + port + '/api/wedraw-docs/json');
+  console.log('🔍 文档JSON: http://localhost:' + port + '/api/docs.json');
   console.log('========================================');
 });
 
