@@ -150,12 +150,15 @@ WeDrawOS/
 
 ## 开发与运行
 
-### 一键启动所有服务
+### 一键启动所有服务（两套命令）
+
+- 开发模式（启动 API + 管理端 + 买家端 + 卖家端 + AI）
 
 ```bash
-# 开发模式（同时启动API、管理端和买家端）
-npm run dev:all
+npm run dev:all:full
 ```
+
+说明：首次运行将自动检查 AI 模型文件，若不存在会自动从 Hugging Face 下载 TinyLlama GGUF 模型到 `src/api/ai-service/models/`。
 
 ### 单独启动各服务
 
@@ -173,11 +176,14 @@ npm run buyer:dev
 ### 生产环境部署
 
 ```bash
-# 构建并启动生产环境API服务
-npm run start:prod
+# 构建并启动生产环境（全部子项目，含AI）
+npm run prod:all
 
-# 仅构建生产版本
-npm run build
+# 仅构建全部子项目（前端+后端）
+npm run build:all
+
+# 仅构建并启动生产环境API服务（不包含前端预览）
+npm run start:prod
 ```
 
 ### 构建与预览各前端项目
@@ -211,6 +217,14 @@ npm run buyer:preview
 ```
 src/api/ai-service/models/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf
 ```
+
+如模型不存在，以下命令会自动下载并准备：
+
+```bash
+npm run prepare:ai
+```
+
+自动下载源：TinyLlama GGUF（Hugging Face），默认保存到上述路径；可通过环境变量 `AI_MODEL_PATH` 指定自定义路径。
 
 ### AI智能助手访问
 

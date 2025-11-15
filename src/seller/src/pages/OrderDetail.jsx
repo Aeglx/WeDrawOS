@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { Card, Descriptions, Tag, Button, Space, Table, message, Modal, Form, Input, Select, DatePicker } from 'antd'
+import { Card, Descriptions, Tag, Button, Space, Table, message, Modal, Form, Input, Select, DatePicker, Steps, Divider } from 'antd'
 import api from '../services/api'
 
 export default function OrderDetail() {
@@ -73,6 +73,16 @@ export default function OrderDetail() {
 
   return (
     <Card title="订单详情" extra={<Space>{data.status === '待发货' && <Button type="primary" onClick={openShip}>发货</Button>}</Space>}>
+      <Steps
+        current={data.status === '待发货' ? 1 : data.status === '已发货' ? 2 : 3}
+        items={[
+          { title: '已下单' },
+          { title: '待发货' },
+          { title: '已发货' },
+          { title: '已完成' }
+        ]}
+      />
+      <Divider />
       <Descriptions column={2} bordered size="small">
         <Descriptions.Item label="订单号">{data.orderNo}</Descriptions.Item>
         <Descriptions.Item label="状态"><Tag color={data.status === '待发货' ? 'processing' : data.status === '已发货' ? 'blue' : 'green'}>{data.status}</Tag></Descriptions.Item>
@@ -83,6 +93,22 @@ export default function OrderDetail() {
       </Descriptions>
       <Card title="商品明细" style={{ marginTop: 16 }}>
         <Table columns={columns} dataSource={data.items} pagination={false} />
+      </Card>
+      <Card title="支付信息" style={{ marginTop: 16 }}>
+        <Descriptions column={2} size="small">
+          <Descriptions.Item label="支付方式">在线支付</Descriptions.Item>
+          <Descriptions.Item label="支付时间">{data.createdAt}</Descriptions.Item>
+          <Descriptions.Item label="应付金额">{data.amount}</Descriptions.Item>
+          <Descriptions.Item label="实付金额">{data.amount}</Descriptions.Item>
+        </Descriptions>
+      </Card>
+      <Card title="物流信息" style={{ marginTop: 16 }} extra={<Space>{data.status === '待发货' && <Button onClick={openShip}>填写物流</Button>}</Space>}>
+        <Descriptions column={2} size="small">
+          <Descriptions.Item label="物流公司">{data.expressCompany || '-'}</Descriptions.Item>
+          <Descriptions.Item label="运单号">{data.trackingNo || '-'}</Descriptions.Item>
+          <Descriptions.Item label="发货时间">{data.shippedAt || '-'}</Descriptions.Item>
+          <Descriptions.Item label="备注">{data.remark || '-'}</Descriptions.Item>
+        </Descriptions>
       </Card>
       <Modal
         title="发货"
