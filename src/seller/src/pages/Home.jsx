@@ -35,25 +35,26 @@ export default function Home() {
     <div>
       <Row gutter={16}>
         <Col span={16}>
-          <Card>
-            <Row align="middle" gutter={24}>
-              <Col span={6}>
-                <Space>
-                  <Avatar size={80} src="https://via.placeholder.com/80" />
-                  <Space direction="vertical">
-                    <div>店铺名称：杂货铺</div>
-                    <div>店铺状态：开店中</div>
-                    <Button type="primary" danger>点击联系客服</Button>
-                  </Space>
+          <Card styles={{ body: { padding: 20 } }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                <Avatar size={80} src="https://via.placeholder.com/80" />
+                <Space direction="vertical">
+                  <div style={{ fontSize: 20, fontWeight: 600 }}>Hi, GOODS</div>
+                  <div>店铺名称：杂货铺</div>
+                  <div>店铺状态：开店中</div>
+                  <Button type="primary" style={{ background: '#ff7a45', borderColor: '#ff7a45', width: 140 }}>点击联系客服</Button>
                 </Space>
-              </Col>
-              {scoreData.map(s => (
-                <Col span={6} key={s.label} style={{ textAlign: 'center' }}>
-                  <Progress type="circle" percent={Math.round((s.value / 5) * 100)} width={100} strokeColor={s.color} format={() => `${s.value}分`} />
-                  <div style={{ marginTop: 8 }}>{s.label}</div>
-                </Col>
-              ))}
-            </Row>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+                {scoreData.map(s => (
+                  <div key={s.label} style={{ textAlign: 'center' }}>
+                    <Progress type="circle" percent={Math.round((s.value / 5) * 100)} width={120} strokeColor={s.color} format={() => `${s.value}分`} />
+                    <div style={{ marginTop: 8 }}>{s.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </Card>
         </Col>
         <Col span={8}>
@@ -72,14 +73,31 @@ export default function Home() {
 
       <Card title="待办事项" style={{ marginTop: 16 }}>
         <Row gutter={16}>
-          {todoSections.map(sec => (
+          {todoSections.slice(0, 3).map(sec => (
             <Col span={8} key={sec.title}>
               <div style={{ background: '#f7f7f7', borderRadius: 8, padding: 16 }}>
-                <div style={{ color: '#ccc', marginBottom: 8 }}>{sec.title}</div>
+                <div style={{ color: '#ccc', marginBottom: 8, fontWeight: 600 }}>{sec.title}</div>
                 <Row>
                   {sec.items.map(it => (
                     <Col span={12} key={it.label} style={{ textAlign: 'center', marginBottom: 12 }}>
-                      <div style={{ color: '#cf1322', fontSize: 18 }}>{it.count}</div>
+                      <div style={{ color: '#f5222d', fontSize: 18 }}>{it.count}</div>
+                      <div style={{ color: '#666' }}>{it.label}</div>
+                    </Col>
+                  ))}
+                </Row>
+              </div>
+            </Col>
+          ))}
+        </Row>
+        <Row gutter={16} style={{ marginTop: 12 }}>
+          {todoSections.slice(3).map(sec => (
+            <Col span={8} key={sec.title}>
+              <div style={{ background: '#f7f7f7', borderRadius: 8, padding: 16 }}>
+                <div style={{ color: '#ccc', marginBottom: 8, fontWeight: 600 }}>{sec.title}</div>
+                <Row>
+                  {sec.items.map(it => (
+                    <Col span={12} key={it.label} style={{ textAlign: 'center', marginBottom: 12 }}>
+                      <div style={{ color: '#f5222d', fontSize: 18 }}>{it.count}</div>
                       <div style={{ color: '#666' }}>{it.label}</div>
                     </Col>
                   ))}
